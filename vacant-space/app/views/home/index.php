@@ -10,7 +10,7 @@
 
   <div class="mt-8 text-center">
     <h1 id="welcome-title" class="font-bold text-5xl text-white uppercase tracking-widest translate-y-full opacity-0 transition-all duration-700 font-oswald">
-      JeffBrew
+      Jeff Brewery
     </h1>
     <p id="welcome-sub" class="mt-4 text-yellow-400 font-bold tracking-[0.3em] text-sm uppercase translate-y-4 opacity-0 transition-all duration-700">
       Trinidad & Tobago
