@@ -36,7 +36,70 @@ class Database {
         ]
     ];
 
+    public static $MERCH_ITEMS = [
+        'm1' => ['name' => 'Logo Rope Hat - Assorted Colours', 'price' => 295, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/00695C/FFFFFF.png?text=Logo+Rope+Hat\n(Assorted+Colours)'],
+        'm2' => ['name' => 'Tin Tacker Sign - Island Series', 'price' => 250, 'category' => 'Accessories', 'soldOut' => true, 'image' => 'https://placehold.co/600x750/FF6F00/FFFFFF.png?text=Tin+Tacker+Sign\n(Island+Series)'],
+        'm3' => ['name' => 'Island Series Willi Becher Glass - 16oz', 'price' => 75, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/FFD54F/171717.png?text=Willi+Becher+Glass\n(16oz)'],
+        'm4' => ['name' => 'Island Series Can Taster Glass - 5oz', 'price' => 55, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/CE1126/FFFFFF.png?text=Can+Taster\n(5oz)'],
+        'm5' => ['name' => 'Vintage Logo Trucker', 'price' => 275, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/171717/FFFFFF.png?text=Vintage+Logo\nTrucker'],
+        'm6' => ['name' => 'Logo Trucker', 'price' => 275, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/00695C/FFFFFF.png?text=Logo+Trucker\n(Standard)'],
+        'm7' => ['name' => 'Brewed for the Journey Trucker', 'price' => 275, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/FF6F00/FFFFFF.png?text=Journey+Trucker\n(Mesh+Back)'],
+        'm8' => ['name' => 'Logo Beach Towel', 'price' => 450, 'category' => 'Accessories', 'image' => 'https://placehold.co/600x750/00695C/FFFFFF.png?text=Logo+Beach+Towel\n(Oversized)'],
+        'm9' => ['name' => 'Branded Can Taster Glass - 5oz', 'price' => 40, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/FFD54F/171717.png?text=Branded+Taster\n(5oz)'],
+        'm10' => ['name' => 'Branded Willi Becher Glass 2024 - 13oz', 'price' => 45, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/171717/FFFFFF.png?text=Willi+Becher+2024\n(13oz)'],
+        'm11' => ['name' => 'Branded Willi Becher Glass 2024 - 16oz', 'price' => 50, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/171717/FFFFFF.png?text=Willi+Becher+2024\n(16oz)'],
+        'm12' => ['name' => 'Logo Hoodie - French Terry Pullover', 'price' => 395, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/333333/FFFFFF.png?text=French+Terry\nHoodie'],
+        'm13' => ['name' => 'Unisex Logo T-Shirt', 'price' => 150, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/FFFFFF/171717.png?text=Unisex+Logo+Tee'],
+        'm14' => ['name' => 'Logo Jersey Hoodie', 'price' => 325, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/CE1126/FFFFFF.png?text=Jersey+Hoodie\n(Lightweight)'],
+        'm15' => ['name' => 'Branded Willi Becher Glass - 12oz', 'price' => 40, 'originalPrice' => 48, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/FF6F00/FFFFFF.png?text=Willi+Becher\n(12oz)'],
+        'm16' => ['name' => 'Branded Teku Glass - 11.2oz', 'price' => 72, 'originalPrice' => 80, 'category' => 'Glassware', 'image' => 'https://placehold.co/600x750/FFD54F/171717.png?text=Teku+Glass\n(11.2oz)'],
+        'm17' => ['name' => 'Logo Tin Sign', 'price' => 199, 'category' => 'Accessories', 'image' => 'https://placehold.co/600x750/00695C/FFFFFF.png?text=Logo+Tin+Sign\n(Classic)'],
+        'm18' => ['name' => 'Tap Handle', 'price' => 395, 'category' => 'Accessories', 'image' => 'https://placehold.co/600x750/171717/FFFFFF.png?text=Custom+Tap+Handle\n(Wood)'],
+        'm19' => ['name' => 'Limited Edition Christmas Sweater 2023', 'price' => 350, 'originalPrice' => 359, 'category' => 'Apparel', 'image' => 'https://placehold.co/600x750/CE1126/FFFFFF.png?text=Xmas+Sweater\n(2023+Edition)'],
+        'm20' => ['name' => 'Key Ring - Antique Brass', 'price' => 40, 'originalPrice' => 49, 'category' => 'Accessories', 'image' => 'https://placehold.co/600x750/B8860B/FFFFFF.png?text=Brass+Key+Ring'],
+    ];
+
     public static function getBeerById($id) {
+        if (str_starts_with($id, 'gift-card-')) {
+            $parts = explode('-', $id);
+            // format is: gift-card-{amount}-{timestamp}
+            $amount = isset($parts[2]) ? floatval($parts[2]) : 50.0;
+            return [
+                'id' => $id,
+                'name' => 'Jeff Brewery Gift Card',
+                'tagline' => 'Give the gift of vibes.',
+                'style' => 'Gift Card',
+                'abv' => 0.0,
+                'price' => $amount,
+                'description' => "A $$amount digital gift card redeemable for anything in the Jeff Brewery shop. The perfect gift for the craft beer lover in your life.",
+                'flavorProfile' => ['Digital', 'Instant', 'Vibes'],
+                'pairing' => ['Birthdays', 'Anniversaries', 'Tabanca'],
+                'vibe' => 'Celebration',
+                'availability' => 'CORE',
+                'image' => 'https://images.unsplash.com/photo-1622646698651-409395290b3a?auto=format&fit=crop&w=800&q=80',
+                'reviews' => []
+            ];
+        }
+
+        if (isset(self::$MERCH_ITEMS[$id])) {
+            $item = self::$MERCH_ITEMS[$id];
+            return [
+                'id' => $id,
+                'name' => $item['name'],
+                'tagline' => $item['category'],
+                'style' => 'Merch',
+                'abv' => 0.0,
+                'price' => $item['price'],
+                'description' => 'Official Jeff Brewery Merchandise.',
+                'flavorProfile' => [],
+                'pairing' => [],
+                'vibe' => 'Lifestyle',
+                'availability' => isset($item['soldOut']) && $item['soldOut'] ? 'LIMITED' : 'CORE',
+                'image' => $item['image'],
+                'reviews' => []
+            ];
+        }
+
         foreach (self::getBeers() as $beer) {
             if ($beer['id'] === $id) {
                 return $beer;
@@ -46,7 +109,7 @@ class Database {
     }
 
     public static function getBeers() {
-        return [
+        $beers = [
             [
                 'id' => 'island-ipa',
                 'name' => 'Island IPA',
@@ -202,5 +265,15 @@ class Database {
                 'reviews' => [],
             ],
         ];
+
+        if (isset($_SESSION['beers_overrides'])) {
+            foreach ($beers as &$beer) {
+                if (isset($_SESSION['beers_overrides'][$beer['id']])) {
+                    $beer['image'] = $_SESSION['beers_overrides'][$beer['id']];
+                }
+            }
+        }
+
+        return $beers;
     }
 }

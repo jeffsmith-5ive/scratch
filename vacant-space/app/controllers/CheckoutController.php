@@ -6,11 +6,25 @@ class CheckoutController extends Controller {
             session_start();
         }
 
-        $cart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+        $sessionCart = isset($_SESSION['cart']) ? $_SESSION['cart'] : [];
+        $cart = [];
         $cartTotal = 0;
         
-        foreach ($cart as $item) {
-            $cartTotal += $item['price'] * $item['quantity'];
+        foreach ($sessionCart as $id => $qty) {
+            $beer = Database::getBeerById($id);
+            if ($beer) {
+                $itemTotal = $beer['price'] * $qty;
+                $cartTotal += $itemTotal;
+                $cart[] = [
+                    'id' => $id,
+                    'name' => $beer['name'],
+                    'price' => $beer['price'],
+                    'quantity' => $qty,
+                    'image' => $beer['image'],
+                    'style' => $beer['style'],
+                    'totalPrice' => $itemTotal
+                ];
+            }
         }
 
         $shippingCost = $cartTotal > 100 ? 0 : 15;
@@ -24,7 +38,6 @@ class CheckoutController extends Controller {
         ];
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Simulate processing
             $step = 'success';
             $formData = [
                 'firstName' => $_POST['firstName'] ?? '',
@@ -33,13 +46,7 @@ class CheckoutController extends Controller {
             ];
             
             // Clear cart
-            if (isset($_SESSION['cart'])) {
-                unset($_SESSION['cart']);
-            }
-            
-            // Re-calculate after clearing so the view doesn't break, though we don't need it on success
-            $cart = []; 
-            $cartTotal = 0;
+            $_SESSION['cart'] = [];
         }
 
         $data = [

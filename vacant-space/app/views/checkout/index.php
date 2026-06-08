@@ -4,7 +4,7 @@
       <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
         <i data-lucide="check-circle" class="h-10 w-10 text-green-600"></i>
       </div>
-      <h2 class="text-4xl font-oswald font-bold text-neutral-900 mb-4 uppercase tracking-wide">Order Confirmed!</h2>
+      <h2 class="text-4xl font-display font-bold text-neutral-900 mb-4 uppercase tracking-wide">Order Confirmed!</h2>
       <p class="text-lg text-gray-600 mb-8 font-light">
         Thanks for the vibes, <span class="font-bold text-neutral-900"><?= htmlspecialchars($formData['firstName']) ?></span>. 
         We've received your order <span class="font-mono bg-gray-100 px-2 py-1 rounded">#JEFF-<?= rand(1000, 9999) ?></span>.
@@ -19,7 +19,7 @@
 
       <a 
         href="?route=home"
-        class="block w-full bg-jeff-orange text-white font-bold py-4 rounded-xl hover:bg-orange-600 transition shadow-lg uppercase tracking-wide cursor-pointer"
+        class="block w-full bg-jeff-orange text-white font-bold py-4 rounded-xl hover:bg-orange-600 transition shadow-lg uppercase tracking-wide cursor-pointer text-center"
       >
         Back to Home
       </a>
@@ -29,7 +29,7 @@
 <?php elseif (count($cart) === 0): ?>
   <div class="min-h-screen flex flex-col items-center justify-center bg-gray-50 px-4">
     <i data-lucide="shopping-cart" class="h-16 w-16 text-gray-300 mb-6"></i>
-    <h2 class="text-3xl font-oswald font-bold text-neutral-900 mb-4 uppercase tracking-widest">Your cooler is empty.</h2>
+    <h2 class="text-3xl font-display font-bold text-neutral-900 mb-4 uppercase tracking-widest text-center">Your cart is empty.</h2>
     <a href="?route=shop" class="text-jeff-orange font-bold uppercase tracking-wider hover:underline flex items-center group">
        <i data-lucide="arrow-left" class="w-4 h-4 mr-2 transform group-hover:-translate-x-1 transition"></i> Return to Shop
     </a>
@@ -52,7 +52,7 @@
           <form method="POST" action="?route=checkout" id="checkout-form" class="space-y-8">
             <!-- Contact -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-              <h3 class="text-xl font-oswald font-bold text-neutral-900 mb-4 flex items-center uppercase tracking-wide">
+              <h3 class="text-xl font-display font-bold text-neutral-900 mb-4 flex items-center uppercase tracking-wide">
                 1. Contact Information
               </h3>
               <input 
@@ -66,7 +66,7 @@
 
             <!-- Shipping -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-              <h3 class="text-xl font-oswald font-bold text-neutral-900 mb-4 flex items-center uppercase tracking-wide">
+              <h3 class="text-xl font-display font-bold text-neutral-900 mb-4 flex items-center uppercase tracking-wide">
                 2. Shipping Details <i data-lucide="truck" class="ml-3 h-5 w-5 text-gray-400"></i>
               </h3>
               <div class="grid grid-cols-2 gap-4 mb-4">
@@ -115,7 +115,7 @@
 
             <!-- Payment -->
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-200">
-              <h3 class="text-xl font-oswald font-bold text-neutral-900 mb-4 flex items-center uppercase tracking-wide">
+              <h3 class="text-xl font-display font-bold text-neutral-900 mb-4 flex items-center uppercase tracking-wide">
                 3. Payment <i data-lucide="lock" class="ml-3 h-4 w-4 text-green-500"></i>
               </h3>
               <div class="mb-4">
@@ -154,7 +154,7 @@
             <button 
               type="submit" 
               id="submit-pay-btn"
-              class="w-full bg-neutral-900 text-white font-bold py-5 rounded-xl hover:bg-jeff-orange transition shadow-xl text-lg flex justify-center items-center font-oswald uppercase tracking-widest relative overflow-hidden"
+              class="w-full bg-neutral-900 text-white font-bold py-5 rounded-xl hover:bg-jeff-orange transition shadow-xl text-lg flex justify-center items-center font-display uppercase tracking-widest relative overflow-hidden"
             >
               <span id="btn-text">Pay $<?= number_format($finalTotal, 2) ?></span>
               <i data-lucide="loader-2" id="btn-spinner" class="w-6 h-6 animate-spin absolute hidden"></i>
@@ -165,16 +165,16 @@
         <!-- RIGHT COLUMN: SUMMARY -->
         <div class="lg:pl-8">
            <div class="bg-white p-6 rounded-2xl shadow-xl border border-gray-100 sticky top-24">
-              <h3 class="text-2xl font-oswald font-bold text-neutral-900 mb-6 uppercase tracking-wide">Order Summary</h3>
+              <h3 class="text-xl font-display font-bold text-neutral-900 mb-6 uppercase tracking-wide">Order Summary</h3>
               
               <div class="max-h-80 overflow-y-auto mb-6 pr-2 scrollbar-hide space-y-4">
                 <?php foreach ($cart as $item): ?>
                   <div class="flex pb-4 border-b border-gray-100 last:border-0 last:pb-0">
                      <div class="h-16 w-16 rounded-lg bg-gray-50 overflow-hidden flex-shrink-0 border border-gray-200">
                         <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="w-full h-full object-cover">
-                     </div>
+                      </div>
                      <div class="ml-4 flex-1">
-                        <div class="flex justify-between font-bold text-neutral-900 text-sm font-oswald uppercase tracking-wide">
+                        <div class="flex justify-between font-bold text-neutral-900 text-sm font-display uppercase tracking-wide">
                            <h4><?= htmlspecialchars($item['name']) ?></h4>
                            <span>$<?= number_format($item['price'] * $item['quantity'], 2) ?></span>
                         </div>
@@ -200,7 +200,7 @@
                       <?php endif; ?>
                     </span>
                  </div>
-                 <div class="flex justify-between text-3xl font-oswald font-bold text-neutral-900 pt-6 border-t border-gray-200 mt-4 leading-none text-jeff-dark">
+                 <div class="flex justify-between text-2xl font-display font-bold text-neutral-900 pt-6 border-t border-gray-200 mt-4 leading-none text-jeff-dark">
                     <span>Total</span>
                     <span>$<?= number_format($finalTotal, 2) ?></span>
                  </div>

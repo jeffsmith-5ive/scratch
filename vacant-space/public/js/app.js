@@ -6,25 +6,113 @@ document.addEventListener('DOMContentLoaded', () => {
     const ageGate = document.getElementById('age-gate');
     const btnYes = document.getElementById('btn-yes');
     const btnNo = document.getElementById('btn-no');
-    const ageError = document.getElementById('age-error');
 
-    // Check session storage first (simulating short-term trust for demo)
-    if (!sessionStorage.getItem('ageVerified')) {
+    // Check if user has already verified age using localStorage
+    if (!localStorage.getItem('jeff-brewery-age-verified')) {
         ageGate.classList.remove('hidden');
     }
 
     if (btnYes) {
         btnYes.addEventListener('click', () => {
-            sessionStorage.setItem('ageVerified', 'true');
+            localStorage.setItem('jeff-brewery-age-verified', 'true');
             ageGate.classList.add('hidden');
-            ageError.classList.add('hidden');
         });
     }
 
     if (btnNo) {
         btnNo.addEventListener('click', () => {
-            ageError.classList.remove('hidden');
-            // Usually we'd redirect to google.com or something here
+            window.location.href = 'https://www.google.com';
+        });
+    }
+
+    // --- Navigation Dropdown & Mobile Menu Logic ---
+    const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
+    const dropdownMenus = document.querySelectorAll('.nav-dropdown-menu');
+    const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
+    const mobileMenuToggleBtn = document.getElementById('mobile-menu-toggle-btn');
+    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileMenuIconOpen = document.getElementById('mobile-menu-icon-open');
+    const mobileMenuIconClose = document.getElementById('mobile-menu-icon-close');
+
+    // Desktop Dropdowns
+    dropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdownId = 'dropdown-' + toggle.dataset.dropdown;
+            const targetMenu = document.getElementById(dropdownId);
+            const arrow = toggle.querySelector('.dropdown-arrow');
+
+            // Close other desktop dropdowns
+            dropdownMenus.forEach(menu => {
+                if (menu.id !== dropdownId) {
+                    menu.classList.add('hidden');
+                    const otherToggle = document.querySelector(`[data-dropdown="${menu.id.replace('dropdown-', '')}"]`);
+                    if (otherToggle) {
+                        const otherArrow = otherToggle.querySelector('.dropdown-arrow');
+                        if (otherArrow) otherArrow.classList.remove('rotate-180');
+                    }
+                }
+            });
+
+            // Toggle target
+            if (targetMenu) {
+                const isHidden = targetMenu.classList.contains('hidden');
+                if (isHidden) {
+                    targetMenu.classList.remove('hidden');
+                    if (arrow) arrow.classList.add('rotate-180');
+                } else {
+                    targetMenu.classList.add('hidden');
+                    if (arrow) arrow.classList.remove('rotate-180');
+                }
+            }
+        });
+    });
+
+    // Mobile Dropdowns
+    mobileDropdownToggles.forEach(toggle => {
+        toggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const dropdownId = 'mobile-dropdown-' + toggle.dataset.dropdown;
+            const targetMenu = document.getElementById(dropdownId);
+            const arrow = toggle.querySelector('.mobile-dropdown-arrow');
+
+            if (targetMenu) {
+                const isHidden = targetMenu.classList.contains('hidden');
+                if (isHidden) {
+                    targetMenu.classList.remove('hidden');
+                    if (arrow) arrow.classList.add('rotate-180');
+                } else {
+                    targetMenu.classList.add('hidden');
+                    if (arrow) arrow.classList.remove('rotate-180');
+                }
+            }
+        });
+    });
+
+    // Close desktop dropdowns when clicking anywhere else
+    document.addEventListener('click', () => {
+        dropdownMenus.forEach(menu => {
+            menu.classList.add('hidden');
+        });
+        document.querySelectorAll('.dropdown-arrow').forEach(arrow => {
+            arrow.classList.remove('rotate-180');
+        });
+    });
+
+    // Mobile Menu Toggle
+    if (mobileMenuToggleBtn && mobileMenu) {
+        mobileMenuToggleBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const isOpen = mobileMenu.classList.contains('hidden');
+            if (isOpen) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenuIconOpen.classList.add('hidden');
+                mobileMenuIconClose.classList.remove('hidden');
+            } else {
+                mobileMenu.classList.add('hidden');
+                mobileMenuIconOpen.classList.remove('hidden');
+                mobileMenuIconClose.classList.add('hidden');
+            }
         });
     }
 
@@ -90,32 +178,124 @@ document.addEventListener('DOMContentLoaded', () => {
     const chatInput = document.getElementById('chat-input');
     const chatSend = document.getElementById('chat-send');
     const chatMessages = document.getElementById('chat-messages');
+    
+    const chatbotFabContainer = document.getElementById('chatbot-fab-container');
+    const chatbotHideBtn = document.getElementById('chatbot-hide-btn');
+    const chatbotToggleIcon = document.getElementById('chatbot-toggle-icon');
+    const chatbotToggleCloseIcon = document.getElementById('chatbot-toggle-close-icon');
+    const chatbotMaximizeBtn = document.getElementById('chatbot-maximize-btn');
+    const chatbotMinimizeBtn = document.getElementById('chatbot-minimize-btn');
 
-    if (chatbotToggle && chatbotWindow && chatbotClose) {
-        chatbotToggle.addEventListener('click', () => {
+    let isChatbotMaximized = false;
+
+    if (chatbotToggle && chatbotWindow) {
+        function updateChatbotUIState() {
+            const isOpen = !chatbotWindow.classList.contains('hidden');
+            
+            // Toggle icons inside FAB
+            if (isOpen) {
+                if (chatbotToggleIcon) chatbotToggleIcon.classList.add('hidden');
+                if (chatbotToggleCloseIcon) chatbotToggleCloseIcon.classList.remove('hidden');
+                if (chatbotHideBtn) chatbotHideBtn.classList.add('hidden');
+                if (chatbotToggle) chatbotToggle.classList.add('rotate-90');
+            } else {
+                if (chatbotToggleIcon) chatbotToggleIcon.classList.remove('hidden');
+                if (chatbotToggleCloseIcon) chatbotToggleCloseIcon.classList.add('hidden');
+                if (chatbotHideBtn) chatbotHideBtn.classList.remove('hidden');
+                if (chatbotToggle) chatbotToggle.classList.remove('rotate-90');
+            }
+        }
+
+        function toggleChatbot() {
             chatbotWindow.classList.toggle('hidden');
             chatbotWindow.classList.toggle('flex');
+            updateChatbotUIState();
+            
             if (!chatbotWindow.classList.contains('hidden')) {
                 chatInput.focus();
                 chatMessages.scrollTop = chatMessages.scrollHeight;
             }
+        }
+
+        chatbotToggle.addEventListener('click', toggleChatbot);
+
+        // Listen for custom open-chatbot event
+        window.addEventListener('open-chatbot', () => {
+            chatbotWindow.classList.remove('hidden');
+            chatbotWindow.classList.add('flex');
+            updateChatbotUIState();
+            chatInput.focus();
+            chatMessages.scrollTop = chatMessages.scrollHeight;
         });
 
-        chatbotClose.addEventListener('click', () => {
-            chatbotWindow.classList.add('hidden');
-            chatbotWindow.classList.remove('flex');
-        });
+        if (chatbotClose) {
+            chatbotClose.addEventListener('click', () => {
+                chatbotWindow.classList.add('hidden');
+                chatbotWindow.classList.remove('flex');
+                updateChatbotUIState();
+            });
+        }
+
+        if (chatbotHideBtn && chatbotFabContainer) {
+            chatbotHideBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                chatbotFabContainer.classList.add('hidden');
+                chatbotWindow.classList.add('hidden');
+                chatbotWindow.classList.remove('flex');
+            });
+        }
+
+        // Maximize/Minimize functionality
+        if (chatbotMaximizeBtn) {
+            chatbotMaximizeBtn.addEventListener('click', () => {
+                isChatbotMaximized = true;
+                chatbotWindow.className = "fixed top-[88px] right-0 bottom-0 left-0 w-full h-[calc(100vh-88px)] bg-white shadow-2xl transition-all duration-300 z-40 border-0 flex flex-col overflow-hidden pointer-events-auto";
+                if (chatbotMaximizeBtn) chatbotMaximizeBtn.classList.add('hidden');
+                if (chatbotClose) chatbotClose.classList.add('hidden');
+                if (chatbotMinimizeBtn) chatbotMinimizeBtn.classList.remove('hidden');
+                if (chatbotFabContainer) chatbotFabContainer.classList.add('hidden');
+            });
+        }
+
+        if (chatbotMinimizeBtn) {
+            chatbotMinimizeBtn.addEventListener('click', () => {
+                isChatbotMaximized = false;
+                chatbotWindow.className = "fixed bottom-24 right-6 w-96 h-[550px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl z-40 border border-gray-200 flex flex-col overflow-hidden max-w-[calc(100vw-2rem)] transition-all duration-300 pointer-events-auto";
+                if (chatbotMaximizeBtn) chatbotMaximizeBtn.classList.remove('hidden');
+                if (chatbotClose) chatbotClose.classList.remove('hidden');
+                if (chatbotMinimizeBtn) chatbotMinimizeBtn.classList.add('hidden');
+                if (chatbotFabContainer) chatbotFabContainer.classList.remove('hidden');
+            });
+        }
 
         function addMessage(text, isBot = false) {
             const div = document.createElement('div');
-            div.className = `flex gap-2 max-w-[85%] ${isBot ? '' : 'self-end'}`;
+            div.className = `flex ${isBot ? 'justify-start' : 'justify-end'}`;
+            
+            // Format bold text and linebreaks for the bot
+            let formattedText = text;
+            if (isBot) {
+                formattedText = text
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n/g, '<br>');
+            } else {
+                const temp = document.createElement('div');
+                temp.textContent = text;
+                formattedText = temp.innerHTML;
+            }
+
             div.innerHTML = `
-                <div class="${isBot ? 'bg-gray-200 text-gray-800 rounded-tl-sm' : 'bg-jeff-teal text-white rounded-tr-sm'} py-2 px-4 rounded-2xl text-sm shadow-sm inline-block">
-                    ${text}
+                <div class="max-w-[80%] p-3 rounded-2xl ${
+                    isBot 
+                      ? 'bg-white border border-gray-200 text-neutral-800 rounded-tl-none shadow-sm' 
+                      : 'bg-jeff-orange text-white rounded-tr-none'
+                } text-sm">
+                    ${formattedText}
                 </div>
             `;
             chatMessages.appendChild(div);
-            // Hide typing indicator if passing bot message
+            
             const typing = document.getElementById('typing-indicator');
             if (typing) typing.remove();
 
@@ -125,12 +305,14 @@ document.addEventListener('DOMContentLoaded', () => {
         function showTyping() {
             const div = document.createElement('div');
             div.id = 'typing-indicator';
-            div.className = 'flex gap-2 max-w-[85%]';
+            div.className = 'flex justify-start';
             div.innerHTML = `
-                <div class="bg-gray-200 text-gray-800 py-2 px-4 rounded-2xl rounded-tl-sm text-sm shadow-sm flex items-center gap-1">
-                    <div class="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce"></div>
-                    <div class="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                    <div class="w-1.5 h-1.5 bg-gray-500 rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                <div class="bg-white border border-gray-200 text-neutral-800 rounded-2xl rounded-tl-none shadow-sm p-3">
+                    <div class="flex items-center gap-1">
+                        <div class="w-1.5 h-1.5 bg-jeff-orange rounded-full animate-bounce"></div>
+                        <div class="w-1.5 h-1.5 bg-jeff-orange rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-1.5 h-1.5 bg-jeff-orange rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                    </div>
                 </div>
             `;
             chatMessages.appendChild(div);
@@ -350,4 +532,70 @@ document.addEventListener('DOMContentLoaded', () => {
                 .catch(err => console.error('Error toggling wishlist:', err));
         });
     });
+
+    // --- TriniChat Modal Logic ---
+    const trinichatModal = document.getElementById('trinichat-modal');
+    const trinichatBackdrop = document.getElementById('trinichat-backdrop');
+    const trinichatWindow = document.getElementById('trinichat-window');
+    const trinichatIframe = document.getElementById('trinichat-iframe');
+    const trinichatMaximizeBtn = document.getElementById('trinichat-maximize-btn');
+    const trinichatCloseBtn = document.getElementById('trinichat-close-btn');
+    const trinichatMaximizeIcon = document.getElementById('trinichat-maximize-icon');
+    const trinichatMinimizeIcon = document.getElementById('trinichat-minimize-icon');
+
+    let isTriniMaximized = false;
+
+    function openTriniChat() {
+        if (!trinichatModal) return;
+        
+        // Load the iframe if not already loaded
+        if (!trinichatIframe.src || trinichatIframe.src === window.location.href) {
+            trinichatIframe.src = 'https://trinichat.me';
+        }
+        
+        trinichatModal.classList.remove('hidden');
+        
+        // Animate open
+        setTimeout(() => {
+            trinichatBackdrop.classList.remove('opacity-0');
+            trinichatBackdrop.classList.add('opacity-100');
+            
+            trinichatWindow.classList.remove('scale-95', 'opacity-0');
+            trinichatWindow.classList.add('scale-100', 'opacity-100');
+        }, 10);
+    }
+
+    function closeTriniChat() {
+        if (!trinichatModal) return;
+        
+        trinichatBackdrop.classList.remove('opacity-100');
+        trinichatBackdrop.classList.add('opacity-0');
+        
+        trinichatWindow.classList.remove('scale-100', 'opacity-100');
+        trinichatWindow.classList.add('scale-95', 'opacity-0');
+        
+        setTimeout(() => {
+            trinichatModal.classList.add('hidden');
+        }, 300);
+    }
+
+    function toggleMaximize() {
+        isTriniMaximized = !isTriniMaximized;
+        if (isTriniMaximized) {
+            trinichatWindow.className = "bg-white shadow-2xl transition-all duration-300 pointer-events-auto overflow-hidden border border-gray-200 flex flex-col relative z-10 w-full h-full rounded-none border-0 scale-100 opacity-100";
+            if (trinichatMaximizeIcon) trinichatMaximizeIcon.classList.add('hidden');
+            if (trinichatMinimizeIcon) trinichatMinimizeIcon.classList.remove('hidden');
+        } else {
+            trinichatWindow.className = "bg-white shadow-2xl transition-all duration-300 pointer-events-auto overflow-hidden border border-gray-200 flex flex-col relative z-10 w-full max-w-4xl h-[80vh] rounded-2xl scale-100 opacity-100";
+            if (trinichatMaximizeIcon) trinichatMaximizeIcon.classList.remove('hidden');
+            if (trinichatMinimizeIcon) trinichatMinimizeIcon.classList.add('hidden');
+        }
+    }
+
+    if (trinichatCloseBtn) trinichatCloseBtn.addEventListener('click', closeTriniChat);
+    if (trinichatBackdrop) trinichatBackdrop.addEventListener('click', closeTriniChat);
+    if (trinichatMaximizeBtn) trinichatMaximizeBtn.addEventListener('click', toggleMaximize);
+
+    // Listen for custom open-trinichat event
+    window.addEventListener('open-trinichat', openTriniChat);
 });
