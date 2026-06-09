@@ -67,7 +67,7 @@
       <div class="p-6 border-b border-neutral-100 bg-neutral-50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h2 class="text-2xl font-display font-bold text-neutral-900 uppercase">The Brewing Flowchart</h2>
-          <p class="text-neutral-500 mt-1">Interactive step-by-step process. Click stages on the left or filter below.</p>
+          <p class="text-neutral-500 mt-1">Interactive step-by-step process. Drag to pan, scroll to zoom. Use controls or left panels to filter.</p>
         </div>
         <!-- Active Filter Badge -->
         <div class="flex items-center gap-2">
@@ -77,277 +77,325 @@
       </div>
       
       <!-- Flowchart Container -->
-      <div class="p-8 bg-neutral-50/50 overflow-y-auto max-h-[900px] flex flex-col items-center select-none" id="flowchart-list">
-         
-         <!-- Start: Raw Grain -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-6 py-4 shadow-lg rounded-[3rem] bg-white border-2 border-red-500 min-w-[200px] text-center transform transition duration-300 hover:scale-105">
-                 <div class="font-bold text-neutral-900 text-lg uppercase tracking-wide">Raw Grain</div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 1. Malting -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
-                         <i data-lucide="wheat" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">1. Malting</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Convert raw grain starches into fermentable sugars.
-                     • Steeping (2-3 days)
-                     • Germination (4-6 days)
-                     • Kilning/Roasting
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 2. Milling -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
-                         <i data-lucide="settings" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">2. Milling</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Break open grain husks to expose starches for mashing.
-                     • Adjust mill rollers
-                     • Collect grist
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 3. Mashing -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
-                         <i data-lucide="thermometer" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">3. Mashing</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Extract fermentable sugars from grains.
-                     • Temp: 60–70°C (140–158°F)
-                     • Saccharification
-                     • Resting
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 4. Lautering -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
-                         <i data-lucide="droplets" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">4. Lautering</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Separate wort from spent grains.
-                     • Vorlauf recirculation
-                     • Sparging with hot water
-                     • Collect wort
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 5. Boiling & Hopping -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
-                         <i data-lucide="flask-conical" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">5. Boiling & Hopping</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Sterilize wort, extract hop bitterness/aroma.
-                     • Boil 60–90 mins
-                     • Early hops (bitterness)
-                     • Late hops (aroma)
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 6. Whirlpooling -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="red">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
-                         <i data-lucide="wind" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">6. Whirlpooling</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Clarify wort by separating hop/trub solids.
-                     • Circulate at high speed
-                     • Pump clear wort
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-red-500 flowchart-line"></div>
-         </div>
-
-         <!-- 7. Wort Cooling -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="blue">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-blue-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
-                         <i data-lucide="snowflake" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">7. Wort Cooling</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Rapidly cool wort to yeast pitching temp.
-                     • Ale: 20–22°C (68–72°F)
-                     • Lager: 9–15°C (48–59°F)
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-blue-500 flowchart-line"></div>
-         </div>
-
-         <!-- 8. Yeast Pitching -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="green">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-green-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-green-50 text-green-600">
-                         <i data-lucide="beaker" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">8. Yeast Pitching</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Begin fermentation.
-                     • Add active yeast
-                     • Aerate oxygen (~5 mins)
-                     • Maintain sanitation
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-green-500 flowchart-line"></div>
-         </div>
-
-         <!-- 9. Fermentation -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="green">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-green-500 w-80 transform transition duration-300 hover:scale-105 text-left" id="node-fermentation">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-green-50 text-green-600">
-                         <i data-lucide="timer" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">9. Fermentation</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Convert sugars into alcohol and CO₂.
-                     • Duration: 5–14 days
-                     • Gravity monitoring
-                     • Sediment settles
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-green-500 flowchart-line"></div>
-         </div>
-
-         <!-- Decision 1: Gravity Check? -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300 py-4" data-color="green">
-             <div class="relative w-48 h-48 flex items-center justify-center transform transition duration-300 hover:scale-105">
-                 <div class="absolute inset-0 transform rotate-45 border-2 shadow-xl bg-white border-green-500 rounded-xl"></div>
-                 <div class="relative z-10 text-center p-4">
-                     <div class="font-bold text-neutral-900 text-md mb-1">Gravity Check?</div>
-                     <div class="text-xs text-neutral-600 font-light">Is fermentation complete?</div>
-                 </div>
-             </div>
-             
-             <!-- Yes/No Pathways -->
-             <div class="relative flex items-center justify-center w-full h-16">
-                 <!-- Main flow line (Yes) -->
-                 <div class="absolute inset-y-0 w-0.5 bg-green-500"></div>
-                 <div class="absolute -top-1 font-bold text-xs bg-white text-green-600 px-2 rounded-full border border-green-200">Yes</div>
-                 
-                 <!-- Loopback indicator (No) -->
-                 <button onclick="document.getElementById('node-fermentation').scrollIntoView({ behavior: 'smooth' })" class="absolute left-1/2 ml-28 flex items-center gap-1.5 px-3 py-1.5 bg-green-50 text-green-700 border border-green-200 rounded-full text-xs font-bold shadow-sm hover:bg-green-100 transition focus:outline-none">
-                     <i data-lucide="refresh-cw" class="w-3.5 h-3.5 animate-spin-slow"></i>
-                     <span>No: Wait & Monitor</span>
-                 </button>
-             </div>
-         </div>
-
-         <!-- 10. Maturation / Conditioning -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="blue">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-blue-500 w-80 transform transition duration-300 hover:scale-105 text-left" id="node-maturation">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
-                         <i data-lucide="snowflake" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">10. Maturation / Conditioning</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Clarify beer, develop flavor.
-                     • Cold storage (0–4°C)
-                     • Optional dry hopping
-                     • Clarification
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-blue-500 flowchart-line"></div>
-         </div>
-
-         <!-- Decision 2: Quality Pass? -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300 py-4" data-color="yellow">
-             <div class="relative w-48 h-48 flex items-center justify-center transform transition duration-300 hover:scale-105">
-                 <div class="absolute inset-0 transform rotate-45 border-2 shadow-xl bg-white border-yellow-500 rounded-xl"></div>
-                 <div class="relative z-10 text-center p-4">
-                     <div class="font-bold text-neutral-900 text-md mb-1">Quality Pass?</div>
-                     <div class="text-xs text-neutral-600 font-light">DO, CO₂, color, bitterness OK?</div>
-                 </div>
-             </div>
-             
-             <!-- Yes/No Pathways -->
-             <div class="relative flex items-center justify-center w-full h-16">
-                 <!-- Main flow line (Yes) -->
-                 <div class="absolute inset-y-0 w-0.5 bg-yellow-500"></div>
-                 <div class="absolute -top-1 font-bold text-xs bg-white text-yellow-600 px-2 rounded-full border border-yellow-200">Yes</div>
-                 
-                 <!-- Loopback indicator (No) -->
-                 <button onclick="document.getElementById('node-maturation').scrollIntoView({ behavior: 'smooth' })" class="absolute left-1/2 ml-28 flex items-center gap-1.5 px-3 py-1.5 bg-yellow-50 text-yellow-700 border border-yellow-200 rounded-full text-xs font-bold shadow-sm hover:bg-yellow-100 transition focus:outline-none">
-                     <i data-lucide="alert-triangle" class="w-3.5 h-3.5"></i>
-                     <span>No: Adjust & Age</span>
-                 </button>
-             </div>
-         </div>
-
-         <!-- 11. Packaging -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="yellow">
-             <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-yellow-500 w-80 transform transition duration-300 hover:scale-105 text-left">
-                 <div class="flex items-center gap-3 mb-3">
-                     <div class="p-2.5 rounded-xl bg-yellow-50 text-yellow-600">
-                         <i data-lucide="package" class="w-5 h-5"></i>
-                     </div>
-                     <div class="font-bold text-neutral-900 text-lg">11. Packaging</div>
-                 </div>
-                 <div class="text-sm text-neutral-600 leading-relaxed font-light whitespace-pre-line">
-                     Prepare beer for distribution.
-                     • Carbonation adjustment
-                     • Sealing & labeling
-                     • Cans, bottles, kegs
-                 </div>
-             </div>
-             <div class="h-10 w-0.5 bg-yellow-500 flowchart-line"></div>
-         </div>
-
-         <!-- End: Packaged Beer -->
-         <div class="flowchart-node flex flex-col items-center w-full transition duration-300" data-color="yellow">
-             <div class="px-6 py-4 shadow-lg rounded-[3rem] bg-white border-2 border-yellow-500 min-w-[200px] text-center transform transition duration-300 hover:scale-105">
-                 <div class="font-bold text-neutral-900 text-lg uppercase tracking-wide">Packaged Beer</div>
-             </div>
-         </div>
-
+      <div class="relative flex-1 w-full h-[650px] bg-neutral-100 overflow-hidden select-none cursor-grab" id="flowchart-viewer">
+          <!-- Pannable Content Canvas -->
+          <div class="absolute origin-top-left transition-transform duration-75 ease-out" id="flowchart-canvas" style="width: 800px; height: 3250px;">
+              <!-- Grid & Edges SVG -->
+              <svg class="absolute inset-0 w-full h-full pointer-events-none" xmlns="http://www.w3.org/2000/svg">
+                  <defs>
+                      <pattern id="grid" width="30" height="30" patternUnits="userSpaceOnUse">
+                          <rect width="30" height="30" fill="none" />
+                          <circle cx="15" cy="15" r="1" fill="#e5e5e5" />
+                      </pattern>
+                      
+                      <!-- Arrow Markers -->
+                      <marker id="arrow-red" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="#ef4444" />
+                      </marker>
+                      <marker id="arrow-blue" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="#3b82f6" />
+                      </marker>
+                      <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="#22c55e" />
+                      </marker>
+                      <marker id="arrow-yellow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                          <path d="M 0 0 L 10 5 L 0 10 z" fill="#eab308" />
+                      </marker>
+                  </defs>
+                  
+                  <rect width="100%" height="100%" fill="url(#grid)" />
+                  
+                  <!-- Edges (Connecting Paths) -->
+                  <!-- Start -> 1 -->
+                  <path d="M 400 110 L 400 180" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 1 -> 2 -->
+                  <path d="M 400 320 L 400 380" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 2 -> 3 -->
+                  <path d="M 400 520 L 400 580" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 3 -> 4 -->
+                  <path d="M 400 720 L 400 780" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 4 -> 5 -->
+                  <path d="M 400 920 L 400 980" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 5 -> 6 -->
+                  <path d="M 400 1120 L 400 1180" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 6 -> 7 -->
+                  <path d="M 400 1320 L 400 1380" stroke="#ef4444" stroke-width="3" fill="none" marker-end="url(#arrow-red)" class="flowchart-line transition duration-300" data-color="red" />
+                  <!-- 7 -> 8 -->
+                  <path d="M 400 1520 L 400 1580" stroke="#3b82f6" stroke-width="3" fill="none" marker-end="url(#arrow-blue)" class="flowchart-line transition duration-300" data-color="blue" />
+                  <!-- 8 -> 9 -->
+                  <path d="M 400 1720 L 400 1780" stroke="#22c55e" stroke-width="3" fill="none" marker-end="url(#arrow-green)" class="flowchart-line transition duration-300" data-color="green" />
+                  <!-- 9 -> d1 -->
+                  <path d="M 400 1920 L 400 2020" stroke="#22c55e" stroke-width="3" fill="none" marker-end="url(#arrow-green)" class="flowchart-line transition duration-300" data-color="green" />
+                  
+                  <!-- d1 -> 10 (Yes) -->
+                  <path d="M 400 2212 L 400 2280" stroke="#22c55e" stroke-width="3" fill="none" marker-end="url(#arrow-green)" class="flowchart-line transition duration-300" data-color="green" />
+                  <!-- d1 -> 9 (No loopback) -->
+                  <path d="M 496 2116 L 620 2116 L 620 1850 L 560 1850" stroke="#22c55e" stroke-dasharray="5,5" stroke-width="3" fill="none" marker-end="url(#arrow-green)" class="flowchart-line transition duration-300" data-color="green" />
+                  
+                  <!-- 10 -> d2 -->
+                  <path d="M 400 2420 L 400 2520" stroke="#3b82f6" stroke-width="3" fill="none" marker-end="url(#arrow-blue)" class="flowchart-line transition duration-300" data-color="blue" />
+                  <!-- d2 -> 11 (Yes) -->
+                  <path d="M 400 2712 L 400 2780" stroke="#eab308" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" class="flowchart-line transition duration-300" data-color="yellow" />
+                  <!-- d2 -> 10 (No loopback) -->
+                  <path d="M 496 2616 L 620 2616 L 620 2350 L 560 2350" stroke="#eab308" stroke-dasharray="5,5" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" class="flowchart-line transition duration-300" data-color="yellow" />
+                  
+                  <!-- 11 -> end -->
+                  <path d="M 400 2920 L 400 2980" stroke="#eab308" stroke-width="3" fill="none" marker-end="url(#arrow-yellow)" class="flowchart-line transition duration-300" data-color="yellow" />
+              </svg>
+              
+              <!-- HTML Nodes positioned absolute -->
+              <!-- Start: Raw Grain -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 300px; top: 50px; width: 200px;" data-color="red">
+                  <div class="px-6 py-4 shadow-xl rounded-[3rem] bg-white border-2 border-red-500 text-center transform transition duration-300 hover:scale-105">
+                      <div class="font-bold text-neutral-900 text-lg uppercase tracking-wide">Raw Grain</div>
+                  </div>
+              </div>
+              
+              <!-- 1. Malting -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 180px; width: 320px;" data-color="red">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
+                              <i data-lucide="wheat" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">1. Malting</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Convert raw grain starches into fermentable sugars.<br>
+                          • Steeping (2-3 days)<br>
+                          • Germination (4-6 days)<br>
+                          • Kilning/Roasting
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 2. Milling -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 380px; width: 320px;" data-color="red">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
+                              <i data-lucide="settings" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">2. Milling</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Break open grain husks to expose starches for mashing.<br>
+                          • Adjust mill rollers<br>
+                          • Collect grist
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 3. Mashing -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 580px; width: 320px;" data-color="red">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
+                              <i data-lucide="thermometer" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">3. Mashing</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Extract fermentable sugars from grains.<br>
+                          • Temp: 60–70°C (140–158°F)<br>
+                          • Saccharification<br>
+                          • Resting
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 4. Lautering -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 780px; width: 320px;" data-color="red">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
+                              <i data-lucide="droplets" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">4. Lautering</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Separate wort from spent grains.<br>
+                          • Vorlauf recirculation<br>
+                          • Sparging with hot water<br>
+                          • Collect wort
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 5. Boiling & Hopping -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 980px; width: 320px;" data-color="red">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
+                              <i data-lucide="flask-conical" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">5. Boiling & Hopping</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Sterilize wort, extract hop bitterness/aroma.<br>
+                          • Boil 60–90 mins<br>
+                          • Early hops (bitterness)<br>
+                          • Late hops (aroma)
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 6. Whirlpooling -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 1180px; width: 320px;" data-color="red">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-red-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-red-50 text-red-600">
+                              <i data-lucide="wind" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">6. Whirlpooling</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Clarify wort by separating hop/trub solids.<br>
+                          • Circulate at high speed<br>
+                          • Pump clear wort
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 7. Wort Cooling -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 1380px; width: 320px;" data-color="blue">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-blue-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+                              <i data-lucide="snowflake" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">7. Wort Cooling</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Rapidly cool wort to yeast pitching temp.<br>
+                          • Ale: 20–22°C (68–72°F)<br>
+                          • Lager: 9–15°C (48–59°F)
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 8. Yeast Pitching -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 1580px; width: 320px;" data-color="green">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-green-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-green-50 text-green-600">
+                              <i data-lucide="beaker" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">8. Yeast Pitching</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Begin fermentation.<br>
+                          • Add active yeast<br>
+                          • Aerate oxygen (~5 mins)<br>
+                          • Maintain sanitation
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- 9. Fermentation -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 1780px; width: 320px;" data-color="green" id="node-fermentation">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-green-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-green-50 text-green-600">
+                              <i data-lucide="timer" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">9. Fermentation</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Convert sugars into alcohol and CO₂.<br>
+                          • Duration: 5–14 days<br>
+                          • Gravity monitoring<br>
+                          • Sediment settles
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- Decision 1: Gravity Check? -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 304px; top: 2020px; width: 192px; height: 192px;" data-color="green" id="node-gravity-check">
+                  <div class="relative w-full h-full flex items-center justify-center transform transition duration-300 hover:scale-105">
+                      <div class="absolute inset-0 transform rotate-45 border-2 shadow-xl bg-white border-green-500 rounded-xl"></div>
+                      <div class="relative z-10 text-center p-4">
+                          <div class="font-bold text-neutral-900 text-sm mb-1 uppercase tracking-wide">Gravity Check?</div>
+                          <div class="text-[10px] text-neutral-500 leading-tight">Is fermentation complete?</div>
+                      </div>
+                  </div>
+                  
+                  <!-- Yes/No Labels -->
+                  <div class="absolute top-[200px] left-1/2 -translate-x-1/2 font-bold text-xs bg-white text-green-600 px-2 py-0.5 rounded-full border border-green-200 z-20">Yes</div>
+                  <div class="absolute top-[80px] left-[200px] font-bold text-xs bg-white text-green-600 px-2 py-0.5 rounded-full border border-green-200 z-20 whitespace-nowrap">No (Wait)</div>
+              </div>
+              
+              <!-- 10. Maturation / Conditioning -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 2280px; width: 320px;" data-color="blue" id="node-maturation">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-blue-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-blue-50 text-blue-600">
+                              <i data-lucide="snowflake" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">10. Maturation / Conditioning</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Clarify beer, develop flavor.<br>
+                          • Cold storage (0–4°C)<br>
+                          • Optional dry hopping<br>
+                          • Clarification
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- Decision 2: Quality Pass? -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 304px; top: 2520px; width: 192px; height: 192px;" data-color="yellow" id="node-quality-pass">
+                  <div class="relative w-full h-full flex items-center justify-center transform transition duration-300 hover:scale-105">
+                      <div class="absolute inset-0 transform rotate-45 border-2 shadow-xl bg-white border-yellow-500 rounded-xl"></div>
+                      <div class="relative z-10 text-center p-4">
+                          <div class="font-bold text-neutral-900 text-sm mb-1 uppercase tracking-wide">Quality Pass?</div>
+                          <div class="text-[10px] text-neutral-500 leading-tight">DO, CO₂, color, bitterness OK?</div>
+                      </div>
+                  </div>
+                  
+                  <!-- Yes/No Labels -->
+                  <div class="absolute top-[200px] left-1/2 -translate-x-1/2 font-bold text-xs bg-white text-yellow-600 px-2 py-0.5 rounded-full border border-yellow-200 z-20">Yes</div>
+                  <div class="absolute top-[80px] left-[200px] font-bold text-xs bg-white text-yellow-600 px-2 py-0.5 rounded-full border border-yellow-200 z-20 whitespace-nowrap">No (Adjust)</div>
+              </div>
+              
+              <!-- 11. Packaging -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 240px; top: 2780px; width: 320px;" data-color="yellow">
+                  <div class="px-5 py-4 shadow-xl rounded-xl bg-white border-2 border-yellow-500 transform transition duration-300 hover:scale-105">
+                      <div class="flex items-center gap-3 mb-3">
+                          <div class="p-2.5 rounded-xl bg-yellow-50 text-yellow-600">
+                              <i data-lucide="package" class="w-5 h-5"></i>
+                          </div>
+                          <div class="font-bold text-neutral-900 text-lg">11. Packaging</div>
+                      </div>
+                      <div class="text-sm text-neutral-600 leading-relaxed font-light">
+                          Prepare beer for distribution.<br>
+                          • Carbonation adjustment<br>
+                          • Sealing & labeling<br>
+                          • Cans, bottles, kegs
+                      </div>
+                  </div>
+              </div>
+              
+              <!-- End: Packaged Beer -->
+              <div class="absolute flowchart-node transition duration-300" style="left: 300px; top: 2980px; width: 200px;" data-color="yellow">
+                  <div class="px-6 py-4 shadow-xl rounded-[3rem] bg-white border-2 border-yellow-500 text-center transform transition duration-300 hover:scale-105">
+                      <div class="font-bold text-neutral-900 text-lg uppercase tracking-wide">Packaged Beer</div>
+                  </div>
+              </div>
+          </div>
+          
+          <!-- Zoom & Pan Control Panel Overlay -->
+          <div class="absolute bottom-6 left-6 z-20 flex flex-col gap-2 bg-white p-2 rounded-xl shadow-lg border border-neutral-200">
+              <button id="zoom-in-btn" class="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700 transition focus:outline-none" title="Zoom In">
+                  <i data-lucide="plus" class="w-5 h-5"></i>
+              </button>
+              <button id="zoom-out-btn" class="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700 transition focus:outline-none" title="Zoom Out">
+                  <i data-lucide="minus" class="w-5 h-5"></i>
+              </button>
+              <button id="zoom-reset-btn" class="p-2 hover:bg-neutral-100 rounded-lg text-neutral-700 transition focus:outline-none" title="Fit View">
+                  <i data-lucide="maximize" class="w-5 h-5"></i>
+              </button>
+          </div>
       </div>
     </section>
   </main>
@@ -467,18 +515,24 @@ document.addEventListener('DOMContentLoaded', () => {
         activeFilterBadge.classList.remove('hidden');
         resetFilterBtn.classList.remove('hidden');
 
-        // Apply filter classes
+        // Apply filter classes to nodes
         nodes.forEach(node => {
             const nodeColor = node.dataset.color;
-            const line = node.querySelector('.flowchart-line');
             if (nodeColor === color) {
                 node.classList.remove('opacity-25', 'scale-95');
                 node.classList.add('opacity-100', 'scale-100');
-                if (line) line.classList.remove('opacity-25');
             } else {
                 node.classList.remove('opacity-100', 'scale-100');
                 node.classList.add('opacity-25', 'scale-95');
-                if (line) line.classList.add('opacity-25');
+            }
+        });
+
+        // Apply filter to SVG lines/paths
+        document.querySelectorAll('svg .flowchart-line').forEach(line => {
+            if (line.dataset.color === color) {
+                line.style.opacity = '1';
+            } else {
+                line.style.opacity = '0.15';
             }
         });
     };
@@ -488,10 +542,12 @@ document.addEventListener('DOMContentLoaded', () => {
         resetFilterBtn.classList.add('hidden');
 
         nodes.forEach(node => {
-            const line = node.querySelector('.flowchart-line');
             node.classList.remove('opacity-25', 'scale-95');
             node.classList.add('opacity-100', 'scale-100');
-            if (line) line.classList.remove('opacity-25');
+        });
+
+        document.querySelectorAll('svg .flowchart-line').forEach(line => {
+            line.style.opacity = '1';
         });
     };
 
@@ -505,6 +561,129 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Reset button
     resetFilterBtn.addEventListener('click', resetFilter);
+
+    // --- Interactive Flowchart Pan and Zoom Logic ---
+    const viewer = document.getElementById('flowchart-viewer');
+    const canvas = document.getElementById('flowchart-canvas');
+    const zoomInBtn = document.getElementById('zoom-in-btn');
+    const zoomOutBtn = document.getElementById('zoom-out-btn');
+    const zoomResetBtn = document.getElementById('zoom-reset-btn');
+
+    let scale = 0.55;
+    let panX = 40;
+    let panY = 20;
+    let isDragging = false;
+    let startX = 0;
+    let startY = 0;
+
+    const updateTransform = () => {
+        canvas.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    };
+
+    // Initialize transform
+    updateTransform();
+
+    // Mouse Drag to Pan
+    viewer.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return; // Only left click drags
+        isDragging = true;
+        viewer.classList.remove('cursor-grab');
+        viewer.classList.add('cursor-grabbing');
+        startX = e.clientX - panX;
+        startY = e.clientY - panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        panX = e.clientX - startX;
+        panY = e.clientY - startY;
+        updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => {
+        if (isDragging) {
+            isDragging = false;
+            viewer.classList.remove('cursor-grabbing');
+            viewer.classList.add('cursor-grab');
+        }
+    });
+
+    // Touch events for mobile panning
+    viewer.addEventListener('touchstart', (e) => {
+        if (e.touches.length === 1) {
+            isDragging = true;
+            startX = e.touches[0].clientX - panX;
+            startY = e.touches[0].clientY - panY;
+        }
+    });
+
+    viewer.addEventListener('touchmove', (e) => {
+        if (isDragging && e.touches.length === 1) {
+            panX = e.touches[0].clientX - startX;
+            panY = e.touches[0].clientY - startY;
+            updateTransform();
+        }
+    });
+
+    viewer.addEventListener('touchend', () => {
+        isDragging = false;
+    });
+
+    // Scroll wheel zoom
+    viewer.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const zoomIntensity = 0.03;
+        const rect = viewer.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left;
+        const mouseY = e.clientY - rect.top;
+
+        // Calculate mouse position relative to canvas before zoom
+        const canvasMouseX = (mouseX - panX) / scale;
+        const canvasMouseY = (mouseY - panY) / scale;
+
+        // Zoom direction
+        if (e.deltaY < 0) {
+            scale = Math.min(scale + zoomIntensity, 1.2);
+        } else {
+            scale = Math.max(scale - zoomIntensity, 0.25);
+        }
+
+        // Adjust pan so zoom is centered on mouse
+        panX = mouseX - canvasMouseX * scale;
+        panY = mouseY - canvasMouseY * scale;
+
+        updateTransform();
+    }, { passive: false });
+
+    // Control buttons
+    zoomInBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        scale = Math.min(scale + 0.1, 1.2);
+        updateTransform();
+    });
+
+    zoomOutBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        scale = Math.max(scale - 0.1, 0.25);
+        updateTransform();
+    });
+
+    zoomResetBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        scale = 0.55;
+        // Center the view roughly
+        const viewerWidth = viewer.clientWidth;
+        panX = (viewerWidth - 800 * scale) / 2;
+        panY = 20;
+        updateTransform();
+    });
+
+    // Center view initially based on container width
+    setTimeout(() => {
+        const viewerWidth = viewer.clientWidth;
+        panX = (viewerWidth - 800 * scale) / 2;
+        updateTransform();
+    }, 100);
 
     // Initialize Lucide icons
     if (window.lucide) {

@@ -40,7 +40,7 @@
     </script>
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="public/css/style.css">
+    <link rel="stylesheet" href="/public/css/style.css">
     
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
@@ -109,6 +109,7 @@ $navLinks = [
         'route' => 'about',
         'subLinks' => [
             ['name' => 'About Us', 'path' => '?route=about', 'route' => 'about'],
+            ['name' => 'Drink the Vision', 'path' => '?route=vision', 'route' => 'vision'],
             ['name' => 'Brewer Guide', 'path' => '?route=brewerGuide', 'route' => 'brewerGuide'],
         ]
     ],
@@ -296,11 +297,11 @@ $navLinks = [
 
     <!-- Footer -->
     <footer class="bg-neutral-900 text-white mt-auto pt-16 pb-8 border-t border-neutral-800">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
-         <div class="col-span-1 md:col-span-1">
-           <h3 class="font-oswald font-bold text-2xl mb-6 text-jeff-gold tracking-wider uppercase">JEFF BREWERY</h3>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-5 gap-12 mb-12">
+         <div class="col-span-1">
+           <h3 class="font-oswald font-bold text-2xl mb-4 text-jeff-gold tracking-wider uppercase leading-none">JEFF<br><span class="text-white">BREWERY</span></h3>
            <p class="text-neutral-400 text-sm leading-relaxed mb-6">
-             Brewing stories from the Caribbean since 2026. Merging modern brewing techniques with the rhythm of Trinidad.
+             A next-generation Trinbagonian craft brewery fusing Caribbean culture, bold flavour engineering, and modern brewing science.
            </p>
            <div class="flex space-x-4 flex-wrap gap-y-2">
              <a href="#" class="w-8 h-8 flex items-center justify-center bg-neutral-800 rounded-full hover:bg-jeff-orange text-white cursor-pointer transition"><i data-lucide="instagram" class="w-4 h-4"></i></a>
@@ -320,6 +321,22 @@ $navLinks = [
          </div>
 
          <div>
+           <h4 class="font-bold text-lg mb-6 tracking-wide font-oswald uppercase text-white">Our Brews</h4>
+           <ul class="text-neutral-400 space-y-2 text-sm grid grid-cols-2 gap-x-4">
+             <li><a href="?route=shop/detail&id=island-ipa" class="hover:text-jeff-gold cursor-pointer transition">Island IPA</a></li>
+             <li><a href="?route=shop/detail&id=jouvert-lager" class="hover:text-jeff-gold cursor-pointer transition">J'ouvert Lager</a></li>
+             <li><a href="?route=shop/detail&id=bitter-truth" class="hover:text-jeff-gold cursor-pointer transition">Bitter Truth Stout</a></li>
+             <li><a href="?route=shop/detail&id=midnight-robber" class="hover:text-jeff-gold cursor-pointer transition">Midnight Robber</a></li>
+             <li><a href="?route=shop/detail&id=maracas-mist" class="hover:text-jeff-gold cursor-pointer transition">Maracas Mist</a></li>
+             <li><a href="?route=shop/detail&id=ocd-saison" class="hover:text-jeff-gold cursor-pointer transition">OCD Saison</a></li>
+             <li><a href="?route=shop/detail&id=soca-sorrel" class="hover:text-jeff-gold cursor-pointer transition">Soca Sorrel Ale</a></li>
+             <li><a href="?route=shop/detail&id=sugarcane-kolsch" class="hover:text-jeff-gold cursor-pointer transition">Sugarcane Kölsch</a></li>
+             <li><a href="?route=shop/detail&id=tamarind-gose" class="hover:text-jeff-gold cursor-pointer transition">Tamarind Gose</a></li>
+             <li><a href="?route=shop/detail&id=soca-starter" class="hover:text-jeff-gold cursor-pointer transition">Soca Starter</a></li>
+           </ul>
+         </div>
+
+         <div>
            <h4 class="font-bold text-lg mb-6 tracking-wide font-oswald uppercase text-white">Community</h4>
            <ul class="text-neutral-400 space-y-3 text-sm">
              <li><a href="?route=blog" class="hover:text-jeff-gold cursor-pointer transition">The Blog</a></li>
@@ -332,21 +349,32 @@ $navLinks = [
 
          <div>
            <h4 class="font-bold text-lg mb-6 tracking-wide font-oswald uppercase text-white">Contact</h4>
-           <p class="text-neutral-400 text-sm mb-2">hello@jeffbrewery.com</p>
-           <p class="text-neutral-400 text-sm mb-4">Port of Spain, Trinidad</p>
-           <a href="?route=contact" class="inline-block text-jeff-gold text-sm font-bold border border-jeff-gold px-4 py-2 rounded hover:bg-jeff-gold hover:text-neutral-900 transition mb-2 whitespace-nowrap">
+           <ul class="text-neutral-400 space-y-3 text-sm mb-4">
+             <li><span class="mr-2">📧</span> <a href="mailto:info@jeffbrewery.com" class="hover:text-jeff-gold transition">info@jeffbrewery.com</a></li>
+             <li><span class="mr-2">📞</span> (868) 746-7332</li>
+             <li><span class="mr-2">🌐</span> <a href="http://www.jeffbrewery.com" target="_blank" class="hover:text-jeff-gold transition">www.jeffbrewery.com</a></li>
+           </ul>
+           <a href="?route=contact" class="inline-block text-jeff-gold text-sm font-bold border border-jeff-gold px-4 py-2 rounded hover:bg-jeff-gold hover:text-neutral-900 transition whitespace-nowrap">
              Contact Support
            </a>
          </div>
       </div>
 
       <!-- Copyright & Legal -->
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-neutral-800 pt-8 flex flex-col md:flex-row justify-between items-center text-xs text-neutral-500">
-         <p>&copy; <?= date('Y') ?> Jeff Brewery Industries. All rights reserved.</p>
-         <div class="flex space-x-6 mt-4 md:mt-0 flex-wrap gap-y-2 items-center">
-           <a href="?route=privacy" class="cursor-pointer hover:text-neutral-300 transition">Privacy Policy</a>
-           <a href="?route=terms" class="cursor-pointer hover:text-neutral-300 transition">Terms of Service</a>
-           <span class="text-jeff-orange font-bold uppercase tracking-wider ml-4 border-l border-neutral-700 pl-4">Please drink responsibly. Must be 18+ to purchase.</span>
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 border-t border-neutral-800 pt-8 flex flex-col lg:flex-row justify-between items-center gap-4 text-xs text-neutral-500">
+         <div class="flex flex-col md:flex-row items-center gap-2 md:gap-4 text-center md:text-left">
+           <p class="whitespace-nowrap">&copy; <?= date('Y') ?> Jeff Brewery Industries · Trinidad & Tobago · All Rights Reserved</p>
+           <span class="hidden md:inline text-neutral-700">|</span>
+           <span class="text-jeff-gold font-bold uppercase tracking-wider font-oswald text-sm md:text-xs mt-1 md:mt-0">Drink the Vision. Live the Culture.</span>
+         </div>
+         <div class="flex flex-col sm:flex-row items-center gap-4 mt-4 lg:mt-0">
+           <div class="flex space-x-6">
+             <a href="?route=privacy" class="cursor-pointer hover:text-neutral-300 transition">Privacy Policy</a>
+             <a href="?route=terms" class="cursor-pointer hover:text-neutral-300 transition font-medium">Terms of Service</a>
+           </div>
+           <span class="text-jeff-orange font-bold uppercase tracking-wider sm:border-l sm:border-neutral-700 sm:pl-4 text-center sm:text-left">
+             Please drink responsibly. Must be 18+ to purchase.
+           </span>
          </div>
       </div>
     </footer>
@@ -525,6 +553,6 @@ $navLinks = [
     </div>
 
     <!-- Scripts -->
-    <script src="public/js/app.js"></script>
+    <script src="/public/js/app.js"></script>
 </body>
 </html>

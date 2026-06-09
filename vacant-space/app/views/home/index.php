@@ -1,21 +1,34 @@
 <div class="flex flex-col bg-carnival-pattern">
 
 <!-- WELCOME ANIMATION -->
-<div id="welcome-screen" class="hidden fixed inset-0 z-[100] bg-neutral-900 flex flex-col items-center justify-center transition-opacity duration-500">
+<div 
+    id="welcome-animation"
+    class="hidden fixed inset-0 z-[100] bg-neutral-900 flex flex-col items-center justify-center transition-opacity duration-500 ease-in-out opacity-100"
+>
 
-  <div class="relative">
-    <div id="welcome-circle" class="absolute inset-0 bg-orange-500 rounded-full opacity-20 blur-xl scale-50 transition-all duration-1000"></div>
-    <i data-lucide="beer" class="relative z-10 w-24 h-24 text-white scale-50 opacity-0 transition-all duration-700"></i>
-  </div>
 
-  <div class="mt-8 text-center">
-    <h1 id="welcome-title" class="font-bold text-5xl text-white uppercase tracking-widest translate-y-full opacity-0 transition-all duration-700 font-oswald">
-      Jeff Brewery
-    </h1>
-    <p id="welcome-sub" class="mt-4 text-yellow-400 font-bold tracking-[0.3em] text-sm uppercase translate-y-4 opacity-0 transition-all duration-700">
-      Trinidad & Tobago
-    </p>
-  </div>
+    
+    <div class="mt-8 text-center overflow-hidden">
+        <h1 
+            id="welcome-title"
+            class="font-display text-5xl font-bold text-white uppercase tracking-widest transform transition-all duration-700 translate-y-full opacity-0 font-oswald"
+            style="transition-delay: 200ms;"
+        >
+            Jeff Brewery
+        </h1>
+        <div 
+            id="welcome-bar"
+            class="h-1 w-0 bg-jeff-orange mx-auto mt-4 rounded-full transform transition-all duration-700 opacity-0"
+            style="transition-delay: 500ms;"
+        ></div>
+        <p 
+            id="welcome-sub"
+            class="mt-4 text-jeff-gold font-bold tracking-[0.3em] text-sm uppercase transform transition-all duration-700 translate-y-4 opacity-0"
+            style="transition-delay: 300ms;"
+        >
+            Trinidad &amp; Tobago
+        </p>
+    </div>
 </div>
 
 <!-- HERO SECTION -->
@@ -140,36 +153,51 @@
 <!-- WELCOME ANIMATION SCRIPT -->
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-
-  if (!sessionStorage.getItem("jeff_welcome_shown")) {
-
-    const screen = document.getElementById("welcome-screen");
-    const circle = document.getElementById("welcome-circle");
-    const icon = screen.querySelector('[data-lucide="beer"]');
-    const title = document.getElementById("welcome-title");
-    const sub = document.getElementById("welcome-sub");
-
-    screen.classList.remove("hidden");
-
-    setTimeout(() => {
-      circle.classList.replace("scale-50","scale-150");
-      icon.classList.remove("scale-50","opacity-0");
-      icon.classList.add("scale-100","opacity-100");
-      title.classList.remove("translate-y-full","opacity-0");
-      sub.classList.remove("translate-y-4","opacity-0");
-    }, 100);
-
-    setTimeout(() => {
-      screen.classList.add("opacity-0");
-    }, 2000);
-
-    setTimeout(() => {
-      screen.remove();
-    }, 2500);
-
-    sessionStorage.setItem("jeff_welcome_shown","true");
+  if (window.location.search.includes("clear_welcome")) {
+    sessionStorage.removeItem("jeff_welcome_shown");
   }
 
-  lucide.createIcons();
+  if (!sessionStorage.getItem("jeff_welcome_shown")) {
+    var el = document.getElementById('welcome-animation');
+    if (el) el.classList.remove('hidden');
+
+    // Stage 1 — Reveal (100ms)
+    var t1 = setTimeout(function() {
+        var title = document.getElementById('welcome-title');
+        if (title) {
+            title.classList.remove('translate-y-full', 'opacity-0');
+            title.classList.add('translate-y-0', 'opacity-100');
+        }
+        
+        var bar = document.getElementById('welcome-bar');
+        if (bar) {
+            bar.classList.remove('w-0', 'opacity-0');
+            bar.classList.add('w-24', 'opacity-100');
+        }
+        
+        var sub = document.getElementById('welcome-sub');
+        if (sub) {
+            sub.classList.remove('translate-y-4', 'opacity-0');
+            sub.classList.add('translate-y-0', 'opacity-100');
+        }
+    }, 100);
+    
+    // Stage 2 — Fade out (2000ms)
+    var t2 = setTimeout(function() {
+        var el = document.getElementById('welcome-animation');
+        if (el) {
+            el.classList.remove('opacity-100');
+            el.classList.add('opacity-0', 'pointer-events-none');
+        }
+    }, 2000);
+    
+    // Stage 3 — Remove from DOM (2500ms)
+    var t3 = setTimeout(function() {
+        var el = document.getElementById('welcome-animation');
+        if (el) el.remove();
+    }, 2500);
+
+    sessionStorage.setItem("jeff_welcome_shown", "true");
+  }
 });
 </script>
