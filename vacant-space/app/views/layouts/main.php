@@ -8,7 +8,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Rock+Salt&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Oswald:wght@200..700&family=Rock+Salt&display=swap" rel="stylesheet">
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -45,7 +45,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
 </head>
-<body class="bg-gray-50 text-gray-900 font-sans flex flex-col min-h-screen">
+<body class="bg-[#0a0a0a] text-[#f5f0e8] font-sans flex flex-col min-h-screen">
 
     <!-- Age Gate Overlay (Hidden by default via JS if verified) -->
     <div id="age-gate" class="fixed inset-0 z-[100] flex items-center justify-center bg-neutral-900/95 backdrop-blur-sm p-4 hidden">
@@ -117,149 +117,43 @@ $navLinks = [
     ['name' => 'Admin', 'path' => '?route=admin', 'route' => 'admin'],
 ];
 ?>
-    <div class="sticky top-0 z-50" id="navbar-container">
-        <!-- Trini Flag Strip -->
-        <div class="h-2 w-full bg-trini-flag shadow-md relative z-50"></div>
+    <header class="premium-navbar">
+        <!-- Trini Flag Strip inside header -->
+        <div class="absolute top-0 left-0 right-0 h-1.5 bg-trini-flag shadow-md z-50"></div>
 
-        <nav class="bg-white text-neutral-900 shadow-sm border-b border-neutral-100 relative z-40">
-            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="flex items-center justify-between h-20">
-
-                    <!-- Logo -->
-                    <a href="?route=home" class="flex items-center cursor-pointer group shrink-0">
-                        <div class="p-2 bg-neutral-900 rounded-lg mr-3 group-hover:bg-trini-red transition-colors duration-300 shadow-lg">
-                            <i data-lucide="beer" class="h-6 w-6 text-white transform group-hover:-rotate-12 transition-transform"></i>
-                        </div>
-                        <div class="flex flex-col hidden sm:flex">
-                            <span class="font-display font-bold text-xl tracking-wide leading-none text-neutral-900 uppercase">
-                                Jeff Brewery
-                            </span>
-                            <span class="text-[10px] text-jeff-orange font-bold tracking-[0.2em] uppercase">
-                                Trinidad & Tobago
-                            </span>
-                        </div>
-                    </a>
-
-                    <!-- Desktop Menu -->
-                    <div class="hidden lg:block flex-1">
-                        <div class="flex items-center justify-center space-x-6 xl:space-x-8">
-                            <?php foreach ($navLinks as $link): ?>
-                                <div class="relative group nav-dropdown-container">
-                                    <?php if (isset($link['subLinks'])): 
-                                        $isActive = ($currentPage === $link['route']) || array_reduce($link['subLinks'], function($carry, $sub) use ($currentPage) {
-                                            return $carry || ($currentPage === $sub['route']);
-                                        }, false);
-                                    ?>
-                                        <button
-                                            data-dropdown="<?= htmlspecialchars($link['route']) ?>"
-                                            class="nav-dropdown-toggle flex items-center text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap focus:outline-none <?= $isActive ? 'text-trini-red' : 'text-neutral-600 hover:text-jeff-teal hover:-translate-y-0.5' ?>"
-                                        >
-                                            <?= htmlspecialchars($link['name']) ?>
-                                            <i data-lucide="chevron-down" class="ml-1 h-4 w-4 transition-transform duration-200 dropdown-arrow"></i>
-                                        </button>
-                                        
-                                        <!-- Desktop Dropdown Menu -->
-                                        <div id="dropdown-<?= htmlspecialchars($link['route']) ?>" class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-white border border-neutral-100 shadow-xl rounded-xl overflow-hidden py-2 z-50 hidden nav-dropdown-menu">
-                                            <?php foreach ($link['subLinks'] as $subLink): ?>
-                                                <a
-                                                    href="<?= htmlspecialchars($subLink['path']) ?>"
-                                                    class="block w-full text-left px-4 py-2 text-sm font-bold uppercase tracking-wide transition-colors <?= $currentPage === $subLink['route'] ? 'bg-neutral-50 text-trini-red' : 'text-neutral-600 hover:bg-neutral-50 hover:text-jeff-teal' ?>"
-                                                >
-                                                    <?= htmlspecialchars($subLink['name']) ?>
-                                                </a>
-                                            <?php endforeach; ?>
-                                        </div>
-                                    <?php else: ?>
-                                        <a
-                                            href="<?= htmlspecialchars($link['path']) ?>"
-                                            class="text-sm font-bold uppercase tracking-wide transition-all duration-200 whitespace-nowrap <?= $currentPage === $link['route'] || (empty($_GET['route']) && $link['route'] === 'home') ? 'text-trini-red border-b-2 border-trini-red' : 'text-neutral-600 hover:text-jeff-teal hover:-translate-y-0.5' ?>"
-                                        >
-                                            <?= htmlspecialchars($link['name']) ?>
-                                        </a>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endforeach; ?>
-                        </div>
-                    </div>
-
-                    <!-- Icons & Gamification Stats -->
-                    <div class="hidden md:flex items-center space-x-3 xl:space-x-4 shrink-0">
-                        <!-- TriniChat Button -->
-                        <button 
-                            onclick="window.dispatchEvent(new CustomEvent('open-trinichat'))"
-                            class="flex items-center space-x-1.5 bg-gradient-to-r from-jeff-teal to-jeff-blue text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider hover:shadow-lg hover:scale-105 transition-all focus:outline-none"
-                        >
-                            <i data-lucide="sparkles" class="h-3.5 w-3.5"></i>
-                            <span>Explore with TriniChat</span>
-                        </button>
-
-                        <!-- Gamification Stats -->
-                        <a href="?route=profile" class="flex flex-col items-end cursor-pointer ml-2">
-                            <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Level</span>
-                            <div class="flex items-center text-xs font-bold text-jeff-teal">
-                                <i data-lucide="trophy" class="w-3 h-3 mr-1 text-jeff-gold fill-current"></i> <?= $userPoints ?> pts
-                            </div>
-                        </a>
-
-                        <!-- Profile -->
-                        <a href="?route=profile" class="p-2 rounded-full text-neutral-600 hover:text-jeff-teal hover:bg-neutral-50 transition-colors">
-                            <i data-lucide="user" class="h-5 w-5"></i>
-                        </a>
-
-                        <div class="h-6 w-px bg-neutral-200 mx-1"></div>
-
-                        <!-- Cart -->
-                        <button class="cart-toggle flex items-center space-x-2 p-2 rounded-full text-neutral-900 hover:text-jeff-orange transition group focus:outline-none">
-                            <div class="relative">
-                                <i data-lucide="shopping-cart" class="h-5 w-5 group-hover:scale-110 transition-transform"></i>
-                                <span class="cart-count absolute -top-2 -right-2 inline-flex items-center justify-center 
-                                                w-4 h-4 text-[10px] font-bold text-white bg-trini-red 
-                                                rounded-full border border-white <?= $cartCount > 0 ? 'animate-bounce' : 'hidden' ?>">
-                                    <?= $cartCount ?>
-                                </span>
-                            </div>
-                            <span class="font-bold text-sm hidden xl:block text-neutral-900 group-hover:text-jeff-orange">Cart</span>
-                        </button>
-                    </div>
-
-                    <!-- Mobile menu button -->
-                    <div class="-mr-2 flex md:hidden items-center space-x-2">
-                        <button 
-                            onclick="window.dispatchEvent(new CustomEvent('open-trinichat'))"
-                            class="flex items-center justify-center bg-gradient-to-r from-jeff-teal to-jeff-blue text-white p-1.5 rounded-full hover:shadow-lg transition-all focus:outline-none"
-                        >
-                            <i data-lucide="sparkles" class="h-4 w-4"></i>
-                        </button>
-                        <button
-                            id="mobile-menu-toggle-btn"
-                            class="inline-flex items-center justify-center p-2 rounded-md text-neutral-900 hover:text-jeff-orange focus:outline-none"
-                        >
-                            <i data-lucide="menu" id="mobile-menu-icon-open" class="h-6 w-6"></i>
-                            <i data-lucide="x" id="mobile-menu-icon-close" class="h-6 w-6 hidden"></i>
-                        </button>
-                    </div>
-
+        <div class="premium-nav-container">
+            <!-- Logo -->
+            <a href="?route=home" class="premium-logo group shrink-0">
+                <div class="p-1.5 bg-neutral-900 rounded-lg group-hover:bg-trini-red transition-colors duration-300 shadow-md">
+                    <i data-lucide="beer" class="h-4.5 w-4.5 text-white transform group-hover:-rotate-12 transition-transform"></i>
                 </div>
-            </div>
+                <span>JEFF<span>BREWERY</span></span>
+            </a>
 
-            <!-- Mobile Menu -->
-            <div id="mobileMenu" class="hidden md:hidden bg-white border-t border-neutral-100 absolute w-full shadow-lg z-40 left-0 origin-top">
-                <div class="px-4 py-4 space-y-2">
+            <!-- Desktop Menu -->
+            <div class="flex items-center gap-9">
+                <ul class="premium-nav-list hidden lg:flex">
                     <?php foreach ($navLinks as $link): ?>
-                        <div>
-                            <?php if (isset($link['subLinks'])): ?>
+                        <li class="relative group nav-dropdown-container">
+                            <?php if (isset($link['subLinks'])): 
+                                $isActive = ($currentPage === $link['route']) || array_reduce($link['subLinks'], function($carry, $sub) use ($currentPage) {
+                                    return $carry || ($currentPage === $sub['route']);
+                                }, false);
+                            ?>
                                 <button
                                     data-dropdown="<?= htmlspecialchars($link['route']) ?>"
-                                    class="mobile-dropdown-toggle flex items-center justify-between w-full text-left px-3 py-3 rounded-lg text-base font-bold text-neutral-700 hover:bg-neutral-50 hover:text-trini-red focus:outline-none"
+                                    class="nav-dropdown-toggle premium-nav-link <?= $isActive ? 'active' : '' ?> focus:outline-none"
                                 >
                                     <?= htmlspecialchars($link['name']) ?>
-                                    <i data-lucide="chevron-down" class="h-5 w-5 transition-transform duration-200 mobile-dropdown-arrow"></i>
+                                    <i data-lucide="chevron-down" class="ml-1 h-3.5 w-3.5 transition-transform duration-200 dropdown-arrow"></i>
                                 </button>
-                                <div id="mobile-dropdown-<?= htmlspecialchars($link['route']) ?>" class="pl-6 pr-3 py-2 space-y-2 bg-neutral-50 rounded-lg mt-1 hidden mobile-dropdown-menu">
+                                
+                                <!-- Desktop Dropdown Menu (Premium dark styling) -->
+                                <div id="dropdown-<?= htmlspecialchars($link['route']) ?>" class="absolute top-full left-1/2 -translate-x-1/2 mt-4 w-48 bg-neutral-900/95 border border-neutral-800 backdrop-blur-md shadow-2xl rounded-xl overflow-hidden py-2 z-50 hidden nav-dropdown-menu">
                                     <?php foreach ($link['subLinks'] as $subLink): ?>
                                         <a
                                             href="<?= htmlspecialchars($subLink['path']) ?>"
-                                            class="block w-full text-left px-3 py-2 rounded-md text-sm font-bold <?= $currentPage === $subLink['route'] ? 'text-trini-red' : 'text-neutral-600 hover:text-jeff-teal' ?>"
+                                            class="block w-full text-left px-4 py-2.5 text-[10px] font-semibold uppercase tracking-widest transition-colors <?= $currentPage === $subLink['route'] ? 'bg-neutral-800 text-[var(--gold)]' : 'text-neutral-400 hover:bg-neutral-800 hover:text-white' ?>"
                                         >
                                             <?= htmlspecialchars($subLink['name']) ?>
                                         </a>
@@ -268,30 +162,120 @@ $navLinks = [
                             <?php else: ?>
                                 <a
                                     href="<?= htmlspecialchars($link['path']) ?>"
-                                    class="block w-full text-left px-3 py-3 rounded-lg text-base font-bold text-neutral-700 hover:bg-neutral-50 hover:text-trini-red"
+                                    class="premium-nav-link <?= $currentPage === $link['route'] || (empty($_GET['route']) && $link['route'] === 'home') ? 'active' : '' ?>"
                                 >
                                     <?= htmlspecialchars($link['name']) ?>
                                 </a>
                             <?php endif; ?>
-                        </div>
+                        </li>
                     <?php endforeach; ?>
+                </ul>
 
-                    <div class="border-t border-neutral-100 pt-4 mt-4 flex items-center justify-between px-3">
-                        <a href="?route=profile" class="flex items-center space-x-2 text-neutral-700 font-bold">
-                            <i data-lucide="user" class="h-5 w-5"></i> <span>Profile (<?= $userPoints ?> pts)</span>
-                        </a>
-                        <button class="cart-toggle flex items-center space-x-2 text-neutral-700 font-bold focus:outline-none">
-                            <i data-lucide="shopping-cart" class="h-5 w-5"></i> 
-                            <span>Cart (<span class="cart-count-text text-trini-red"><?= $cartCount ?></span>)</span>
-                        </button>
-                    </div>
+                <!-- Icons & Gamification Stats -->
+                <div class="hidden md:flex items-center gap-6 shrink-0">
+                    <!-- TriniChat Button -->
+                    <button 
+                        onclick="window.dispatchEvent(new CustomEvent('open-trinichat'))"
+                        class="flex items-center space-x-1.5 bg-gradient-to-r from-teal-700 to-[var(--gold)] text-white px-3 py-1.5 rounded-full text-[9px] font-bold uppercase tracking-widest hover:shadow-lg hover:scale-105 transition-all focus:outline-none"
+                    >
+                        <i data-lucide="sparkles" class="h-3 w-3 text-[var(--gold)] animate-pulse"></i>
+                        <span>TriniChat</span>
+                    </button>
+
+                    <!-- Gamification Stats -->
+                    <a href="?route=profile" class="flex flex-col items-end cursor-pointer">
+                        <span class="text-[8px] font-bold text-neutral-500 uppercase tracking-wider">Level</span>
+                        <div class="flex items-center text-[10px] font-bold text-[var(--gold)]">
+                            <i data-lucide="trophy" class="w-3 h-3 mr-1 text-[var(--gold)] fill-current"></i> <?= $userPoints ?> pts
+                        </div>
+                    </a>
+
+                    <!-- Profile -->
+                    <a href="?route=profile" class="p-1.5 rounded-full text-neutral-400 hover:text-[var(--gold)] transition-colors">
+                        <i data-lucide="user" class="h-4.5 w-4.5"></i>
+                    </a>
+
+                    <!-- Cart -->
+                    <button class="cart-toggle flex items-center space-x-1.5 p-1.5 rounded-full text-neutral-400 hover:text-[var(--gold)] transition group focus:outline-none">
+                        <div class="relative">
+                            <i data-lucide="shopping-cart" class="h-4.5 w-4.5 group-hover:scale-110 transition-transform"></i>
+                            <span class="cart-count absolute -top-1.5 -right-1.5 inline-flex items-center justify-center 
+                                            w-3.5 h-3.5 text-[8px] font-bold text-white bg-trini-red 
+                                            rounded-full border border-neutral-900 <?= $cartCount > 0 ? 'animate-bounce' : 'hidden' ?>">
+                                <?= $cartCount ?>
+                            </span>
+                        </div>
+                    </button>
+                </div>
+
+                <!-- Mobile menu button -->
+                <div class="flex md:hidden items-center space-x-3">
+                    <button 
+                        onclick="window.dispatchEvent(new CustomEvent('open-trinichat'))"
+                        class="flex items-center justify-center bg-gradient-to-r from-teal-700 to-[var(--gold)] text-white p-1.5 rounded-full hover:shadow-lg transition-all focus:outline-none"
+                    >
+                        <i data-lucide="sparkles" class="h-3.5 w-3.5"></i>
+                    </button>
+                    <button
+                        id="mobile-menu-toggle-btn"
+                        class="inline-flex items-center justify-center p-2 rounded-md text-neutral-400 hover:text-[var(--gold)] focus:outline-none"
+                    >
+                        <i data-lucide="menu" id="mobile-menu-icon-open" class="h-5 w-5"></i>
+                        <i data-lucide="x" id="mobile-menu-icon-close" class="h-5 w-5 hidden"></i>
+                    </button>
                 </div>
             </div>
-        </nav>
-    </div>
+        </div>
+
+        <!-- Mobile Menu (Premium Dark Glassmorphic) -->
+        <div id="mobileMenu" class="hidden md:hidden bg-[#0A0A0A]/95 backdrop-blur-md border-t border-neutral-900 absolute w-full shadow-2xl z-40 left-0 origin-top">
+            <div class="px-6 py-6 space-y-3">
+                <?php foreach ($navLinks as $link): ?>
+                    <div>
+                        <?php if (isset($link['subLinks'])): ?>
+                            <button
+                                data-dropdown="<?= htmlspecialchars($link['route']) ?>"
+                                class="mobile-dropdown-toggle flex items-center justify-between w-full text-left py-2 rounded-lg text-xs font-semibold uppercase tracking-wider text-neutral-400 hover:text-white focus:outline-none"
+                            >
+                                <?= htmlspecialchars($link['name']) ?>
+                                <i data-lucide="chevron-down" class="h-4 w-4 transition-transform duration-200 mobile-dropdown-arrow"></i>
+                            </button>
+                            <div id="mobile-dropdown-<?= htmlspecialchars($link['route']) ?>" class="pl-4 pr-2 py-2 space-y-2 bg-neutral-900/50 rounded-lg mt-1 hidden mobile-dropdown-menu">
+                                <?php foreach ($link['subLinks'] as $subLink): ?>
+                                    <a
+                                        href="<?= htmlspecialchars($subLink['path']) ?>"
+                                        class="block w-full text-left py-2 text-[10px] font-semibold uppercase tracking-widest <?= $currentPage === $subLink['route'] ? 'text-[var(--gold)]' : 'text-neutral-500 hover:text-neutral-300' ?>"
+                                    >
+                                        <?= htmlspecialchars($subLink['name']) ?>
+                                    </a>
+                                <?php endforeach; ?>
+                            </div>
+                        <?php else: ?>
+                            <a
+                                href="<?= htmlspecialchars($link['path']) ?>"
+                                class="block w-full text-left py-2 text-xs font-semibold uppercase tracking-wider text-neutral-400 hover:text-white"
+                            >
+                                <?= htmlspecialchars($link['name']) ?>
+                            </a>
+                        <?php endif; ?>
+                    </div>
+                <?php endforeach; ?>
+
+                <div class="border-t border-neutral-900 pt-4 mt-4 flex items-center justify-between">
+                    <a href="?route=profile" class="flex items-center space-x-2 text-neutral-400 hover:text-white text-xs font-semibold uppercase tracking-wider">
+                        <i data-lucide="user" class="h-4.5 w-4.5"></i> <span>Profile (<?= $userPoints ?> pts)</span>
+                    </a>
+                    <button class="cart-toggle flex items-center space-x-2 text-neutral-400 hover:text-white text-xs font-semibold uppercase tracking-wider focus:outline-none">
+                        <i data-lucide="shopping-cart" class="h-4.5 w-4.5"></i> 
+                        <span>Cart (<span class="cart-count-text text-trini-red font-bold"><?= $cartCount ?></span>)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
 
     <!-- Main Content Area -->
-    <main class="flex-grow flex flex-col">
+    <main class="flex-grow flex flex-col pt-[76px]">
         <?php echo $content; ?>
     </main>
 
@@ -426,7 +410,7 @@ $navLinks = [
             </button>
             <button 
                 id="chatbot-toggle" 
-                class="bg-jeff-orange hover:bg-orange-600 text-white p-4 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1 focus:outline-none"
+                class="liquid-glass-button text-white p-4 rounded-full shadow-lg hover:shadow-xl focus:outline-none"
             >
                 <i data-lucide="message-circle" id="chatbot-toggle-icon" class="w-7 h-7"></i>
                 <i data-lucide="x" id="chatbot-toggle-close-icon" class="w-7 h-7 hidden"></i>
@@ -551,6 +535,25 @@ $navLinks = [
             </div>
         </div>
     </div>
+
+    <!-- SVG Liquid Glass Filters -->
+    <svg style="display:none; position: absolute; width: 0; height: 0;" aria-hidden="true" color-interpolation-filters="sRGB">
+        <defs>
+            <filter id="liquid-glass-bubble">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="0.5" result="blurred_source"></feGaussianBlur>
+                <feImage href="/public/images/displacement-map-m6kvh9.png" x="0" y="0" width="100%" height="100%" result="displacement_map"></feImage>
+                <feDisplacementMap in="blurred_source" in2="displacement_map" scale="30" xChannelSelector="R" yChannelSelector="G" result="displaced"></feDisplacementMap>
+                <feColorMatrix in="displaced" type="saturate" result="displaced_saturated" values="1.5"></feColorMatrix>
+                <feImage href="/public/images/specular-map-m6kvh9.png" x="0" y="0" width="100%" height="100%" result="specular_layer"></feImage>
+                <feComposite in="displaced_saturated" in2="specular_layer" operator="in" result="specular_saturated"></feComposite>
+                <feComponentTransfer in="specular_layer" result="specular_faded">
+                    <feFuncA type="linear" slope="0.4"></feFuncA>
+                </feComponentTransfer>
+                <feBlend in="specular_saturated" in2="displaced" mode="normal" result="withSaturation"></feBlend>
+                <feBlend in="specular_faded" in2="withSaturation" mode="normal"></feBlend>
+            </filter>
+        </defs>
+    </svg>
 
     <!-- Scripts -->
     <script src="/public/js/app.js"></script>

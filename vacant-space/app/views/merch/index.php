@@ -8,15 +8,15 @@ foreach ($merchItems as $item) {
 }
 ?>
 
-<div class="min-h-screen bg-gray-50 py-16">
+<div class="min-h-screen bg-[#0A0A0A] py-16">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         <!-- Header -->
         <div class="text-center mb-16">
-           <h1 class="text-5xl md:text-7xl font-display font-bold text-neutral-900 mb-4 uppercase">
+           <h1 class="text-5xl md:text-7xl font-display font-bold text-white mb-4 uppercase">
               Provisions
            </h1>
-           <p class="text-xl text-gray-500 max-w-2xl mx-auto font-serif italic">
+           <p class="text-xl text-neutral-400 max-w-2xl mx-auto font-serif italic">
               "Wear the vibes. Represent the culture."
            </p>
         </div>
@@ -28,7 +28,7 @@ foreach ($merchItems as $item) {
               <?php foreach ($categories as $cat): ?>
                  <button
                    data-category="<?= htmlspecialchars($cat) ?>"
-                   class="category-chip px-4 py-2 rounded-full text-sm font-bold transition border <?= $cat === 'All' ? 'bg-neutral-900 text-white border-neutral-900' : 'bg-white text-gray-500 border-gray-200 hover:border-gray-400' ?>"
+                   class="category-chip px-4 py-2 rounded-full text-sm font-bold transition border <?= $cat === 'All' ? 'bg-jeff-orange text-white border-jeff-orange' : 'bg-black text-neutral-400 border border-neutral-800 hover:border-neutral-700 hover:text-white' ?>"
                  >
                     <?= htmlspecialchars($cat) ?>
                  </button>
@@ -41,9 +41,9 @@ foreach ($merchItems as $item) {
                  type="text" 
                  id="merch-search"
                  placeholder="Search merch..." 
-                 class="w-full pl-10 pr-4 py-2 rounded-full border border-gray-200 focus:outline-none focus:ring-2 focus:ring-jeff-orange bg-white"
+                 class="w-full pl-10 pr-4 py-2 rounded-full border border-neutral-800 bg-black text-white focus:outline-none focus:ring-2 focus:ring-jeff-orange"
               />
-              <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-gray-400"></i>
+              <i data-lucide="search" class="absolute left-3 top-2.5 w-4 h-4 text-neutral-500"></i>
            </div>
         </div>
 
@@ -54,22 +54,22 @@ foreach ($merchItems as $item) {
                  data-item-id="<?= htmlspecialchars($id) ?>"
                  data-category="<?= htmlspecialchars($item['category']) ?>"
                  data-name="<?= htmlspecialchars(strtolower($item['name'])) ?>"
-                 class="merch-card bg-white rounded-xl shadow-sm hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col group relative"
+                 class="merch-card bg-neutral-900 rounded-xl border border-neutral-800 hover:shadow-2xl hover:border-neutral-700 transition-all duration-300 overflow-hidden flex flex-col group relative"
               >
                  
                  <!-- Image -->
-                 <div class="aspect-[4/5] overflow-hidden bg-gray-100 relative">
-                    <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="w-full h-full object-cover transition duration-700 group-hover:scale-105 <?= isset($item['soldOut']) && $item['soldOut'] ? 'grayscale opacity-70' : '' ?>" />
+                 <div class="aspect-[4/5] overflow-hidden bg-black relative">
+                    <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="w-full h-full object-cover transition duration-700 group-hover:scale-105 <?= isset($item['soldOut']) && $item['soldOut'] ? 'grayscale opacity-50' : '' ?>" />
                     
                     <!-- Badges -->
                     <div class="absolute top-3 left-3 flex flex-col gap-2">
                        <?php if (isset($item['soldOut']) && $item['soldOut']): ?>
-                          <span class="bg-neutral-900 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
+                          <span class="bg-black/80 backdrop-blur border border-neutral-800 text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider">
                              Sold Out
                           </span>
                        <?php endif; ?>
                        <?php if (isset($item['originalPrice']) && (!isset($item['soldOut']) || !$item['soldOut'])): ?>
-                          <span class="bg-trini-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider flex items-center">
+                          <span class="bg-trini-red text-white text-[10px] font-bold px-2 py-1 rounded uppercase tracking-wider flex items-center shadow-sm">
                              <i data-lucide="tag" class="w-3 h-3 mr-1"></i> Sale
                           </span>
                        <?php endif; ?>
@@ -77,7 +77,7 @@ foreach ($merchItems as $item) {
 
                     <!-- Quick Add Overlay (Desktop) -->
                     <?php if (!isset($item['soldOut']) || !$item['soldOut']): ?>
-                       <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition duration-300 bg-gradient-to-t from-black/60 to-transparent">
+                       <div class="absolute inset-x-0 bottom-0 p-4 translate-y-full group-hover:translate-y-0 transition duration-300 bg-gradient-to-t from-black/80 to-transparent">
                           <button 
                              class="quick-add-btn w-full bg-white text-neutral-900 font-bold py-3 rounded-lg hover:bg-jeff-orange hover:text-white transition shadow-lg flex items-center justify-center uppercase tracking-wide text-xs focus:outline-none"
                              data-id="<?= htmlspecialchars($id) ?>"
@@ -90,33 +90,33 @@ foreach ($merchItems as $item) {
 
                  <!-- Info -->
                  <div class="p-5 flex-1 flex flex-col">
-                    <p class="text-xs text-gray-400 font-bold uppercase tracking-wider mb-1"><?= htmlspecialchars($item['category']) ?></p>
-                    <h3 class="font-bold text-neutral-900 text-lg leading-tight mb-2 group-hover:text-jeff-teal transition-colors">
+                    <p class="text-xs text-neutral-500 font-bold uppercase tracking-wider mb-1"><?= htmlspecialchars($item['category']) ?></p>
+                    <h3 class="font-bold text-white text-lg leading-tight mb-2 group-hover:text-jeff-teal transition-colors">
                        <?= htmlspecialchars($item['name']) ?>
                     </h3>
                     
-                    <div class="mt-auto pt-4 border-t border-gray-50 flex items-center justify-between">
+                    <div class="mt-auto pt-4 border-t border-neutral-800 flex items-center justify-between">
                        <div>
                           <?php if (isset($item['originalPrice'])): ?>
                              <div class="flex items-baseline space-x-2">
-                                <span class="font-bold text-trini-red text-lg">TTD$<?= htmlspecialchars($item['price']) ?></span>
-                                <span class="text-xs text-gray-400 line-through">TTD$<?= htmlspecialchars($item['originalPrice']) ?></span>
-                             </div>
+                                 <span class="font-bold text-trini-red text-lg">TTD$<?= htmlspecialchars($item['price']) ?></span>
+                                 <span class="text-xs text-neutral-500 line-through">TTD$<?= htmlspecialchars($item['originalPrice']) ?></span>
+                              </div>
                           <?php else: ?>
-                             <span class="font-bold text-neutral-900 text-lg">TTD$<?= htmlspecialchars($item['price']) ?></span>
+                             <span class="font-bold text-white text-lg">TTD$<?= htmlspecialchars($item['price']) ?></span>
                           <?php endif; ?>
                        </div>
                        
                        <!-- Mobile Add Button / Sold out icon -->
                        <?php if (!isset($item['soldOut']) || !$item['soldOut']): ?>
-                           <button 
-                              class="quick-add-btn md:hidden w-8 h-8 bg-neutral-100 rounded-full flex items-center justify-center text-neutral-900 hover:bg-jeff-orange hover:text-white transition focus:outline-none"
-                              data-id="<?= htmlspecialchars($id) ?>"
-                           >
-                              <i data-lucide="shopping-bag" class="w-4 h-4"></i>
-                           </button>
+                            <button 
+                               class="quick-add-btn md:hidden w-8 h-8 bg-black border border-neutral-800 rounded-full flex items-center justify-center text-white hover:bg-jeff-orange hover:border-jeff-orange hover:text-white transition focus:outline-none"
+                               data-id="<?= htmlspecialchars($id) ?>"
+                            >
+                               <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                            </button>
                        <?php else: ?>
-                           <i data-lucide="x-circle" class="w-5 h-5 text-gray-300"></i>
+                            <i data-lucide="x-circle" class="w-5 h-5 text-neutral-600"></i>
                        <?php endif; ?>
                     </div>
                  </div>
@@ -126,14 +126,14 @@ foreach ($merchItems as $item) {
         
         <!-- Empty State -->
         <div id="no-results" class="text-center py-20 hidden">
-           <i data-lucide="filter" class="w-12 h-12 text-gray-300 mx-auto mb-4"></i>
-           <p class="text-gray-500 text-lg">No provisions found matching your search.</p>
-           <button id="clear-filters-btn" class="mt-4 text-jeff-orange font-bold hover:underline">
+           <i data-lucide="filter" class="w-12 h-12 text-neutral-700 mx-auto mb-4"></i>
+           <p class="text-neutral-400 text-lg">No provisions found matching your search.</p>
+           <button id="clear-filters-btn" class="mt-4 text-jeff-gold font-bold hover:underline transition">
               Clear Filters
            </button>
         </div>
 
-    </div>
+     </div>
 </div>
 
 <script>
@@ -176,11 +176,9 @@ document.addEventListener('DOMContentLoaded', () => {
     categoryChips.forEach(chip => {
         chip.addEventListener('click', () => {
             categoryChips.forEach(c => {
-                c.classList.remove('bg-neutral-900', 'text-white', 'border-neutral-900');
-                c.classList.add('bg-white', 'text-gray-500', 'border-gray-200', 'hover:border-gray-400');
+                c.className = "category-chip px-4 py-2 rounded-full text-sm font-bold transition border bg-black text-neutral-400 border border-neutral-800 hover:border-neutral-700 hover:text-white";
             });
-            chip.classList.add('bg-neutral-900', 'text-white', 'border-neutral-900');
-            chip.classList.remove('bg-white', 'text-gray-500', 'border-gray-200', 'hover:border-gray-400');
+            chip.className = "category-chip px-4 py-2 rounded-full text-sm font-bold transition border bg-jeff-orange text-white border-jeff-orange";
             
             activeCategory = chip.dataset.category;
             filterItems();
@@ -202,11 +200,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             categoryChips.forEach(chip => {
                 if (chip.dataset.category === 'All') {
-                    chip.classList.add('bg-neutral-900', 'text-white', 'border-neutral-900');
-                    chip.classList.remove('bg-white', 'text-gray-500', 'border-gray-200', 'hover:border-gray-400');
+                    chip.className = "category-chip px-4 py-2 rounded-full text-sm font-bold transition border bg-jeff-orange text-white border-jeff-orange";
                 } else {
-                    chip.classList.remove('bg-neutral-900', 'text-white', 'border-neutral-900');
-                    chip.classList.add('bg-white', 'text-gray-500', 'border-gray-200', 'hover:border-gray-400');
+                    chip.className = "category-chip px-4 py-2 rounded-full text-sm font-bold transition border bg-black text-neutral-400 border border-neutral-800 hover:border-neutral-700 hover:text-white";
                 }
             });
             
