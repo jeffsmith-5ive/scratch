@@ -25,7 +25,11 @@ $inWishlist = isset($wishlist) && in_array($beer['id'], $wishlist);
     <?php endif; ?>
 
     <!-- Availability Badge -->
-    <?php if ($isAvailable): ?>
+    <?php if (!empty($beer['isNew'])): ?>
+      <span class="absolute top-3 left-3 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md transform -rotate-2 z-10">
+        NEW FLAVOUR
+      </span>
+    <?php elseif ($isAvailable): ?>
       <span class="absolute top-3 left-3 bg-red-700 text-white text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-md transform -rotate-2 z-10">
         <?php echo htmlspecialchars($beer['availability']); ?>
       </span>
@@ -60,16 +64,37 @@ $inWishlist = isset($wishlist) && in_array($beer['id'], $wishlist);
         ?>
       </span>
 
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-1.5">
         <button 
-          class="add-to-cart-btn bg-neutral-800 hover:bg-[var(--gold)] hover:text-neutral-900 border border-neutral-700 text-[#f5f0e8] px-5 py-2.5 rounded-full text-sm font-bold transition-all flex items-center gap-2 shadow-md active:scale-95"
+          class="add-to-cart-btn bg-neutral-800 hover:bg-[var(--gold)] hover:text-neutral-900 border border-neutral-700 text-[#f5f0e8] px-4 py-2 rounded-full text-xs font-bold transition-all flex items-center gap-1 shadow-md active:scale-95"
           data-id="<?php echo htmlspecialchars($beer['id']); ?>"
         >
           Add 🛒
         </button>
 
+        <?php
+        $cardBeerJson = htmlspecialchars(json_encode($beer, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
+        $cardFlavors = isset($beer['flavorProfile']) ? htmlspecialchars(implode(',', $beer['flavorProfile'])) : '';
+        $cardPairing = isset($beer['pairing']) ? htmlspecialchars(implode(',', $beer['pairing'])) : '';
+        ?>
+        <button 
+            class="open-beer-share-btn p-2 rounded-full text-neutral-400 hover:text-[var(--gold)] hover:bg-neutral-800 transition focus:outline-none" 
+            data-beer="<?= $cardBeerJson ?>" 
+            data-id="<?= htmlspecialchars($beer['id']) ?>"
+            data-name="<?= htmlspecialchars($beer['name']) ?>"
+            data-tagline="<?= htmlspecialchars($beer['tagline'] ?? '') ?>"
+            data-style="<?= htmlspecialchars($beer['style'] ?? 'Craft Brew') ?>"
+            data-abv="<?= htmlspecialchars($beer['abv'] ?? 5.0) ?>"
+            data-price="<?= htmlspecialchars($beer['price'] ?? 15) ?>"
+            data-image="<?= htmlspecialchars($beer['image'] ?? '') ?>"
+            data-flavors="<?= $cardFlavors ?>"
+            data-pairing="<?= $cardPairing ?>"
+            title="Share Brew">
+            <i data-lucide="share-2" class="w-4.5 h-4.5"></i>
+        </button>
+
         <button class="toggle-wishlist-btn p-2 rounded-full hover:bg-neutral-800 transition focus:outline-none <?= $inWishlist ? 'text-trini-red' : 'text-neutral-600 hover:text-neutral-400' ?>" data-id="<?= htmlspecialchars($beer['id']) ?>" title="Toggle Wishlist">
-            <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
             </svg>
         </button>

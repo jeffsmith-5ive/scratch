@@ -18,21 +18,63 @@ class Database {
     public static $BLOG_POSTS = [
         [
             'id' => '1',
-            'title' => 'The History of Stout in the Caribbean',
-            'excerpt' => 'Why do islanders love a dark beer in hot weather? We dive into the colonial history and modern evolution.',
-            'content' => 'Full content placeholder...',
-            'date' => 'Oct 15, 2023',
-            'image' => 'https://placehold.co/800x400/171717/FFFFFF.png?text=History+of+Stout',
-            'author' => 'Jeff B.',
+            'title' => 'The History & Evolution of Craft Brewing in Trinidad & Tobago',
+            'excerpt' => 'From the historic sugar estates of Couva to modern craft microbreweries, explore how Trinidad transformed tropical ingredients into world-class beers.',
+            'content' => "Sitting on the veranda watching the sun dip over the Gulf of Paria, there's nothing quite like cracking open a cold one. But not just any beer—something that speaks to the soul of the island.\n\nThe history of brewing in Trinidad & Tobago is as rich and complex as a well-aged stout. It dates back to colonial sugar estates like Brechin Castle in Couva, where workers and landowners alike brewed fermented beverages from sugarcane molasses, local fruits, and island yeasts.\n\nToday, Jeff Brewery Industries is leading a modern craft revolution. We take local ingredients like Tobago organic cacao, Moruga Scorpion peppers, and Maracas citrus, fusing traditional brewing science with bold Caribbean flavor engineering.",
+            'date' => 'July 28, 2026',
+            'image' => 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?auto=format&fit=crop&w=1200&q=80',
+            'author' => 'Jeff Smith (Founder)',
+            'category' => 'Brewery History'
         ],
         [
             'id' => '2',
-            'title' => 'Pairing IPA with Spicy Curry',
-            'excerpt' => 'The hops in IPA cut through the richness of coconut milk and amplify the heat of scotch bonnet peppers.',
-            'content' => 'Full content placeholder...',
-            'date' => 'Nov 02, 2023',
-            'image' => 'https://placehold.co/800x400/FF6F00/FFFFFF.png?text=Curry+&+IPA+Pairing',
-            'author' => 'Chef Maria',
+            'title' => 'Pairing Island IPA with Spicy Trinidadian Geera Pork & Curry',
+            'excerpt' => 'How the bright citrus hops and piney bitterness of West Coast IPAs cut through rich coconut curries and Scotch Bonnet pepper heat.',
+            'content' => "Trinbagonian food is renowned worldwide for its intense spice, garlic depth, and bold curry profiles. Pairing wine with Geera Pork or Pepper Roti can be tricky, but an Island IPA is pure perfection.\n\nThe secret lies in the hop alpha acids. The crisp bitterness of Citra and Cascade hops cuts right through heavy coconut milk curries, while the tropical passionfruit aromas complement Scotch Bonnet heat without overwhelming your palate.\n\nPro-Tip from Chef Maria: Serve your Island IPA chilled at 6°C alongside hot Geera Pork or Doubles with extra pepper sauce for the ultimate weekend liming experience!",
+            'date' => 'July 15, 2026',
+            'image' => 'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?auto=format&fit=crop&w=1200&q=80',
+            'author' => 'Chef Maria Gonzales',
+            'category' => 'Culinary & Pairings'
+        ],
+        [
+            'id' => '3',
+            'title' => 'Behind the Brew: Infusing Trinidad Moruga Scorpion & Tobago Cacao',
+            'excerpt' => 'Discover how we balance extreme heat with dark roasted malts, organic Tobago cacao nibs, and local sorrel in our custom craft lab.',
+            'content' => "In our Couva Brew Lab, experimentation is a religion. When we set out to create 'Jeff's Spicy Mango Haze' and 'Port of Spain Cocoa Stout', we knew we had to source ingredients directly from local island farmers.\n\nFor our cocoa stout, we steep roasted organic cacao nibs from Tobago in cold conditioning tanks for 72 hours. This produces a velvety, dark chocolate mouthfeel without adding heavy sweetness.\n\nFor our spicy fruit ales, we micro-extract Moruga Scorpion pepper oil to deliver a subtle warm glow on the finish without burning the throat. It is precision flavor engineering at its finest.",
+            'date' => 'June 30, 2026',
+            'image' => 'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=1200&q=80',
+            'author' => 'Marcus Vance (Head Brewer)',
+            'category' => 'Brew Lab Experiments'
+        ],
+        [
+            'id' => '4',
+            'title' => 'J\'ouvert Lager: The Science of Sustained Carnival Energy',
+            'excerpt' => 'Why low-ABV crisp pilsners brewed with mineral-rich island spring water are the ultimate choice for road stamina and hot sun celebrations.',
+            'content' => "Carnival Monday & Tuesday demand extraordinary physical endurance. Dancing behind the truck under the blazing Caribbean sun for 12 hours straight requires proper hydration and sessionable beverages.\n\nOur J'ouvert Lager is engineered specifically for 'road stamina'. Brewed to a clean 5.0% ABV with 100% pilsner malt and balanced island minerals, it delivers a crisp, refreshing mouthfeel that quenches thirst without causing early fatigue.\n\nKeep a cooler stocked with J'ouvert Lager for your band, drink plenty of water, and enjoy the sunrise on the road!",
+            'date' => 'June 12, 2026',
+            'image' => 'https://images.unsplash.com/photo-1518176258769-f227c798150e?auto=format&fit=crop&w=1200&q=80',
+            'author' => 'Dr. Liam Hosein (Flavor Engineer)',
+            'category' => 'Culture & Science'
+        ],
+        [
+            'id' => '5',
+            'title' => 'Sustainability at Couva Estate: Turning Spent Grain into Livestock Feed',
+            'excerpt' => 'Our zero-waste initiative donates 100% of spent mashing grains to local dairy farmers in Couva, closing the loop on Caribbean agriculture.',
+            'content' => "Craft brewing requires substantial agricultural inputs, but what happens to the malted barley after we extract all the fermentable sugars during mashing?\n\nAt Jeff Brewery, 100% of our spent grains are collected daily by local livestock and dairy farmers across the Couva estate region. Spent grains are high in protein and fiber, providing nutritious feed for cattle and pigs while keeping tons of organic waste out of Trinidadian landfills.\n\nSustainability isn't a buzzword for us; it's how we ensure the islands remain green and vibrant for generations to come.",
+            'date' => 'May 22, 2026',
+            'image' => 'https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80',
+            'author' => 'Sarah Boodhoo (Sustainability Lead)',
+            'category' => 'Sustainability'
+        ],
+        [
+            'id' => '6',
+            'title' => 'The Rise of the Craft Beer Krewe: Loyalty Rewards & Community Brews',
+            'excerpt' => 'How our digital Krewe points system lets beer lovers rank up from Freshmen Limers to Master Brewers and shape upcoming seasonal releases.',
+            'content' => "Beer is inherently social. In Trinidad & Tobago, liming with friends is where ideas are born, stories are shared, and lifelong bonds are forged.\n\nWe created the Jeff Brewery Krewe Loyalty Program to give back to our community. Every purchase, product review, and custom recipe crafted in our lab earns you Krewe Points. As you rank up from Freshman Limer to Legendary Brewmaster, you unlock VIP discounts, free merch, taproom tasting passes, and even voting rights on our next seasonal release!\n\nJoin the Krewe today and help us write the next chapter of Caribbean craft beer.",
+            'date' => 'May 05, 2026',
+            'image' => 'https://images.unsplash.com/photo-1575444758702-4a6b9222336e?auto=format&fit=crop&w=1200&q=80',
+            'author' => 'Jeff Smith (Founder)',
+            'category' => 'Community & Vibes'
         ]
     ];
 
@@ -60,6 +102,50 @@ class Database {
     ];
 
     public static function getBeerById($id) {
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
+        }
+
+        if (isset($_SESSION['user']['saved_recipes'])) {
+            foreach ($_SESSION['user']['saved_recipes'] as $recipe) {
+                if (($recipe['id'] ?? '') === $id || ($recipe['batch_id'] ?? '') === $id) {
+                    return [
+                        'id' => $recipe['id'],
+                        'name' => $recipe['name'] . ' (Custom Batch)',
+                        'tagline' => 'Custom Craft Brew Lab Creation',
+                        'style' => strtoupper($recipe['base'] ?? 'CRAFT BREW'),
+                        'abv' => floatval($recipe['abv'] ?? 6.5),
+                        'price' => 28.00,
+                        'description' => 'Custom craft brew infused with ' . ($recipe['infusion'] ?? 'special spices') . '.',
+                        'flavorProfile' => explode('&', $recipe['infusion'] ?? ''),
+                        'pairing' => ['Custom Tastes', 'Island Vibe'],
+                        'vibe' => 'Craft Lab Original',
+                        'availability' => 'CUSTOM',
+                        'image' => 'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=600&q=80',
+                        'reviews' => []
+                    ];
+                }
+            }
+        }
+
+        if (str_starts_with($id, 'custom_') || str_starts_with($id, 'rec_')) {
+            return [
+                'id' => $id,
+                'name' => 'Custom Brewmaster Batch',
+                'tagline' => 'Handcrafted in Couva Estate Lab',
+                'style' => 'CUSTOM CRAFT LAGER',
+                'abv' => 6.5,
+                'price' => 25.00,
+                'description' => 'Custom Trinbagonian craft lager tailored to your exact taste profile with premium malts and island spices.',
+                'flavorProfile' => ['Custom Infusion', 'Island Hops', 'Clean Malt'],
+                'pairing' => ['Geera Pork', 'Shark & Bake', 'Doubles'],
+                'vibe' => 'Craft Lab Special',
+                'availability' => 'CUSTOM',
+                'image' => 'https://images.unsplash.com/photo-1566633806327-68e152aaf26d?auto=format&fit=crop&w=600&q=80',
+                'reviews' => []
+            ];
+        }
+
         if (str_starts_with($id, 'gift-card-')) {
             $parts = explode('-', $id);
             // format is: gift-card-{amount}-{timestamp}
@@ -110,6 +196,23 @@ class Database {
 
     public static function getBeers() {
         $beers = [
+            [
+                'id' => 'brechin-castle',
+                'name' => 'Brechin Castle',
+                'tagline' => 'Heritage in Every Pour.',
+                'style' => 'HISTORIC BLONDE ALE',
+                'abv' => 4.2,
+                'ibu' => 25,
+                'price' => 15,
+                'description' => 'Inspired by the historic Brechin Castle Estate right here in Couva, this smooth English-inspired Blonde Ale is a direct tribute to the people, craftsmanship, and traditions that built Trinidad\'s sugar industry from the ground up. We compiled this brew using premium English malts and classic hops to output a gentle biscuit sweetness, floral aromas, and a crisp finish. It’s legacy hardware running flawlessly. Yuh done know, this is history in a glass.',
+                'flavorProfile' => ['Biscuit Sweetness', 'Floral Aromas', 'Crisp Finish', 'Smooth Malt'],
+                'pairing' => ['Pholourie', 'Fruit Cake', 'Christmas Ham'],
+                'vibe' => 'Sugar Estate Heritage',
+                'availability' => 'CORE',
+                'image' => '/public/images/brechin_castle.jpg',
+                'reviews' => [],
+                'isNew' => true,
+            ],
             [
                 'id' => 'island-ipa',
                 'name' => 'Island IPA',

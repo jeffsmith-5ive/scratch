@@ -835,6 +835,7 @@
           <div class="ingredient-chip">Sea Salt</div>
           <div class="ingredient-chip">Orange</div>
           <div class="ingredient-chip">Lime</div>
+          <div class="ingredient-chip">Coffee</div>
         </div>
       </div>
 

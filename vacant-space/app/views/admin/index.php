@@ -103,6 +103,47 @@
        </div>
     </div>
 
+    <!-- Customer Activity & Live Monitor Section -->
+    <div class="bg-[#111111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden mb-8">
+       <div class="px-6 py-5 border-b border-white/10 bg-black/40 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+          <div class="flex items-center gap-3">
+             <div class="p-2.5 bg-[var(--gold)]/10 text-[var(--gold)] border border-[var(--gold)]/20 rounded-xl">
+                <i data-lucide="eye" class="w-5 h-5"></i>
+             </div>
+             <div>
+                <h3 class="font-bold text-xl text-white font-oswald uppercase tracking-wide">Live Customer Activity Monitor</h3>
+                <p class="text-xs text-neutral-400">Real-time actions, orders, logins, and custom brew lab activity from customers.</p>
+             </div>
+          </div>
+          <a href="?route=profile" class="text-xs font-bold uppercase text-[var(--gold)] hover:underline flex items-center gap-1">
+             View Customer Profile <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+          </a>
+       </div>
+
+       <div class="p-6">
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+             <?php foreach ($customerActivity ?? [] as $act): ?>
+                <div class="bg-black/50 border border-white/10 rounded-xl p-4 flex items-start gap-3 hover:border-white/20 transition">
+                   <div class="p-2.5 rounded-lg border text-sm <?= $act['badge'] ?> shrink-0">
+                      <i data-lucide="<?= $act['icon'] ?>" class="w-4 h-4"></i>
+                   </div>
+                   <div class="flex-1 min-w-0">
+                      <div class="flex justify-between items-start">
+                         <h4 class="text-sm font-bold text-white truncate"><?= htmlspecialchars($act['user']) ?></h4>
+                         <span class="text-[10px] text-neutral-500 font-mono"><?= htmlspecialchars($act['time']) ?></span>
+                      </div>
+                      <p class="text-xs text-neutral-300 mt-0.5 truncate"><?= htmlspecialchars($act['action']) ?></p>
+                      <div class="mt-2 flex items-center justify-between text-[10px] font-semibold text-neutral-400">
+                         <span class="truncate"><?= htmlspecialchars($act['email']) ?></span>
+                         <span class="bg-neutral-900 px-2 py-0.5 rounded border border-white/5 text-amber-300"><?= htmlspecialchars($act['amount']) ?></span>
+                      </div>
+                   </div>
+                </div>
+             <?php endforeach; ?>
+          </div>
+       </div>
+    </div>
+
     <!-- Charts Row -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
        <!-- Weekly Sales -->
@@ -121,6 +162,80 @@
        <div class="bg-[#111111] border border-white/10 p-6 rounded-xl shadow-2xl min-w-0 flex flex-col">
          <h3 class="font-bold text-lg mb-6 text-white font-oswald uppercase">Gamification Engagement</h3>
          <div id="engagement-chart" class="w-full"></div>
+       </div>
+    </div>
+
+    <!-- Admin Order Fulfillment & Shipping Manager -->
+    <div class="bg-[#111111] border border-white/10 rounded-2xl shadow-2xl overflow-hidden mb-8">
+       <div class="px-6 py-5 border-b border-white/10 bg-black/40 flex flex-col sm:flex-row justify-between sm:items-center gap-4">
+          <div class="flex items-center gap-3">
+             <div class="p-2.5 bg-amber-500/10 text-amber-400 border border-amber-500/20 rounded-xl">
+                <i data-lucide="truck" class="w-5 h-5"></i>
+             </div>
+             <div>
+                <h3 class="font-bold text-xl text-white font-oswald uppercase tracking-wide">Order Fulfillment & Shipping Manager</h3>
+                <p class="text-xs text-neutral-400">Update order status between Brewing, Island Delivery, or Brewery Taproom Pickup in real-time.</p>
+             </div>
+          </div>
+       </div>
+
+       <div class="overflow-x-auto">
+          <table class="w-full text-left">
+             <thead class="bg-black/60 text-neutral-400 text-xs uppercase tracking-wider border-b border-white/10">
+                <tr>
+                   <th class="px-6 py-4 font-semibold">Order ID</th>
+                   <th class="px-6 py-4 font-semibold">Customer</th>
+                   <th class="px-6 py-4 font-semibold">Mode</th>
+                   <th class="px-6 py-4 font-semibold">Current Status</th>
+                   <th class="px-6 py-4 font-semibold">Total</th>
+                   <th class="px-6 py-4 font-semibold text-right">Update Order Status</th>
+                </tr>
+             </thead>
+             <tbody class="divide-y divide-white/5">
+                <?php foreach ($recentOrders ?? [] as $order): 
+                   $isPickup = ($order['delivery_type'] ?? '') === 'pickup' || str_contains(strtolower($order['status'] ?? ''), 'collection') || str_contains(strtolower($order['status'] ?? ''), 'pickup');
+                   $statusColor = str_contains(strtolower($order['status'] ?? ''), 'ready') ? 'amber' : ($order['status'] === 'Delivered' || $order['status'] === 'Picked Up' ? 'emerald' : 'blue');
+                ?>
+                   <tr class="hover:bg-white/5 transition-colors">
+                      <td class="px-6 py-4 font-mono font-bold text-amber-300">#<?= htmlspecialchars($order['id']) ?></td>
+                      <td class="px-6 py-4 font-bold text-white"><?= htmlspecialchars($order['customer'] ?? 'Jeff Smith') ?></td>
+                      <td class="px-6 py-4 text-xs font-semibold text-neutral-300">
+                         <?php if ($isPickup): ?>
+                            <span class="bg-amber-950/60 text-amber-400 border border-amber-800/40 px-2.5 py-1 rounded-full inline-flex items-center gap-1">
+                               <i data-lucide="store" class="w-3.5 h-3.5"></i> Taproom Pickup
+                            </span>
+                         <?php else: ?>
+                            <span class="bg-teal-950/60 text-teal-400 border border-teal-800/40 px-2.5 py-1 rounded-full inline-flex items-center gap-1">
+                               <i data-lucide="truck" class="w-3.5 h-3.5"></i> Island Delivery
+                            </span>
+                         <?php endif; ?>
+                      </td>
+                      <td class="px-6 py-4">
+                         <span id="status-badge-<?= htmlspecialchars($order['id']) ?>" class="bg-<?= $statusColor ?>-950/80 text-<?= $statusColor ?>-400 border border-<?= $statusColor ?>-800/40 text-xs font-bold uppercase tracking-wider px-3 py-1 rounded-full inline-flex items-center gap-1.5 shadow">
+                            <span class="w-2 h-2 rounded-full bg-<?= $statusColor ?>-400 animate-pulse"></span>
+                            <?= htmlspecialchars($order['status']) ?>
+                         </span>
+                      </td>
+                      <td class="px-6 py-4 font-oswald font-bold text-white text-lg">$<?= number_format($order['total'], 2) ?></td>
+                      <td class="px-6 py-4 text-right">
+                         <div class="inline-flex items-center gap-2">
+                            <select id="status-select-<?= htmlspecialchars($order['id']) ?>" class="bg-black/60 border border-white/15 rounded-xl px-3 py-1.5 text-xs text-white outline-none focus:border-[var(--gold)] font-medium">
+                               <option value="Order Placed" <?= $order['status'] === 'Order Placed' ? 'selected' : '' ?>>Order Placed</option>
+                               <option value="Brewing & Bottling" <?= $order['status'] === 'Brewing & Bottling' ? 'selected' : '' ?>>Brewing & Bottling</option>
+                               <option value="Out for Delivery" <?= $order['status'] === 'Out for Delivery' ? 'selected' : '' ?>>Out for Delivery 🚚</option>
+                               <option value="Ready for Brewery Collection" <?= $order['status'] === 'Ready for Brewery Collection' ? 'selected' : '' ?>>Ready for Collection 🍺</option>
+                               <option value="Delivered" <?= $order['status'] === 'Delivered' ? 'selected' : '' ?>>Delivered ✅</option>
+                               <option value="Picked Up" <?= $order['status'] === 'Picked Up' ? 'selected' : '' ?>>Picked Up 🎉</option>
+                            </select>
+                            <button onclick="adminUpdateStatus('<?= htmlspecialchars($order['id']) ?>')" class="bg-[var(--gold)] text-black hover:bg-yellow-500 font-bold uppercase text-[10px] px-3 py-1.5 rounded-xl transition shadow flex items-center gap-1">
+                               <i data-lucide="refresh-cw" class="w-3 h-3"></i> Save
+                            </button>
+                         </div>
+                      </td>
+                   </tr>
+                <?php endforeach; ?>
+             </tbody>
+          </table>
        </div>
     </div>
 
@@ -530,4 +645,29 @@ document.addEventListener('DOMContentLoaded', () => {
         lucide.createIcons();
     }
 });
+
+function adminUpdateStatus(orderId) {
+    const select = document.getElementById('status-select-' + orderId);
+    if (!select) return;
+    const newStatus = select.value;
+
+    fetch('?route=admin/updateOrderStatus', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ orderId: orderId, status: newStatus })
+    })
+    .then(r => r.json())
+    .then(data => {
+        if (data.success) {
+            alert('Order #' + orderId + ' status updated to: ' + newStatus);
+            window.location.reload();
+        } else {
+            alert('Failed to update status: ' + (data.error || 'Unknown error'));
+        }
+    })
+    .catch(err => {
+        console.error(err);
+        alert('Error updating status.');
+    });
+}
 </script>

@@ -207,12 +207,18 @@
                     </button>
                  </div>
 
-                 <!-- 6. SOCIAL -->
-                 <div class="mt-6 flex justify-center space-x-4">
-                    <button class="text-neutral-400 hover:text-white flex items-center text-xs font-bold uppercase tracking-wider transition group">
-                       <i data-lucide="share-2" class="w-4 h-4 mr-2 group-hover:scale-110 transition"></i> Share Recipe
-                    </button>
-                 </div>
+                  <!-- 6. SOCIAL -->
+                  <div class="mt-6 flex flex-col items-center gap-3">
+                     <button id="open-share-modal" class="w-full bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 text-white font-bold py-3 px-4 rounded-xl text-xs uppercase tracking-wider transition flex items-center justify-center gap-2 group shadow-md">
+                        <i data-lucide="share-2" class="w-4 h-4 text-jeff-gold group-hover:scale-110 transition"></i> Share Recipe to Social Media
+                     </button>
+                     <div class="flex items-center gap-4 text-xs text-neutral-400 font-bold uppercase tracking-wider">
+                        <span>Quick Share:</span>
+                        <button id="quick-whatsapp" class="hover:text-green-400 transition" title="Share to WhatsApp"><i data-lucide="message-circle" class="w-4 h-4"></i></button>
+                        <button id="quick-instagram" class="hover:text-pink-400 transition" title="Share to Instagram (IG Image Card)"><i data-lucide="instagram" class="w-4 h-4"></i></button>
+                        <button id="quick-facebook" class="hover:text-blue-400 transition" title="Share to Facebook"><i data-lucide="facebook" class="w-4 h-4"></i></button>
+                     </div>
+                  </div>
 
               </div>
            </div>
@@ -265,7 +271,77 @@
            <?php endfor; ?>
         </div>
         <p class="text-center text-xs font-bold uppercase tracking-widest text-neutral-550 mt-8">Community Leaderboard launching next season.</p>
-     </section>
+      </section>
+   </div>
+
+   <!-- SOCIAL SHARE MODAL -->
+   <div id="share-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md hidden transition-all duration-300">
+      <div class="bg-neutral-900 border border-neutral-800 rounded-3xl max-w-lg w-full p-6 md:p-8 mx-4 shadow-2xl relative">
+         <button id="close-share-modal" class="absolute top-4 right-4 text-neutral-400 hover:text-white transition p-2 rounded-full hover:bg-neutral-800">
+            <i data-lucide="x" class="w-6 h-6"></i>
+         </button>
+
+         <div class="text-center mb-6">
+            <div class="w-12 h-12 bg-jeff-orange/10 border border-jeff-orange/30 text-jeff-orange rounded-full flex items-center justify-center mx-auto mb-3">
+               <i data-lucide="share-2" class="w-6 h-6"></i>
+            </div>
+            <h3 class="text-2xl font-oswald font-bold text-white uppercase">Share Your Craft Lager</h3>
+            <p class="text-xs text-neutral-400 mt-1">Show off your Trinbagonian brewmaster recipe to de krew!</p>
+         </div>
+
+         <!-- RECIPE CARD PREVIEW -->
+         <div id="share-card-preview" class="bg-black/80 border border-neutral-800 rounded-2xl p-5 mb-6 text-left relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-24 h-24 bg-jeff-orange/10 rounded-full blur-xl pointer-events-none"></div>
+            <div class="flex justify-between items-start mb-3">
+               <div>
+                  <span class="text-[10px] font-bold text-jeff-gold uppercase tracking-[0.2em] block">JEFF BREWERY LAB RECIPE</span>
+                  <h4 id="modal-recipe-name" class="text-2xl font-oswald font-bold text-white uppercase tracking-wide">Untitled Brew</h4>
+               </div>
+               <span id="modal-recipe-abv" class="bg-jeff-orange text-white text-xs font-bold px-2.5 py-1 rounded-full">5.0% ABV</span>
+            </div>
+            <div class="text-xs text-neutral-300 space-y-1 mb-3">
+               <p><strong class="text-neutral-400">Base Malt:</strong> <span id="modal-recipe-malt">Pilsner</span></p>
+               <p><strong class="text-neutral-400">Hops:</strong> <span id="modal-recipe-hops">Cascade</span></p>
+               <p><strong class="text-neutral-400">Notes:</strong> <span id="modal-recipe-notes">Clean finish</span></p>
+            </div>
+            <p id="modal-recipe-desc" class="text-[11px] text-neutral-400 italic border-l-2 border-jeff-gold pl-3 line-clamp-2">
+               "A unique Pilsner malt base lager..."
+            </p>
+         </div>
+
+         <!-- SHARE OPTIONS -->
+         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+            <button id="share-whatsapp" class="flex flex-col items-center justify-center p-3 rounded-xl bg-green-950/40 border border-green-800/40 text-green-400 hover:bg-green-900/60 transition group">
+               <i data-lucide="message-circle" class="w-6 h-6 mb-1.5 group-hover:scale-110 transition"></i>
+               <span class="text-xs font-bold uppercase tracking-wider">WhatsApp</span>
+            </button>
+            <button id="share-instagram" class="flex flex-col items-center justify-center p-3 rounded-xl bg-pink-950/40 border border-pink-800/40 text-pink-400 hover:bg-pink-900/60 transition group">
+               <i data-lucide="instagram" class="w-6 h-6 mb-1.5 group-hover:scale-110 transition"></i>
+               <span class="text-xs font-bold uppercase tracking-wider">Instagram (IG)</span>
+            </button>
+            <button id="share-facebook" class="flex flex-col items-center justify-center p-3 rounded-xl bg-blue-950/40 border border-blue-800/40 text-blue-400 hover:bg-blue-900/60 transition group">
+               <i data-lucide="facebook" class="w-6 h-6 mb-1.5 group-hover:scale-110 transition"></i>
+               <span class="text-xs font-bold uppercase tracking-wider">Facebook</span>
+            </button>
+            <button id="share-native" class="flex flex-col items-center justify-center p-3 rounded-xl bg-purple-950/40 border border-purple-800/40 text-purple-400 hover:bg-purple-900/60 transition group">
+               <i data-lucide="share" class="w-6 h-6 mb-1.5 group-hover:scale-110 transition"></i>
+               <span class="text-xs font-bold uppercase tracking-wider">More...</span>
+            </button>
+         </div>
+
+         <!-- COPY LINK INPUT -->
+         <div class="relative flex items-center">
+            <input id="share-url-input" type="text" readonly class="w-full bg-black border border-neutral-800 rounded-xl py-3 pl-4 pr-24 text-xs text-neutral-300 font-mono outline-none focus:border-jeff-orange">
+            <button id="copy-share-url" class="absolute right-1 top-1 bottom-1 px-4 bg-jeff-orange text-white text-xs font-bold rounded-lg uppercase tracking-wider hover:bg-orange-600 transition flex items-center gap-1">
+               <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy
+            </button>
+         </div>
+
+         <!-- TOAST NOTIFICATION -->
+         <div id="share-toast" class="hidden mt-3 text-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 py-2 rounded-lg transition-all animate-fade-in">
+            Link copied to clipboard! 🍺
+         </div>
+      </div>
    </div>
 </div>
 
@@ -491,16 +567,353 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         const btnIcon = addToCartBtn.querySelector('i');
-        const oldClass = btnIcon.className;
         btnIcon.className = 'w-5 h-5 mr-2 animate-spin';
         btnIcon.setAttribute('data-lucide', 'loader-2');
         lucide.createIcons();
-        
-        setTimeout(() => {
-            alert('Custom brew added to cart successfully!');
-            window.location.href = '?route=shop';
-        }, 800);
+
+        fetch('?route=craft/addCustomToCart', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name: config.name,
+                malt: config.malt,
+                hops: config.hops,
+                abv: config.abv,
+                notes: config.notes,
+                qty: quantity,
+                isPilotBatch: isPilotBatch
+            })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                // Update header cart count UI if function exists
+                const cartCountEl = document.querySelector('.cart-count');
+                if (cartCountEl) {
+                    cartCountEl.innerText = data.count;
+                    cartCountEl.classList.remove('hidden');
+                }
+
+                // Redirect directly to checkout
+                window.location.href = '?route=cart/checkout';
+            } else {
+                alert('Error adding custom batch to cart: ' + (data.error || 'Unknown error'));
+            }
+        })
+        .catch(err => {
+            console.error(err);
+            alert('Failed to add custom batch to cart.');
+        });
     });
+
+    // --- URL State Initialization ---
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('name')) config.name = urlParams.get('name');
+    if (urlParams.has('malt')) config.malt = urlParams.get('malt');
+    if (urlParams.has('hops')) config.hops = urlParams.get('hops');
+    if (urlParams.has('abv')) config.abv = parseFloat(urlParams.get('abv')) || 5.0;
+    if (urlParams.has('notes')) {
+        const notesParam = urlParams.get('notes');
+        config.notes = notesParam ? notesParam.split(',') : [];
+    }
+
+    if (config.name) nameInput.value = config.name;
+    if (config.abv) {
+        abvInput.value = config.abv;
+        abvDisplay.textContent = `${config.abv.toFixed(1)}%`;
+    }
+
+    // --- Social Sharing Setup ---
+    const shareModal = document.getElementById('share-modal');
+    const openShareBtn = document.getElementById('open-share-modal');
+    const closeShareBtn = document.getElementById('close-share-modal');
+    const shareUrlInput = document.getElementById('share-url-input');
+    const copyShareBtn = document.getElementById('copy-share-url');
+    const shareToast = document.getElementById('share-toast');
+
+    const modalRecipeName = document.getElementById('modal-recipe-name');
+    const modalRecipeAbv = document.getElementById('modal-recipe-abv');
+    const modalRecipeMalt = document.getElementById('modal-recipe-malt');
+    const modalRecipeHops = document.getElementById('modal-recipe-hops');
+    const modalRecipeNotes = document.getElementById('modal-recipe-notes');
+    const modalRecipeDesc = document.getElementById('modal-recipe-desc');
+
+    const shareWhatsappBtn = document.getElementById('share-whatsapp');
+    const shareInstagramBtn = document.getElementById('share-instagram');
+    const shareFacebookBtn = document.getElementById('share-facebook');
+    const shareNativeBtn = document.getElementById('share-native');
+
+    const quickWhatsappBtn = document.getElementById('quick-whatsapp');
+    const quickInstagramBtn = document.getElementById('quick-instagram');
+    const quickFacebookBtn = document.getElementById('quick-facebook');
+
+    const getShareableUrl = () => {
+        const url = new URL(window.location.href);
+        url.searchParams.set('route', 'craft');
+        url.searchParams.set('name', config.name || 'My Custom Lager');
+        url.searchParams.set('malt', config.malt);
+        url.searchParams.set('hops', config.hops);
+        url.searchParams.set('abv', config.abv);
+        if (config.notes.length > 0) {
+            url.searchParams.set('notes', config.notes.join(','));
+        } else {
+            url.searchParams.delete('notes');
+        }
+        return url.toString();
+    };
+
+    const getShareableText = () => {
+        const brewName = config.name || 'My Custom Lager';
+        const notesStr = config.notes.length > 0 ? config.notes.join(', ') : 'Clean finish';
+        return `🍺 Check out my custom craft lager recipe "${brewName}" on Jeff Brewery Lab! (${config.malt} Malt, ${config.hops} Hops, ${config.abv}% ABV, Notes: ${notesStr})`;
+    };
+
+    const generateInstagramCardCanvas = () => {
+        const canvas = document.createElement('canvas');
+        canvas.width = 1080;
+        canvas.height = 1080;
+        const ctx = canvas.getContext('2d');
+
+        // Background Gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, 1080, 1080);
+        bgGrad.addColorStop(0, '#0a0a0a');
+        bgGrad.addColorStop(0.5, '#171717');
+        bgGrad.addColorStop(1, '#050505');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, 1080, 1080);
+
+        // Gold Radial Glow
+        const radGrad = ctx.createRadialGradient(540, 350, 50, 540, 350, 500);
+        radGrad.addColorStop(0, 'rgba(212, 160, 23, 0.18)');
+        radGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(0, 0, 1080, 1080);
+
+        // Top Trini Flag Strip
+        ctx.fillStyle = '#CE1126';
+        ctx.fillRect(0, 0, 1080, 14);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 14, 1080, 4);
+        ctx.fillStyle = '#000000';
+        ctx.fillRect(0, 18, 1080, 8);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.fillRect(0, 26, 1080, 4);
+        ctx.fillStyle = '#CE1126';
+        ctx.fillRect(0, 30, 1080, 14);
+
+        // Outer Gold Border
+        ctx.strokeStyle = 'rgba(212, 160, 23, 0.4)';
+        ctx.lineWidth = 10;
+        ctx.strokeRect(40, 70, 1000, 970);
+
+        // Header Brand Title
+        ctx.fillStyle = '#D4A017';
+        ctx.font = 'bold 26px "Oswald", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('JEFF BREWERY LAB • CRAFT LAGER RECIPE', 540, 135);
+
+        // Recipe Name
+        const brewName = (config.name || 'UNTITLED LAGER').toUpperCase();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 58px "Oswald", sans-serif';
+        ctx.fillText(brewName, 540, 220);
+
+        // ABV & Subtitle
+        ctx.fillStyle = '#FF6F00';
+        ctx.font = 'bold 34px "Oswald", sans-serif';
+        ctx.fillText(`${config.abv.toFixed(1)}% ABV • TRINBAGONIAN SOUL`, 540, 280);
+
+        // Divider
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.moveTo(140, 320);
+        ctx.lineTo(940, 320);
+        ctx.stroke();
+
+        // Recipe Card Details Panel Box
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.04)';
+        ctx.beginPath();
+        if (ctx.roundRect) {
+            ctx.roundRect(120, 350, 840, 420, 24);
+        } else {
+            ctx.rect(120, 350, 840, 420);
+        }
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+        ctx.stroke();
+
+        // Details Grid
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#888888';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText('BASE MALT:', 160, 420);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.fillText(config.malt, 330, 420);
+
+        ctx.fillStyle = '#888888';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText('HOPS:', 580, 420);
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.fillText(config.hops, 670, 420);
+
+        ctx.fillStyle = '#888888';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText('FLAVOR PROFILE:', 160, 490);
+        const notesStr = config.notes.length > 0 ? config.notes.join(' • ') : 'Clean Finish';
+        ctx.fillStyle = '#D4A017';
+        ctx.font = 'bold 28px sans-serif';
+        ctx.fillText(notesStr, 400, 490);
+
+        // Quote
+        ctx.fillStyle = '#E5E5E5';
+        ctx.font = 'italic 24px Georgia, serif';
+        const quoteText = `"${dynamicDesc.textContent.replace(/^"|"$/g, '')}"`;
+        
+        let words = quoteText.split(' ');
+        let line = '';
+        let y = 570;
+        for (let n = 0; n < words.length; n++) {
+            let testLine = line + words[n] + ' ';
+            let metrics = ctx.measureText(testLine);
+            if (metrics.width > 760 && n > 0) {
+                ctx.fillText(line, 160, y);
+                line = words[n] + ' ';
+                y += 34;
+            } else {
+                line = testLine;
+            }
+        }
+        ctx.fillText(line, 160, y);
+
+        // Call To Action Footer
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FF6F00';
+        ctx.font = 'bold 30px "Oswald", sans-serif';
+        ctx.fillText('BREWED FRESH AT JEFF BREWERY', 540, 835);
+
+        ctx.fillStyle = '#888888';
+        ctx.font = '22px sans-serif';
+        ctx.fillText('Build your custom lager at jeffbrewery.com', 540, 880);
+
+        ctx.fillStyle = '#D4A017';
+        ctx.font = 'bold 20px sans-serif';
+        ctx.fillText('DRINK THE VISION • LIVE THE CULTURE', 540, 970);
+
+        return canvas;
+    };
+
+    const populateShareModal = () => {
+        const shareUrl = getShareableUrl();
+        const brewName = config.name || 'My Custom Lager';
+        const notesStr = config.notes.length > 0 ? config.notes.join(', ') : 'Clean finish';
+
+        modalRecipeName.textContent = brewName;
+        modalRecipeAbv.textContent = `${config.abv.toFixed(1)}% ABV`;
+        modalRecipeMalt.textContent = config.malt;
+        modalRecipeHops.textContent = config.hops;
+        modalRecipeNotes.textContent = notesStr;
+        modalRecipeDesc.textContent = dynamicDesc.textContent;
+        shareUrlInput.value = shareUrl;
+    };
+
+    const openShareModal = () => {
+        populateShareModal();
+        shareModal.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+    };
+
+    const closeShareModal = () => {
+        shareModal.classList.add('hidden');
+        shareToast.classList.add('hidden');
+    };
+
+    if (openShareBtn) openShareBtn.addEventListener('click', openShareModal);
+    if (closeShareBtn) closeShareBtn.addEventListener('click', closeShareModal);
+    if (shareModal) {
+        shareModal.addEventListener('click', (e) => {
+            if (e.target === shareModal) closeShareModal();
+        });
+    }
+
+    const shareToWhatsApp = () => {
+        const text = getShareableText();
+        const url = getShareableUrl();
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(text + '\n' + url)}`, '_blank');
+    };
+
+    const shareToInstagram = () => {
+        const canvas = generateInstagramCardCanvas();
+        canvas.toBlob((blob) => {
+            const brewName = (config.name || 'My Custom Lager').replace(/\s+/g, '_');
+            const fileName = `JeffBrewery_${brewName}_IG.png`;
+
+            // Download image file directly
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            URL.revokeObjectURL(link.href);
+
+            // Copy caption to clipboard
+            const caption = `🍺 Custom Craft Lager Recipe: "${config.name || 'My Custom Lager'}" (${config.malt} Malt, ${config.hops} Hops, ${config.abv}% ABV).\nBrewed with Trinbagonian soul at @JeffBrewery!\n${getShareableUrl()} #JeffBrewery #CraftBeer #TriniVibes`;
+            navigator.clipboard.writeText(caption).catch(() => {});
+
+            // Show Toast & Open Instagram
+            shareToast.innerHTML = '📸 Instagram Recipe Card Downloaded! Caption copied to clipboard. Ready for IG Story/Post!';
+            shareToast.className = 'mt-3 text-center text-xs font-bold text-pink-400 bg-pink-950/40 border border-pink-800/40 py-2.5 px-3 rounded-lg transition-all animate-fade-in block';
+
+            setTimeout(() => {
+                window.open('https://www.instagram.com', '_blank');
+            }, 1200);
+        }, 'image/png');
+    };
+
+    const shareToFacebook = () => {
+        const url = getShareableUrl();
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    };
+
+    const shareNative = () => {
+        const text = getShareableText();
+        const url = getShareableUrl();
+        if (navigator.share) {
+            navigator.share({
+                title: config.name || 'Custom Lager Recipe',
+                text: text,
+                url: url
+            }).catch(() => {});
+        } else {
+            copyToClipboard();
+        }
+    };
+
+    const copyToClipboard = () => {
+        const shareUrl = getShareableUrl();
+        navigator.clipboard.writeText(shareUrl).then(() => {
+            shareToast.innerHTML = 'Link copied to clipboard! 🍺';
+            shareToast.className = 'mt-3 text-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 py-2 rounded-lg transition-all animate-fade-in block';
+            setTimeout(() => shareToast.classList.add('hidden'), 3000);
+        }).catch(() => {
+            shareUrlInput.select();
+            document.execCommand('copy');
+            shareToast.innerHTML = 'Link copied to clipboard! 🍺';
+            shareToast.className = 'mt-3 text-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 py-2 rounded-lg transition-all animate-fade-in block';
+            setTimeout(() => shareToast.classList.add('hidden'), 3000);
+        });
+    };
+
+    if (shareWhatsappBtn) shareWhatsappBtn.addEventListener('click', shareToWhatsApp);
+    if (shareInstagramBtn) shareInstagramBtn.addEventListener('click', shareToInstagram);
+    if (shareFacebookBtn) shareFacebookBtn.addEventListener('click', shareToFacebook);
+    if (shareNativeBtn) shareNativeBtn.addEventListener('click', shareNative);
+    if (copyShareBtn) copyShareBtn.addEventListener('click', copyToClipboard);
+
+    if (quickWhatsappBtn) quickWhatsappBtn.addEventListener('click', shareToWhatsApp);
+    if (quickInstagramBtn) quickInstagramBtn.addEventListener('click', shareToInstagram);
+    if (quickFacebookBtn) quickFacebookBtn.addEventListener('click', shareToFacebook);
 
     // Initial render
     updateUI();

@@ -82,15 +82,87 @@ $isLimited = in_array(strtoupper($beer['availability']), ['LIMITED', 'SEASONAL']
     </span>
 </div>
 
-<div class="flex gap-4">
+<?php
+$beerJson = htmlspecialchars(json_encode($beer, JSON_HEX_APOS | JSON_HEX_QUOT), ENT_QUOTES, 'UTF-8');
+$flavorsStr = isset($beer['flavorProfile']) ? htmlspecialchars(implode(',', $beer['flavorProfile'])) : '';
+$pairingStr = isset($beer['pairing']) ? htmlspecialchars(implode(',', $beer['pairing'])) : '';
+?>
+<div class="flex gap-3">
     <button class="add-to-cart-btn flex-1 bg-jeff-orange text-white py-4 rounded-xl font-bold hover:bg-orange-600 transition shadow hover:shadow-lg flex items-center justify-center gap-3 uppercase tracking-widest font-oswald text-lg" data-id="<?= htmlspecialchars($beer['id']) ?>">
         <i data-lucide="shopping-cart" class="w-5 h-5"></i> Add to Cooler
+    </button>
+    <button 
+        class="open-beer-share-btn bg-neutral-950 border border-neutral-800 text-neutral-400 p-4 rounded-xl hover:bg-neutral-900 hover:text-jeff-gold transition focus:outline-none flex items-center justify-center shadow" 
+        data-beer="<?= $beerJson ?>" 
+        data-id="<?= htmlspecialchars($beer['id']) ?>"
+        data-name="<?= htmlspecialchars($beer['name']) ?>"
+        data-tagline="<?= htmlspecialchars($beer['tagline'] ?? '') ?>"
+        data-style="<?= htmlspecialchars($beer['style'] ?? 'Craft Brew') ?>"
+        data-abv="<?= htmlspecialchars($beer['abv'] ?? 5.0) ?>"
+        data-price="<?= htmlspecialchars($beer['price'] ?? 15) ?>"
+        data-image="<?= htmlspecialchars($beer['image'] ?? '') ?>"
+        data-flavors="<?= $flavorsStr ?>"
+        data-pairing="<?= $pairingStr ?>"
+        title="Share Brew to Social Media">
+        <i data-lucide="share-2" class="w-6 h-6"></i>
     </button>
     <button class="toggle-wishlist-btn bg-neutral-950 border border-neutral-800 text-neutral-500 p-4 rounded-xl hover:bg-neutral-900 hover:text-white transition focus:outline-none <?= isset($wishlist) && in_array($beer['id'], $wishlist) ? 'text-trini-red border-trini-red/30 bg-red-950/20' : '' ?>" data-id="<?= htmlspecialchars($beer['id']) ?>" title="Toggle Wishlist">
         <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
         </svg>
     </button>
+</div>
+
+<!-- Quick Social Share Bar -->
+<div class="mt-4 flex items-center justify-between text-xs text-neutral-400 font-bold uppercase tracking-wider bg-neutral-950/80 p-3 rounded-xl border border-neutral-800">
+    <span class="flex items-center gap-1.5"><i data-lucide="sparkles" class="w-4 h-4 text-jeff-gold"></i> Share Brew:</span>
+    <div class="flex items-center gap-4">
+        <button 
+            class="open-beer-share-btn hover:text-pink-400 transition flex items-center gap-1.5" 
+            data-beer="<?= $beerJson ?>" 
+            data-id="<?= htmlspecialchars($beer['id']) ?>"
+            data-name="<?= htmlspecialchars($beer['name']) ?>"
+            data-tagline="<?= htmlspecialchars($beer['tagline'] ?? '') ?>"
+            data-style="<?= htmlspecialchars($beer['style'] ?? 'Craft Brew') ?>"
+            data-abv="<?= htmlspecialchars($beer['abv'] ?? 5.0) ?>"
+            data-price="<?= htmlspecialchars($beer['price'] ?? 15) ?>"
+            data-image="<?= htmlspecialchars($beer['image'] ?? '') ?>"
+            data-flavors="<?= $flavorsStr ?>"
+            data-pairing="<?= $pairingStr ?>"
+            data-target="ig-story">
+            <i data-lucide="instagram" class="w-4 h-4"></i> IG Story
+        </button>
+        <button 
+            class="open-beer-share-btn hover:text-pink-400 transition flex items-center gap-1.5" 
+            data-beer="<?= $beerJson ?>" 
+            data-id="<?= htmlspecialchars($beer['id']) ?>"
+            data-name="<?= htmlspecialchars($beer['name']) ?>"
+            data-tagline="<?= htmlspecialchars($beer['tagline'] ?? '') ?>"
+            data-style="<?= htmlspecialchars($beer['style'] ?? 'Craft Brew') ?>"
+            data-abv="<?= htmlspecialchars($beer['abv'] ?? 5.0) ?>"
+            data-price="<?= htmlspecialchars($beer['price'] ?? 15) ?>"
+            data-image="<?= htmlspecialchars($beer['image'] ?? '') ?>"
+            data-flavors="<?= $flavorsStr ?>"
+            data-pairing="<?= $pairingStr ?>"
+            data-target="ig-post">
+            <i data-lucide="image" class="w-4 h-4"></i> IG Post
+        </button>
+        <button 
+            class="open-beer-share-btn hover:text-green-400 transition flex items-center gap-1.5" 
+            data-beer="<?= $beerJson ?>" 
+            data-id="<?= htmlspecialchars($beer['id']) ?>"
+            data-name="<?= htmlspecialchars($beer['name']) ?>"
+            data-tagline="<?= htmlspecialchars($beer['tagline'] ?? '') ?>"
+            data-style="<?= htmlspecialchars($beer['style'] ?? 'Craft Brew') ?>"
+            data-abv="<?= htmlspecialchars($beer['abv'] ?? 5.0) ?>"
+            data-price="<?= htmlspecialchars($beer['price'] ?? 15) ?>"
+            data-image="<?= htmlspecialchars($beer['image'] ?? '') ?>"
+            data-flavors="<?= $flavorsStr ?>"
+            data-pairing="<?= $pairingStr ?>"
+            data-target="wa">
+            <i data-lucide="message-circle" class="w-4 h-4"></i> WhatsApp
+        </button>
+    </div>
 </div>
 </div>
 

@@ -496,11 +496,38 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(data => {
                     if (data.success) {
                         updateCartCountUI(data.count);
+                        const cartDrawer = document.getElementById('cart-drawer');
+                        if (cartDrawer) {
+                            cartDrawer.classList.remove('hidden');
+                            loadCartItems();
+                        }
                     }
                 })
                 .catch(err => console.error('Error adding to cart:', err));
         });
     });
+
+    window.addToCart = function(id, qty = 1) {
+        fetch('?route=cart/add', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: id, qty: qty })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                updateCartCountUI(data.count);
+                const cartDrawer = document.getElementById('cart-drawer');
+                if (cartDrawer) {
+                    cartDrawer.classList.remove('hidden');
+                    loadCartItems();
+                }
+            } else {
+                alert(data.error || 'Failed to add item to cart');
+            }
+        })
+        .catch(err => console.error('Error adding to cart:', err));
+    };
 
     // Toggle wishlist buttons everywhere
     document.querySelectorAll('.toggle-wishlist-btn').forEach(btn => {
@@ -598,4 +625,358 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Listen for custom open-trinichat event
     window.addEventListener('open-trinichat', openTriniChat);
+
+    // --- Global Beer Social Share Modal Logic ---
+    let currentShareBeer = null;
+    const beerShareModal = document.getElementById('beer-share-modal');
+    const closeBeerShareBtn = document.getElementById('close-beer-share-modal');
+    const beerModalTitle = document.getElementById('beer-modal-title');
+    const beerModalName = document.getElementById('beer-modal-name');
+    const beerModalPrice = document.getElementById('beer-modal-price');
+    const beerModalTagline = document.getElementById('beer-modal-tagline');
+    const beerModalStyle = document.getElementById('beer-modal-style');
+    const beerModalAbv = document.getElementById('beer-modal-abv');
+    const beerModalFlavors = document.getElementById('beer-modal-flavors');
+    const beerModalImg = document.getElementById('beer-modal-img');
+    const beerShareUrlInput = document.getElementById('beer-share-url-input');
+    const copyBeerShareUrlBtn = document.getElementById('copy-beer-share-url');
+    const beerShareToast = document.getElementById('beer-share-toast');
+
+    const beerIgStoryBtn = document.getElementById('beer-share-ig-story');
+    const beerIgPostBtn = document.getElementById('beer-share-ig-post');
+    const beerWhatsappBtn = document.getElementById('beer-share-whatsapp');
+    const beerFacebookBtn = document.getElementById('beer-share-facebook');
+
+    function getBeerShareUrl(beer) {
+        const url = new URL(window.location.origin + window.location.pathname);
+        url.searchParams.set('route', 'shop/detail');
+        url.searchParams.set('id', beer.id);
+        return url.toString();
+    }
+
+    function getBeerShareCaption(beer) {
+        const flavors = beer.flavorProfile ? beer.flavorProfile.join(', ') : 'Great Taste';
+        return `🍺 Check out "${beer.name}" by @JeffBrewery! (${beer.style || 'Craft Brew'}, ${beer.abv || '5.0'}% ABV).\nTagline: "${beer.tagline || ''}"\nFlavor Notes: ${flavors}\nTry it at ${getBeerShareUrl(beer)} #JeffBrewery #CraftBeer #TriniCraft #DrinkTheVision`;
+    }
+
+    function populateBeerShareModal(beer) {
+        currentShareBeer = beer;
+        if (!beer) return;
+
+        if (beerModalTitle) beerModalTitle.textContent = `Share ${beer.name}`;
+        if (beerModalName) beerModalName.textContent = beer.name;
+        if (beerModalPrice) beerModalPrice.textContent = `$${parseFloat(beer.price || 0).toFixed(2)}`;
+        if (beerModalTagline) beerModalTagline.textContent = beer.tagline ? `"${beer.tagline}"` : '';
+        if (beerModalStyle) beerModalStyle.textContent = beer.style || 'Craft Brew';
+        if (beerModalAbv) beerModalAbv.textContent = `${parseFloat(beer.abv || 0).toFixed(1)}% ABV`;
+        
+        const flavors = beer.flavorProfile ? beer.flavorProfile.join(' • ') : 'Crafted with Trinbagonian soul';
+        if (beerModalFlavors) beerModalFlavors.textContent = flavors;
+
+        if (beerModalImg) {
+            beerModalImg.src = beer.image || '/public/images/island_ipa.jpg';
+        }
+
+        if (beerShareUrlInput) beerShareUrlInput.value = getBeerShareUrl(beer);
+    }
+
+    function openBeerShareModal(beer, autoTarget) {
+        populateBeerShareModal(beer);
+        if (!beerShareModal) return;
+        beerShareModal.classList.remove('hidden');
+        if (window.lucide) lucide.createIcons();
+
+        if (autoTarget === 'ig-story') {
+            generateAndShareBeerImage(true);
+        } else if (autoTarget === 'ig-post') {
+            generateAndShareBeerImage(false);
+        } else if (autoTarget === 'wa') {
+            shareBeerToWhatsApp();
+        }
+    }
+
+    function closeBeerShareModal() {
+        if (!beerShareModal) return;
+        beerShareModal.classList.add('hidden');
+        if (beerShareToast) beerShareToast.classList.add('hidden');
+    }
+
+    function loadCanvasImage(src) {
+        return new Promise((resolve) => {
+            if (!src) return resolve(null);
+            const img = new Image();
+            // Only set crossOrigin for external http/https URLs to prevent local same-origin canvas CORS blocking
+            if (src.startsWith('http://') || src.startsWith('https://')) {
+                if (!src.includes(window.location.hostname)) {
+                    img.crossOrigin = 'anonymous';
+                }
+            }
+            img.onload = () => resolve(img);
+            img.onerror = (e) => {
+                console.warn('Canvas image load warning:', src, e);
+                resolve(null);
+            };
+            img.src = src;
+        });
+    }
+
+    // Canvas Image Generator for ANY Beer
+    async function createBeerCardCanvasAsync(beer, isStory = false) {
+        const width = 1080;
+        const height = isStory ? 1920 : 1080;
+        const canvas = document.createElement('canvas');
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+
+        // Background Gradient
+        const bgGrad = ctx.createLinearGradient(0, 0, width, height);
+        bgGrad.addColorStop(0, '#0a0a0a');
+        bgGrad.addColorStop(0.5, '#141414');
+        bgGrad.addColorStop(1, '#050505');
+        ctx.fillStyle = bgGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Gold Radial Glow behind bottle
+        const glowY = isStory ? 680 : 490;
+        const radGrad = ctx.createRadialGradient(width/2, glowY, 50, width/2, glowY, isStory ? 480 : 320);
+        radGrad.addColorStop(0, 'rgba(212, 160, 23, 0.28)');
+        radGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+        ctx.fillStyle = radGrad;
+        ctx.fillRect(0, 0, width, height);
+
+        // Top Trini Flag Strip
+        ctx.fillStyle = '#CE1126'; ctx.fillRect(0, 0, width, 16);
+        ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 16, width, 4);
+        ctx.fillStyle = '#000000'; ctx.fillRect(0, 20, width, 8);
+        ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 28, width, 4);
+        ctx.fillStyle = '#CE1126'; ctx.fillRect(0, 32, width, 16);
+
+        // Border Frame
+        ctx.strokeStyle = 'rgba(212, 160, 23, 0.4)';
+        ctx.lineWidth = 12;
+        ctx.strokeRect(40, 70, width - 80, height - 110);
+
+        // Header Title
+        ctx.fillStyle = '#D4A017';
+        ctx.font = 'bold 28px "Oswald", sans-serif';
+        ctx.textAlign = 'center';
+        ctx.fillText('JEFF BREWERY • TRINBAGONIAN CRAFT BEER', width/2, 135);
+
+        // Beer Title & Style Badge
+        const nameUpper = (beer.name || 'CRAFT BEER').toUpperCase();
+        ctx.fillStyle = '#FFFFFF';
+        ctx.font = 'bold 58px "Oswald", sans-serif';
+        ctx.fillText(nameUpper, width/2, 215);
+
+        ctx.fillStyle = '#FF6F00';
+        ctx.font = 'bold 32px "Oswald", sans-serif';
+        ctx.fillText(`${(beer.style || 'CRAFT BREW').toUpperCase()} • ${parseFloat(beer.abv || 0).toFixed(1)}% ABV`, width/2, 265);
+
+        if (beer.tagline) {
+            ctx.fillStyle = '#D4A017';
+            ctx.font = 'italic 28px Georgia, serif';
+            ctx.fillText(`"${beer.tagline}"`, width/2, 310);
+        }
+
+        // --- DRAW ACTUAL BEER PREVIEW IMAGE ---
+        const beerImg = await loadCanvasImage(beer.image || '/public/images/island_ipa.jpg');
+        if (beerImg) {
+            const maxImgHeight = isStory ? 640 : 340;
+            const maxImgWidth = isStory ? 750 : 500;
+            let drawW = beerImg.width;
+            let drawH = beerImg.height;
+
+            const scale = Math.min(maxImgWidth / drawW, maxImgHeight / drawH);
+            drawW *= scale;
+            drawH *= scale;
+
+            const imgX = (width - drawW) / 2;
+            const imgYCenter = isStory ? 390 + (640 - drawH)/2 : 330 + (340 - drawH)/2;
+
+            // Draw soft bottle glow / pedestal shadow
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+            ctx.beginPath();
+            ctx.ellipse(width/2, imgYCenter + drawH - 12, drawW * 0.45, 18, 0, 0, Math.PI * 2);
+            ctx.fill();
+
+            // Render Actual Beer Product Image!
+            ctx.drawImage(beerImg, imgX, imgYCenter, drawW, drawH);
+        }
+
+        // Details Box Y Offset
+        const boxY = isStory ? 1080 : 700;
+        const boxHeight = isStory ? 650 : 250;
+
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+        ctx.beginPath();
+        if (ctx.roundRect) ctx.roundRect(100, boxY, width - 200, boxHeight, 24);
+        else ctx.rect(100, boxY, width - 200, boxHeight);
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
+        ctx.stroke();
+
+        // Details Content
+        ctx.textAlign = 'left';
+        ctx.fillStyle = '#A3A3A3';
+        ctx.font = 'bold 24px sans-serif';
+        ctx.fillText('FLAVOR PROFILE:', 140, boxY + 55);
+
+        const flavorsStr = beer.flavorProfile ? beer.flavorProfile.join(' • ') : 'Crafted with passion';
+        ctx.fillStyle = '#D4A017';
+        ctx.font = 'bold 26px sans-serif';
+        ctx.fillText(flavorsStr, 380, boxY + 55);
+
+        if (beer.pairing && beer.pairing.length > 0) {
+            ctx.fillStyle = '#A3A3A3';
+            ctx.font = 'bold 24px sans-serif';
+            ctx.fillText('BEST SERVED WITH:', 140, boxY + 120);
+
+            ctx.fillStyle = '#FFFFFF';
+            ctx.font = 'bold 26px sans-serif';
+            ctx.fillText(beer.pairing.join(' • '), 420, boxY + 120);
+        }
+
+        if (isStory && beer.description) {
+            ctx.fillStyle = '#E5E5E5';
+            ctx.font = 'italic 25px Georgia, serif';
+            let words = beer.description.split(' ');
+            let line = '';
+            let curY = boxY + 200;
+            for (let n = 0; n < words.length; n++) {
+                let testLine = line + words[n] + ' ';
+                let metrics = ctx.measureText(testLine);
+                if (metrics.width > 800 && n > 0) {
+                    ctx.fillText(line, 140, curY);
+                    line = words[n] + ' ';
+                    curY += 36;
+                } else line = testLine;
+            }
+            ctx.fillText(line, 140, curY);
+        }
+
+        // Call To Action Footer
+        ctx.textAlign = 'center';
+        ctx.fillStyle = '#FF6F00';
+        ctx.font = 'bold 34px "Oswald", sans-serif';
+        ctx.fillText('ISLAND-WIDE DELIVERY • JEFFBREWERY.COM', width/2, height - 100);
+
+        ctx.fillStyle = '#D4A017';
+        ctx.font = 'bold 22px sans-serif';
+        ctx.fillText('DRINK THE VISION • LIVE THE CULTURE', width/2, height - 55);
+
+        return canvas;
+    }
+
+    async function generateAndShareBeerImage(isStory = false) {
+        if (!currentShareBeer) return;
+
+        if (beerShareToast) {
+            beerShareToast.innerHTML = '🎨 Generating High-Res Image with Beer Photo...';
+            beerShareToast.className = 'mt-3 text-center text-xs font-bold text-yellow-400 bg-yellow-950/40 border border-yellow-800/40 py-2.5 px-3 rounded-lg transition-all animate-fade-in block';
+        }
+
+        const canvas = await createBeerCardCanvasAsync(currentShareBeer, isStory);
+        canvas.toBlob((blob) => {
+            const cleanName = (currentShareBeer.name || 'JeffBrewery_Beer').replace(/\s+/g, '_');
+            const typeLabel = isStory ? 'IG_Story' : 'IG_Post';
+            const fileName = `${cleanName}_${typeLabel}.png`;
+
+            const link = document.createElement('a');
+            link.download = fileName;
+            link.href = URL.createObjectURL(blob);
+            link.click();
+            URL.revokeObjectURL(link.href);
+
+            const caption = getBeerShareCaption(currentShareBeer);
+            navigator.clipboard.writeText(caption).catch(() => {});
+
+            if (beerShareToast) {
+                beerShareToast.innerHTML = `📸 ${isStory ? 'Instagram Story' : 'Instagram Feed'} Image Card Downloaded! Caption copied to clipboard. Ready to post!`;
+                beerShareToast.className = 'mt-3 text-center text-xs font-bold text-pink-400 bg-pink-950/40 border border-pink-800/40 py-2.5 px-3 rounded-lg transition-all animate-fade-in block';
+            }
+
+            setTimeout(() => {
+                window.open('https://www.instagram.com', '_blank');
+            }, 1200);
+        }, 'image/png');
+    }
+
+    function shareBeerToWhatsApp() {
+        if (!currentShareBeer) return;
+        const caption = getBeerShareCaption(currentShareBeer);
+        window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(caption)}`, '_blank');
+    }
+
+    function shareBeerToFacebook() {
+        if (!currentShareBeer) return;
+        const url = getBeerShareUrl(currentShareBeer);
+        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+    }
+
+    // Attach click listeners to open-beer-share-btn elements
+    document.addEventListener('click', (e) => {
+        const btn = e.target.closest('.open-beer-share-btn');
+        if (btn) {
+            e.preventDefault();
+            e.stopPropagation();
+            try {
+                let beerData = null;
+
+                if (btn.dataset.beer) {
+                    try {
+                        let jsonStr = btn.dataset.beer;
+                        beerData = JSON.parse(jsonStr);
+                    } catch (pErr) {
+                        console.warn('dataset.beer JSON parse fallback triggered', pErr);
+                    }
+                }
+
+                if (!beerData && btn.dataset.id) {
+                    beerData = {
+                        id: btn.dataset.id,
+                        name: btn.dataset.name || 'Craft Beer',
+                        tagline: btn.dataset.tagline || '',
+                        style: btn.dataset.style || 'Craft Brew',
+                        abv: parseFloat(btn.dataset.abv || 5.0),
+                        price: parseFloat(btn.dataset.price || 15),
+                        image: btn.dataset.image || '/public/images/island_ipa.jpg',
+                        flavorProfile: btn.dataset.flavors ? btn.dataset.flavors.split(',') : [],
+                        pairing: btn.dataset.pairing ? btn.dataset.pairing.split(',') : []
+                    };
+                }
+
+                if (beerData) {
+                    const target = btn.dataset.target || null;
+                    openBeerShareModal(beerData, target);
+                } else {
+                    console.error('No beer data found on button:', btn);
+                }
+            } catch (err) {
+                console.error('Error opening beer share modal:', err);
+            }
+        }
+    });
+
+    if (closeBeerShareBtn) closeBeerShareBtn.addEventListener('click', closeBeerShareModal);
+    if (beerShareModal) {
+        beerShareModal.addEventListener('click', (e) => {
+            if (e.target === beerShareModal) closeBeerShareModal();
+        });
+    }
+
+    if (beerIgStoryBtn) beerIgStoryBtn.addEventListener('click', () => generateAndShareBeerImage(true));
+    if (beerIgPostBtn) beerIgPostBtn.addEventListener('click', () => generateAndShareBeerImage(false));
+    if (beerWhatsappBtn) beerWhatsappBtn.addEventListener('click', shareBeerToWhatsApp);
+    if (beerFacebookBtn) beerFacebookBtn.addEventListener('click', shareBeerToFacebook);
+
+    if (copyBeerShareUrlBtn && beerShareUrlInput) {
+        copyBeerShareUrlBtn.addEventListener('click', () => {
+            navigator.clipboard.writeText(beerShareUrlInput.value).then(() => {
+                beerShareToast.innerHTML = 'Link copied to clipboard! 🍺';
+                beerShareToast.className = 'mt-3 text-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 py-2.5 px-3 rounded-lg transition-all animate-fade-in block';
+                setTimeout(() => beerShareToast.classList.add('hidden'), 3000);
+            });
+        });
+    }
 });

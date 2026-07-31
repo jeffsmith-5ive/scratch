@@ -88,6 +88,7 @@ if (isset($_SESSION['cart'])) {
 }
 $currentPage = $_GET['route'] ?? 'home';
 $userPoints = $_SESSION['user']['points'] ?? 0;
+$authRole = $_SESSION['auth_role'] ?? (isset($_SESSION['user']) ? 'customer' : 'guest');
 
 $navLinks = [
     ['name' => 'Home', 'path' => '?route=home', 'route' => 'home'],
@@ -182,18 +183,33 @@ $navLinks = [
                         <span>TriniChat</span>
                     </button>
 
-                    <!-- Gamification Stats -->
-                    <a href="?route=profile" class="flex flex-col items-end cursor-pointer">
-                        <span class="text-[8px] font-bold text-neutral-500 uppercase tracking-wider">Level</span>
-                        <div class="flex items-center text-[10px] font-bold text-[var(--gold)]">
-                            <i data-lucide="trophy" class="w-3 h-3 mr-1 text-[var(--gold)] fill-current"></i> <?= $userPoints ?> pts
-                        </div>
-                    </a>
+                    <!-- Auth Badge / User Status -->
+                    <?php if ($authRole === 'admin'): ?>
+                        <a href="?route=admin" class="flex items-center gap-1.5 bg-amber-500/10 border border-amber-500/30 text-amber-300 px-3 py-1.5 rounded-full text-[10px] font-bold uppercase tracking-wider hover:bg-amber-500/20 transition">
+                            <i data-lucide="shield-check" class="w-3.5 h-3.5 text-amber-400"></i>
+                            <span>Admin Portal</span>
+                        </a>
+                        <a href="?route=auth/logout" class="text-neutral-400 hover:text-red-400 text-[10px] font-bold uppercase tracking-wider transition" title="Logout">
+                            <i data-lucide="log-out" class="w-4 h-4"></i>
+                        </a>
+                    <?php else: ?>
+                        <!-- Gamification Stats -->
+                        <a href="?route=profile" class="flex flex-col items-end cursor-pointer">
+                            <span class="text-[8px] font-bold text-neutral-500 uppercase tracking-wider">Level</span>
+                            <div class="flex items-center text-[10px] font-bold text-[var(--gold)]">
+                                <i data-lucide="trophy" class="w-3 h-3 mr-1 text-[var(--gold)] fill-current"></i> <?= $userPoints ?> pts
+                            </div>
+                        </a>
 
-                    <!-- Profile -->
-                    <a href="?route=profile" class="p-1.5 rounded-full text-neutral-400 hover:text-[var(--gold)] transition-colors">
-                        <i data-lucide="user" class="h-4.5 w-4.5"></i>
-                    </a>
+                        <!-- Profile -->
+                        <a href="?route=profile" class="p-1.5 rounded-full text-neutral-400 hover:text-[var(--gold)] transition-colors" title="Customer Profile">
+                            <i data-lucide="user" class="h-4.5 w-4.5"></i>
+                        </a>
+
+                        <a href="?route=auth/login" class="text-[10px] font-bold uppercase text-[var(--gold)] border border-[var(--gold)]/40 px-2.5 py-1 rounded-full hover:bg-[var(--gold)] hover:text-black transition">
+                            Login
+                        </a>
+                    <?php endif; ?>
 
                     <!-- Cart -->
                     <button class="cart-toggle flex items-center space-x-1.5 p-1.5 rounded-full text-neutral-400 hover:text-[var(--gold)] transition group focus:outline-none">
@@ -307,6 +323,7 @@ $navLinks = [
          <div>
            <h4 class="font-bold text-lg mb-6 tracking-wide font-oswald uppercase text-white">Our Brews</h4>
            <ul class="text-neutral-400 space-y-2 text-sm grid grid-cols-2 gap-x-4">
+             <li><a href="?route=shop/detail&id=brechin-castle" class="hover:text-jeff-gold cursor-pointer transition">Brechin Castle</a></li>
              <li><a href="?route=shop/detail&id=island-ipa" class="hover:text-jeff-gold cursor-pointer transition">Island IPA</a></li>
              <li><a href="?route=shop/detail&id=jouvert-lager" class="hover:text-jeff-gold cursor-pointer transition">J'ouvert Lager</a></li>
              <li><a href="?route=shop/detail&id=bitter-truth" class="hover:text-jeff-gold cursor-pointer transition">Bitter Truth Stout</a></li>
@@ -327,7 +344,17 @@ $navLinks = [
              <li><a href="?route=about" class="hover:text-jeff-gold cursor-pointer transition">Our Story</a></li>
              <li><a href="?route=sustainability" class="hover:text-jeff-gold cursor-pointer transition">Sustainability</a></li>
              <li><a href="?route=krewe" class="hover:text-jeff-gold cursor-pointer transition">Join the Krewe</a></li>
-             <li class="pt-4"><a href="?route=admin" class="hover:text-jeff-gold cursor-pointer transition text-neutral-600 block">Admin Access</a></li>
+           </ul>
+         </div>
+
+         <div>
+           <h4 class="font-bold text-lg mb-6 tracking-wide font-oswald uppercase text-white">Account & Portal</h4>
+           <ul class="text-neutral-400 space-y-2.5 text-sm">
+             <li><a href="?route=auth/login&role=customer" class="hover:text-jeff-gold transition flex items-center gap-1.5"><i data-lucide="user" class="w-3.5 h-3.5 text-emerald-400"></i> Customer Login</a></li>
+             <li><a href="?route=auth/register&role=customer" class="hover:text-jeff-gold transition flex items-center gap-1.5"><i data-lucide="user-plus" class="w-3.5 h-3.5 text-teal-400"></i> Customer Register</a></li>
+             <li><a href="?route=auth/login&role=admin" class="hover:text-jeff-gold transition flex items-center gap-1.5"><i data-lucide="shield" class="w-3.5 h-3.5 text-amber-400"></i> Admin Portal Login</a></li>
+             <li><a href="?route=admin" class="hover:text-jeff-gold transition flex items-center gap-1.5"><i data-lucide="layout-dashboard" class="w-3.5 h-3.5 text-amber-300"></i> Admin Dashboard</a></li>
+             <li><a href="?route=auth/logout" class="hover:text-red-400 transition flex items-center gap-1.5 text-neutral-500"><i data-lucide="log-out" class="w-3.5 h-3.5"></i> Sign Out</a></li>
            </ul>
          </div>
 
@@ -396,7 +423,78 @@ $navLinks = [
             </div>
         </div>
     </div>
-    
+
+    <!-- GLOBAL BEER SOCIAL SHARE MODAL -->
+    <div id="beer-share-modal" class="fixed inset-0 z-[80] flex items-center justify-center bg-black/80 backdrop-blur-md hidden transition-all duration-300 pointer-events-auto">
+        <div class="bg-neutral-900 border border-neutral-800 rounded-3xl max-w-lg w-full p-6 md:p-8 mx-4 shadow-2xl relative">
+            <button id="close-beer-share-modal" class="absolute top-4 right-4 text-neutral-400 hover:text-white transition p-2 rounded-full hover:bg-neutral-800">
+                <i data-lucide="x" class="w-6 h-6"></i>
+            </button>
+
+            <div class="text-center mb-6">
+                <div class="w-12 h-12 bg-jeff-gold/10 border border-jeff-gold/30 text-jeff-gold rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i data-lucide="share-2" class="w-6 h-6"></i>
+                </div>
+                <h3 id="beer-modal-title" class="text-2xl font-oswald font-bold text-white uppercase">Share Brew</h3>
+                <p class="text-xs text-neutral-400 mt-1">Share this Trinbagonian craft beer on social media as an image card, story, or post!</p>
+            </div>
+
+            <!-- BEER PREVIEW CARD IN MODAL -->
+            <div id="beer-share-preview-card" class="bg-black/90 border border-neutral-800 rounded-2xl p-4 mb-6 flex items-center gap-4 relative overflow-hidden">
+                <div class="w-20 h-24 bg-neutral-900 rounded-xl p-2 flex items-center justify-center border border-neutral-800 shrink-0">
+                    <img id="beer-modal-img" src="" alt="" class="max-w-full max-h-full object-contain drop-shadow-md">
+                </div>
+                <div class="flex-1 min-w-0">
+                    <div class="flex justify-between items-start">
+                        <h4 id="beer-modal-name" class="text-xl font-oswald font-bold text-white uppercase truncate">Beer Name</h4>
+                        <span id="beer-modal-price" class="text-jeff-gold font-oswald font-bold text-lg">$0.00</span>
+                    </div>
+                    <p id="beer-modal-tagline" class="text-xs text-jeff-gold italic mb-1 truncate">Tagline</p>
+                    <div class="flex items-center gap-2 text-[10px] uppercase font-bold text-neutral-400 mb-1">
+                        <span id="beer-modal-style" class="bg-neutral-800 px-2 py-0.5 rounded">Style</span>
+                        <span id="beer-modal-abv" class="bg-teal-950/40 text-teal-400 px-2 py-0.5 rounded">0.0% ABV</span>
+                    </div>
+                    <p id="beer-modal-flavors" class="text-[10px] text-neutral-400 truncate">Flavors...</p>
+                </div>
+            </div>
+
+            <!-- SHARE OPTIONS -->
+            <div class="grid grid-cols-2 gap-3 mb-6">
+                <button id="beer-share-ig-story" class="flex flex-col items-center justify-center p-3.5 rounded-xl bg-gradient-to-r from-purple-900/40 via-pink-900/40 to-orange-900/40 border border-pink-700/40 text-pink-300 hover:brightness-125 transition group shadow-md">
+                    <i data-lucide="instagram" class="w-6 h-6 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">IG Story (9:16 Card)</span>
+                    <span class="text-[9px] text-pink-300/80">Vertical Story Image</span>
+                </button>
+                <button id="beer-share-ig-post" class="flex flex-col items-center justify-center p-3.5 rounded-xl bg-pink-950/40 border border-pink-800/40 text-pink-400 hover:bg-pink-900/60 transition group shadow-md">
+                    <i data-lucide="image" class="w-6 h-6 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">IG Post (1:1 Card)</span>
+                    <span class="text-[9px] text-pink-400/80">Square Feed Image</span>
+                </button>
+                <button id="beer-share-whatsapp" class="flex flex-col items-center justify-center p-3 rounded-xl bg-green-950/40 border border-green-800/40 text-green-400 hover:bg-green-900/60 transition group">
+                    <i data-lucide="message-circle" class="w-5 h-5 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">WhatsApp</span>
+                </button>
+                <button id="beer-share-facebook" class="flex flex-col items-center justify-center p-3 rounded-xl bg-blue-950/40 border border-blue-800/40 text-blue-400 hover:bg-blue-900/60 transition group">
+                    <i data-lucide="facebook" class="w-5 h-5 mb-1 group-hover:scale-110 transition"></i>
+                    <span class="text-xs font-bold uppercase tracking-wider">Facebook</span>
+                </button>
+            </div>
+
+            <!-- COPY LINK INPUT -->
+            <div class="relative flex items-center">
+                <input id="beer-share-url-input" type="text" readonly class="w-full bg-black border border-neutral-800 rounded-xl py-3 pl-4 pr-24 text-xs text-neutral-300 font-mono outline-none focus:border-jeff-gold">
+                <button id="copy-beer-share-url" class="absolute right-1 top-1 bottom-1 px-4 bg-jeff-gold text-black text-xs font-bold rounded-lg uppercase tracking-wider hover:bg-yellow-500 transition flex items-center gap-1">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i> Copy Link
+                </button>
+            </div>
+
+            <!-- TOAST NOTIFICATION -->
+            <div id="beer-share-toast" class="hidden mt-3 text-center text-xs font-bold text-emerald-400 bg-emerald-950/40 border border-emerald-800/40 py-2.5 px-3 rounded-lg transition-all animate-fade-in">
+                Link copied to clipboard! 🍺
+            </div>
+        </div>
+    </div>
+
     <!-- AI Brew Guide FAB (Floating Action Button) -->
     <div id="chatbot-fab-container" class="fixed bottom-6 right-6 z-40 flex flex-col items-end pointer-events-auto">
         <div class="relative">
@@ -556,6 +654,6 @@ $navLinks = [
     </svg>
 
     <!-- Scripts -->
-    <script src="/public/js/app.js"></script>
+    <script src="/public/js/app.js?v=<?= file_exists(__DIR__ . '/../../public/js/app.js') ? filemtime(__DIR__ . '/../../public/js/app.js') : time() ?>"></script>
 </body>
 </html>
