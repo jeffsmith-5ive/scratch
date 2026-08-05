@@ -115,9 +115,14 @@
 
             <!-- Payment -->
             <div class="bg-neutral-900 p-6 rounded-2xl border border-neutral-800 shadow-xl">
-              <h3 class="text-xl font-display font-bold text-white mb-4 flex items-center uppercase tracking-wide">
-                3. Payment <i data-lucide="lock" class="ml-3 h-4 w-4 text-green-400"></i>
-              </h3>
+              <div class="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <h3 class="text-xl font-display font-bold text-white flex items-center uppercase tracking-wide">
+                  3. Payment <i data-lucide="lock" class="ml-3 h-4 w-4 text-green-400"></i>
+                </h3>
+                <a target="_blank" href="https://www.crescentprocessing.com" class="inline-block hover:opacity-90 transition">
+                  <img alt="visa / mastercard processor" src="https://www.crescentprocessing.com/img/creditcards/visa-mastercard.png" height="32" class="h-8 w-auto" style="border-width: 0px" />
+                </a>
+              </div>
               <div class="mb-4">
                  <div class="relative">
                     <i data-lucide="credit-card" class="absolute left-4 top-3.5 h-5 w-5 text-neutral-500"></i>
@@ -206,11 +211,16 @@
                  </div>
               </div>
 
-              <div class="mt-8 bg-black p-4 rounded-xl flex items-start border border-neutral-800 shadow-inner">
-                 <i data-lucide="shield-check" class="w-5 h-5 text-jeff-teal mt-0.5 flex-shrink-0"></i>
-                 <p class="text-xs text-neutral-400 ml-3 leading-relaxed">
-                   Your payment information is encrypted and secure. We do not store your credit card details on our servers.
-                 </p>
+              <div class="mt-8 bg-black p-4 rounded-xl flex flex-col sm:flex-row items-center justify-between border border-neutral-800 shadow-inner gap-3">
+                 <div class="flex items-start">
+                   <i data-lucide="shield-check" class="w-5 h-5 text-jeff-teal mt-0.5 flex-shrink-0"></i>
+                   <p class="text-xs text-neutral-400 ml-3 leading-relaxed">
+                     Your payment information is encrypted and secure. We do not store your credit card details on our servers.
+                   </p>
+                 </div>
+                 <a target="_blank" href="https://www.crescentprocessing.com" class="flex-shrink-0 hover:opacity-90 transition">
+                   <img alt="visa / mastercard processor" src="https://www.crescentprocessing.com/img/creditcards/visa-mastercard.png" height="30" class="h-7 w-auto" style="border-width: 0px" />
+                 </a>
               </div>
            </div>
         </div>

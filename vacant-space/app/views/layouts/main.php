@@ -379,6 +379,9 @@ $navLinks = [
            <span class="text-jeff-gold font-bold uppercase tracking-wider font-oswald text-sm md:text-xs mt-1 md:mt-0">Drink the Vision. Live the Culture.</span>
          </div>
          <div class="flex flex-col sm:flex-row items-center gap-4 mt-4 lg:mt-0">
+           <a target="_blank" href="https://www.crescentprocessing.com" class="inline-block hover:opacity-90 transition">
+             <img alt="visa / mastercard processor" src="https://www.crescentprocessing.com/img/creditcards/visa-mastercard.png" height="32" class="h-8 w-auto" style="border-width: 0px" />
+           </a>
            <div class="flex space-x-6">
              <a href="?route=privacy" class="cursor-pointer hover:text-neutral-300 transition">Privacy Policy</a>
              <a href="?route=terms" class="cursor-pointer hover:text-neutral-300 transition font-medium">Terms of Service</a>
