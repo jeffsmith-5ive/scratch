@@ -24,12 +24,25 @@ body {
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
-  padding: 20px 60px;
-  background: linear-gradient(to bottom, rgba(10, 10, 10, 0.95), rgba(10, 10, 10, 0));
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-bottom: 1px solid rgba(245, 240, 232, 0.05);
+  z-index: 50;
+  padding: 12px 18px;
+  background: rgba(10, 10, 10, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(245, 240, 232, 0.08);
+  transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+  .premium-navbar {
+    padding: 14px 32px;
+  }
+}
+
+@media (min-width: 1280px) {
+  .premium-navbar {
+    padding: 16px 48px;
+  }
 }
 
 .premium-nav-container {
@@ -37,12 +50,15 @@ body {
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  gap: 16px;
 }
 
 /* Logo Text Styles */
 .premium-logo {
   font-family: 'Bebas Neue', sans-serif;
-  font-size: 28px;
+  font-size: 26px;
   line-height: 1;
   letter-spacing: 0.06em;
   color: var(--off-white);
@@ -50,8 +66,16 @@ body {
   text-decoration: none;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (min-width: 768px) {
+  .premium-logo {
+    font-size: 28px;
+    gap: 12px;
+  }
 }
 
 .premium-logo span {
@@ -62,10 +86,16 @@ body {
 .premium-nav-list {
   display: flex;
   align-items: center;
-  gap: 36px;
+  gap: 20px;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+@media (min-width: 1400px) {
+  .premium-nav-list {
+    gap: 30px;
+  }
 }
 
 .premium-nav-link {

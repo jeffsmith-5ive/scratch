@@ -866,7 +866,7 @@ document.addEventListener('DOMContentLoaded', () => {
             shareToast.className = 'mt-3 text-center text-xs font-bold text-pink-400 bg-pink-950/40 border border-pink-800/40 py-2.5 px-3 rounded-lg transition-all animate-fade-in block';
 
             setTimeout(() => {
-                window.open('https://www.instagram.com', '_blank');
+                window.open('https://www.instagram.com/jeffbrewery?stkn=MWhjbXA5ZDJnbHNqag%3D%3D&utm_source=qr', '_blank');
             }, 1200);
         }, 'image/png');
     };

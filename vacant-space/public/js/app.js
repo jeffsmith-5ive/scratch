@@ -25,12 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Navigation Dropdown & Mobile Menu Logic ---
+    // --- Navigation Dropdown & Mobile Sidebar Logic ---
     const dropdownToggles = document.querySelectorAll('.nav-dropdown-toggle');
     const dropdownMenus = document.querySelectorAll('.nav-dropdown-menu');
     const mobileDropdownToggles = document.querySelectorAll('.mobile-dropdown-toggle');
     const mobileMenuToggleBtn = document.getElementById('mobile-menu-toggle-btn');
-    const mobileMenu = document.getElementById('mobileMenu');
+    const mobileSidebar = document.getElementById('mobile-sidebar');
+    const mobileSidebarPanel = document.getElementById('mobile-sidebar-panel');
+    const mobileSidebarBackdrop = document.getElementById('mobile-sidebar-backdrop');
+    const mobileSidebarCloseBtn = document.getElementById('mobile-sidebar-close-btn');
     const mobileMenuIconOpen = document.getElementById('mobile-menu-icon-open');
     const mobileMenuIconClose = document.getElementById('mobile-menu-icon-close');
 
@@ -68,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mobile Dropdowns
+    // Mobile Dropdowns inside Sidebar
     mobileDropdownToggles.forEach(toggle => {
         toggle.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -99,21 +102,58 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mobile Menu Toggle
-    if (mobileMenuToggleBtn && mobileMenu) {
+    // Mobile Sidebar Open / Close Functions
+    function openMobileSidebar() {
+        if (!mobileSidebar) return;
+        mobileSidebar.classList.remove('hidden');
+        setTimeout(() => {
+            if (mobileSidebarBackdrop) {
+                mobileSidebarBackdrop.classList.remove('opacity-0');
+                mobileSidebarBackdrop.classList.add('opacity-100');
+            }
+            if (mobileSidebarPanel) {
+                mobileSidebarPanel.classList.remove('-translate-x-full');
+                mobileSidebarPanel.classList.add('translate-x-0');
+            }
+        }, 10);
+        if (mobileMenuIconOpen) mobileMenuIconOpen.classList.add('hidden');
+        if (mobileMenuIconClose) mobileMenuIconClose.classList.remove('hidden');
+    }
+
+    function closeMobileSidebar() {
+        if (!mobileSidebar) return;
+        if (mobileSidebarBackdrop) {
+            mobileSidebarBackdrop.classList.remove('opacity-100');
+            mobileSidebarBackdrop.classList.add('opacity-0');
+        }
+        if (mobileSidebarPanel) {
+            mobileSidebarPanel.classList.remove('translate-x-0');
+            mobileSidebarPanel.classList.add('-translate-x-full');
+        }
+        if (mobileMenuIconOpen) mobileMenuIconOpen.classList.remove('hidden');
+        if (mobileMenuIconClose) mobileMenuIconClose.classList.add('hidden');
+        setTimeout(() => {
+            mobileSidebar.classList.add('hidden');
+        }, 300);
+    }
+    window.closeMobileSidebar = closeMobileSidebar;
+
+    if (mobileMenuToggleBtn) {
         mobileMenuToggleBtn.addEventListener('click', (e) => {
             e.stopPropagation();
-            const isOpen = mobileMenu.classList.contains('hidden');
-            if (isOpen) {
-                mobileMenu.classList.remove('hidden');
-                mobileMenuIconOpen.classList.add('hidden');
-                mobileMenuIconClose.classList.remove('hidden');
+            if (mobileSidebar && !mobileSidebar.classList.contains('hidden')) {
+                closeMobileSidebar();
             } else {
-                mobileMenu.classList.add('hidden');
-                mobileMenuIconOpen.classList.remove('hidden');
-                mobileMenuIconClose.classList.add('hidden');
+                openMobileSidebar();
             }
         });
+    }
+
+    if (mobileSidebarCloseBtn) {
+        mobileSidebarCloseBtn.addEventListener('click', closeMobileSidebar);
+    }
+    if (mobileSidebarBackdrop) {
+        mobileSidebarBackdrop.addEventListener('click', closeMobileSidebar);
     }
 
     // --- Cart Drawer Logic ---
@@ -249,9 +289,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chatbotMaximizeBtn) {
             chatbotMaximizeBtn.addEventListener('click', () => {
                 isChatbotMaximized = true;
-                chatbotWindow.className = "fixed top-[88px] right-0 bottom-0 left-0 w-full h-[calc(100vh-88px)] bg-white shadow-2xl transition-all duration-300 z-40 border-0 flex flex-col overflow-hidden pointer-events-auto";
+                chatbotWindow.className = "fixed inset-2 sm:inset-6 bg-white shadow-2xl transition-all duration-300 z-[85] border border-gray-200 flex flex-col overflow-hidden pointer-events-auto rounded-2xl";
                 if (chatbotMaximizeBtn) chatbotMaximizeBtn.classList.add('hidden');
-                if (chatbotClose) chatbotClose.classList.add('hidden');
                 if (chatbotMinimizeBtn) chatbotMinimizeBtn.classList.remove('hidden');
                 if (chatbotFabContainer) chatbotFabContainer.classList.add('hidden');
             });
@@ -260,24 +299,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (chatbotMinimizeBtn) {
             chatbotMinimizeBtn.addEventListener('click', () => {
                 isChatbotMaximized = false;
-                chatbotWindow.className = "fixed bottom-24 right-6 w-96 h-[550px] max-h-[calc(100vh-8rem)] bg-white rounded-2xl shadow-2xl z-40 border border-gray-200 flex flex-col overflow-hidden max-w-[calc(100vw-2rem)] transition-all duration-300 pointer-events-auto";
+                chatbotWindow.className = "fixed bottom-20 right-3 left-3 sm:left-auto sm:right-6 sm:bottom-24 w-auto sm:w-96 sm:max-w-md h-[520px] max-h-[calc(100dvh-6rem)] bg-white rounded-2xl shadow-2xl z-[85] border border-gray-200 flex flex-col overflow-hidden transition-all duration-300 pointer-events-auto";
                 if (chatbotMaximizeBtn) chatbotMaximizeBtn.classList.remove('hidden');
-                if (chatbotClose) chatbotClose.classList.remove('hidden');
                 if (chatbotMinimizeBtn) chatbotMinimizeBtn.classList.add('hidden');
                 if (chatbotFabContainer) chatbotFabContainer.classList.remove('hidden');
             });
         }
 
-        function addMessage(text, isBot = false) {
+        function addMessage(text, isBot = false, recommendations = [], chips = []) {
             const div = document.createElement('div');
-            div.className = `flex ${isBot ? 'justify-start' : 'justify-end'}`;
+            div.className = `flex ${isBot ? 'justify-start' : 'justify-end'} w-full animate-fade-in`;
             
-            // Format bold text and linebreaks for the bot
+            // Format bold text, bullet points, and linebreaks for the bot
             let formattedText = text;
             if (isBot) {
                 formattedText = text
                     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
                     .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/\n\n/g, '<br><br>')
                     .replace(/\n/g, '<br>');
             } else {
                 const temp = document.createElement('div');
@@ -285,19 +324,85 @@ document.addEventListener('DOMContentLoaded', () => {
                 formattedText = temp.innerHTML;
             }
 
-            div.innerHTML = `
-                <div class="max-w-[80%] p-3 rounded-2xl ${
+            let html = `
+                <div class="max-w-[90%] sm:max-w-[85%] p-3.5 rounded-2xl ${
                     isBot 
-                      ? 'bg-white border border-gray-200 text-neutral-800 rounded-tl-none shadow-sm' 
-                      : 'bg-jeff-orange text-white rounded-tr-none'
-                } text-sm">
-                    ${formattedText}
-                </div>
+                      ? 'bg-neutral-900 border border-white/10 text-neutral-200 rounded-tl-none shadow-md' 
+                      : 'bg-[var(--gold)] text-black font-medium rounded-tr-none shadow-md'
+                } text-xs sm:text-sm leading-relaxed">
+                    <div>${formattedText}</div>
             `;
+
+            // If bot returned product recommendations (Section 4, 11, 14, 18)
+            if (isBot && recommendations && recommendations.length > 0) {
+                html += `<div class="mt-3.5 pt-3 border-t border-white/10 space-y-2.5">`;
+                recommendations.forEach(rec => {
+                    const price = parseFloat(rec.price || 15).toFixed(2);
+                    const match = rec.matchPct || 85;
+                    const isLow = rec.isLowStock || (rec.stock <= 20);
+                    
+                    html += `
+                        <div class="bg-black/60 border border-white/10 rounded-xl p-2.5 hover:border-[var(--gold)]/40 transition-colors">
+                            <div class="flex items-center gap-2.5">
+                                <img src="${rec.image || '/public/images/brechin_castle.jpg'}" alt="${rec.name}" class="w-12 h-12 rounded-lg object-cover bg-neutral-900 shrink-0 border border-white/10" />
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-center justify-between gap-1">
+                                        <div class="font-bold text-white text-xs truncate">${rec.name}</div>
+                                        <span class="px-1.5 py-0.5 rounded text-[10px] font-bold bg-[var(--gold)]/20 text-[var(--gold)] border border-[var(--gold)]/30 shrink-0">${match}% Match</span>
+                                    </div>
+                                    <div class="text-[10px] text-neutral-400 font-mono">${rec.style || 'Craft Brew'} · ${rec.abv || '5.0'}% ABV · $${price}</div>
+                                </div>
+                            </div>
+                            
+                            ${rec.reason ? `
+                                <div class="mt-2 text-[10px] text-neutral-300 italic bg-white/5 p-1.5 rounded-lg border border-white/5">
+                                    "${rec.reason}"
+                                </div>
+                            ` : ''}
+
+                            ${isLow ? `
+                                <div class="mt-1 text-[10px] text-red-400 font-bold flex items-center gap-1">
+                                    <span>⚠️ Low Stock (${rec.stock || 12} left)</span>
+                                </div>
+                            ` : ''}
+
+                            <div class="mt-2.5 pt-2 border-t border-white/5 flex items-center justify-between gap-2">
+                                <a href="?route=shop/detail&id=${encodeURIComponent(rec.id)}" class="text-[10px] font-bold text-neutral-300 hover:text-white px-2.5 py-1 rounded bg-neutral-800 hover:bg-neutral-700 transition">
+                                    View Details
+                                </a>
+                                <button onclick="addBeerFromChatbot('${rec.id}', '${rec.name}', ${price}, '${rec.image}')" class="text-[10px] font-bold text-black px-2.5 py-1 rounded bg-[var(--gold)] hover:bg-yellow-400 transition flex items-center gap-1">
+                                    <i data-lucide="plus" class="w-3 h-3"></i> Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            // If bot returned follow-up suggested chips
+            if (isBot && chips && chips.length > 0) {
+                html += `<div class="mt-3 pt-2.5 border-t border-white/10 flex flex-wrap gap-1.5">`;
+                chips.forEach(chip => {
+                    html += `
+                        <button onclick="sendQuickPrompt('${chip.replace(/'/g, "\\'")}')" class="text-[10px] font-medium px-2.5 py-1 rounded-full bg-neutral-800 hover:bg-[var(--gold)] hover:text-black text-neutral-300 border border-white/10 transition">
+                            ${chip}
+                        </button>
+                    `;
+                });
+                html += `</div>`;
+            }
+
+            html += `</div>`;
+            div.innerHTML = html;
             chatMessages.appendChild(div);
             
             const typing = document.getElementById('typing-indicator');
             if (typing) typing.remove();
+
+            if (window.lucide) {
+                lucide.createIcons();
+            }
 
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
@@ -307,11 +412,12 @@ document.addEventListener('DOMContentLoaded', () => {
             div.id = 'typing-indicator';
             div.className = 'flex justify-start';
             div.innerHTML = `
-                <div class="bg-white border border-gray-200 text-neutral-800 rounded-2xl rounded-tl-none shadow-sm p-3">
-                    <div class="flex items-center gap-1">
-                        <div class="w-1.5 h-1.5 bg-jeff-orange rounded-full animate-bounce"></div>
-                        <div class="w-1.5 h-1.5 bg-jeff-orange rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
-                        <div class="w-1.5 h-1.5 bg-jeff-orange rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
+                <div class="bg-neutral-900 border border-white/10 text-neutral-300 rounded-2xl rounded-tl-none shadow-sm p-3">
+                    <div class="flex items-center gap-1.5">
+                        <span class="text-[10px] text-neutral-400 mr-1 font-mono">Brewer Guide typing</span>
+                        <div class="w-1.5 h-1.5 bg-[var(--gold)] rounded-full animate-bounce"></div>
+                        <div class="w-1.5 h-1.5 bg-[var(--gold)] rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                        <div class="w-1.5 h-1.5 bg-[var(--gold)] rounded-full animate-bounce" style="animation-delay: 0.4s"></div>
                     </div>
                 </div>
             `;
@@ -319,12 +425,12 @@ document.addEventListener('DOMContentLoaded', () => {
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function sendMessage() {
-            const text = chatInput.value.trim();
+        function sendMessage(customText = null) {
+            const text = (customText || chatInput.value).trim();
             if (!text) return;
 
             addMessage(text, false);
-            chatInput.value = '';
+            if (!customText) chatInput.value = '';
             showTyping();
 
             fetch('?route=chatbot/ask', {
@@ -335,17 +441,56 @@ document.addEventListener('DOMContentLoaded', () => {
                 .then(res => res.json())
                 .then(data => {
                     if (data.reply) {
-                        addMessage(data.reply, true);
+                        addMessage(data.reply, true, data.recommendations || [], data.suggestedChips || []);
                     } else if (data.error) {
                         addMessage("Oops: " + data.error, true);
                     }
                 })
                 .catch(err => {
-                    addMessage("I'm having trouble connecting right now.", true);
+                    addMessage("I'm having trouble connecting to the brewery right now. Please try again shortly!", true);
                 });
         }
 
-        chatSend.addEventListener('click', sendMessage);
+        window.sendQuickPrompt = function(promptText) {
+            sendMessage(promptText);
+        };
+
+        window.addBeerFromChatbot = function(id, name, price, image) {
+            // Track analytics event: recommendation_added_to_cart (Layer 4 & Section 21)
+            fetch('?route=chatbot/trackEvent', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ 
+                    event: 'recommendation_added_to_cart', 
+                    data: { beer_id: id, beer_name: name, price: price }
+                })
+            }).catch(() => {});
+
+            // Add item to cart via existing cart API
+            fetch('?route=cart/add', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id: id, name: name, price: price, image: image, quantity: 1 })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    // Update cart badge
+                    document.querySelectorAll('.cart-count-text').forEach(el => el.textContent = data.count);
+                    // Open cart drawer
+                    const cartDrawer = document.getElementById('cart-drawer');
+                    if (cartDrawer) {
+                        cartDrawer.classList.remove('translate-x-full');
+                        if (typeof loadCartItems === 'function') loadCartItems();
+                    }
+                }
+            })
+            .catch(() => {
+                window.location.href = `?route=shop/detail&id=${encodeURIComponent(id)}`;
+            });
+        };
+
+        chatSend.addEventListener('click', () => sendMessage());
         chatInput.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') sendMessage();
         });
@@ -609,11 +754,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function toggleMaximize() {
         isTriniMaximized = !isTriniMaximized;
         if (isTriniMaximized) {
-            trinichatWindow.className = "bg-white shadow-2xl transition-all duration-300 pointer-events-auto overflow-hidden border border-gray-200 flex flex-col relative z-10 w-full h-full rounded-none border-0 scale-100 opacity-100";
+            trinichatWindow.className = "bg-white shadow-2xl transition-all duration-300 pointer-events-auto overflow-hidden border border-gray-200 flex flex-col relative z-10 w-full h-full rounded-none sm:rounded-2xl border-0 scale-100 opacity-100";
             if (trinichatMaximizeIcon) trinichatMaximizeIcon.classList.add('hidden');
             if (trinichatMinimizeIcon) trinichatMinimizeIcon.classList.remove('hidden');
         } else {
-            trinichatWindow.className = "bg-white shadow-2xl transition-all duration-300 pointer-events-auto overflow-hidden border border-gray-200 flex flex-col relative z-10 w-full max-w-4xl h-[80vh] rounded-2xl scale-100 opacity-100";
+            trinichatWindow.className = "bg-white shadow-2xl transition-all duration-300 pointer-events-auto overflow-hidden border border-gray-200 flex flex-col relative z-10 w-full max-w-4xl h-[92vh] sm:h-[80vh] rounded-2xl scale-100 opacity-100";
             if (trinichatMaximizeIcon) trinichatMaximizeIcon.classList.remove('hidden');
             if (trinichatMinimizeIcon) trinichatMinimizeIcon.classList.add('hidden');
         }
@@ -622,6 +767,20 @@ document.addEventListener('DOMContentLoaded', () => {
     if (trinichatCloseBtn) trinichatCloseBtn.addEventListener('click', closeTriniChat);
     if (trinichatBackdrop) trinichatBackdrop.addEventListener('click', closeTriniChat);
     if (trinichatMaximizeBtn) trinichatMaximizeBtn.addEventListener('click', toggleMaximize);
+
+    // Global ESC key listener to close mobile menu, cart, TriniChat, or chatbot
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeMobileSidebar();
+            if (typeof closeCart === 'function') closeCart();
+            if (typeof closeTriniChat === 'function') closeTriniChat();
+            if (chatbotWindow && !chatbotWindow.classList.contains('hidden')) {
+                chatbotWindow.classList.add('hidden');
+                chatbotWindow.classList.remove('flex');
+                if (typeof updateChatbotUIState === 'function') updateChatbotUIState();
+            }
+        }
+    });
 
     // Listen for custom open-trinichat event
     window.addEventListener('open-trinichat', openTriniChat);
@@ -897,7 +1056,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             setTimeout(() => {
-                window.open('https://www.instagram.com', '_blank');
+                window.open('https://www.instagram.com/jeffbrewery?stkn=MWhjbXA5ZDJnbHNqag%3D%3D&utm_source=qr', '_blank');
             }, 1200);
         }, 'image/png');
     }

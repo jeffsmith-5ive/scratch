@@ -30,14 +30,15 @@
           <p>
             Craft breweries focus on small-batch production, unique recipes, and flavor experimentation. This allows for diverse beer styles like IPAs, stouts, sours, and saisons. Attention to ingredient quality, water chemistry, and fermentation control is critical to achieving signature flavors.
           </p>
-          <div class="pt-4">
+          <div class="pt-4 space-y-2.5">
             <button 
-              onclick="window.dispatchEvent(new CustomEvent('open-trinichat'))"
-              class="w-full flex items-center justify-center gap-2 bg-[var(--teal)] hover:bg-[var(--teal)]/80 text-white py-3 px-6 rounded-xl font-bold transition-colors shadow-md focus:outline-none"
+              onclick="const chatToggle = document.getElementById('chatbot-toggle'); if (chatToggle) { if (document.getElementById('chatbot-window').classList.contains('hidden')) chatToggle.click(); document.getElementById('chat-input')?.focus(); }"
+              class="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-[var(--teal)] to-[var(--gold)] hover:opacity-95 text-white py-3.5 px-6 rounded-xl font-bold transition-all shadow-lg hover:shadow-xl focus:outline-none uppercase tracking-wider text-xs"
             >
-              <i data-lucide="info" class="w-5 h-5 text-[var(--gold)]"></i>
-              Ask the Brewer Guide a Question
+              <i data-lucide="sparkles" class="w-4 h-4 text-white"></i>
+              Ask Brewer Guide AI Advisor
             </button>
+            <p class="text-[11px] text-neutral-400 text-center">Powered by 4-Layer Beer Intelligence & Live Inventory</p>
           </div>
         </div>
       </div>

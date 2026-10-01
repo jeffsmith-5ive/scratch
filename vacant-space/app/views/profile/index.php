@@ -346,14 +346,17 @@ $progressPercent = min(100, max(0, round(($userPoints / $nextRankPoints) * 100))
 
                                 <!-- Items List -->
                                 <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                                    <?php foreach ($order['items'] as $item): ?>
+                                    <?php foreach ($order['items'] as $item): 
+                                        $itemQty = $item['qty'] ?? $item['quantity'] ?? 1;
+                                        $itemPrice = $item['price'] ?? 0;
+                                    ?>
                                         <div class="flex items-center gap-4 bg-neutral-900/60 p-3 rounded-xl border border-white/5">
                                             <img src="<?= htmlspecialchars($item['image']) ?>" alt="<?= htmlspecialchars($item['name']) ?>" class="w-14 h-14 object-contain rounded-lg bg-black/40 p-1 border border-white/5">
                                             <div class="flex-1 min-w-0">
                                                 <h4 class="text-sm font-bold text-white truncate"><?= htmlspecialchars($item['name']) ?></h4>
-                                                <p class="text-xs text-neutral-400">Qty: <?= $item['qty'] ?> × $<?= number_format($item['price'], 2) ?></p>
+                                                <p class="text-xs text-neutral-400">Qty: <?= $itemQty ?> × $<?= number_format($itemPrice, 2) ?></p>
                                             </div>
-                                            <span class="text-sm font-oswald font-bold text-white">$<?= number_format($item['qty'] * $item['price'], 2) ?></span>
+                                            <span class="text-sm font-oswald font-bold text-white">$<?= number_format($itemQty * $itemPrice, 2) ?></span>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>

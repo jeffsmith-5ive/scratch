@@ -369,11 +369,43 @@ class Database {
             ],
         ];
 
-        if (isset($_SESSION['beers_overrides'])) {
+        // Apply session data overrides (prices, stock, styles, etc.)
+        if (isset($_SESSION['beers_data_overrides'])) {
             foreach ($beers as &$beer) {
-                if (isset($_SESSION['beers_overrides'][$beer['id']])) {
-                    $beer['image'] = $_SESSION['beers_overrides'][$beer['id']];
+                if (isset($_SESSION['beers_data_overrides'][$beer['id']])) {
+                    foreach ($_SESSION['beers_data_overrides'][$beer['id']] as $k => $v) {
+                        $beer[$k] = $v;
+                    }
                 }
+            }
+        }
+
+
+        // Add custom added beers from session
+        if (isset($_SESSION['beers_custom']) && is_array($_SESSION['beers_custom'])) {
+            foreach ($_SESSION['beers_custom'] as $customBeer) {
+                $beers[] = $customBeer;
+            }
+        }
+
+        // Remove deleted beers
+        if (isset($_SESSION['beers_deleted']) && is_array($_SESSION['beers_deleted'])) {
+            $beers = array_values(array_filter($beers, function($b) {
+                return !in_array($b['id'], $_SESSION['beers_deleted']);
+            }));
+        }
+
+        // Default stock fields if missing
+        foreach ($beers as &$beer) {
+            if (!isset($beer['stock'])) {
+                $beer['stock'] = ($beer['availability'] === 'LIMITED') ? 12 : 142;
+            }
+            if (!isset($beer['max_stock'])) {
+                $beer['max_stock'] = ($beer['availability'] === 'LIMITED') ? 50 : 200;
+            }
+            if (!isset($beer['ibu'])) {
+                $style = strtoupper($beer['style'] ?? '');
+                $beer['ibu'] = str_contains($style, 'IPA') ? 65 : (str_contains($style, 'STOUT') ? 55 : (str_contains($style, 'SAISON') ? 28 : 20));
             }
         }
 
