@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Jeff Brewery Industries Relational Database Schema",
+  "version": "1.0.0",
+  "description": "Enterprise Entity Relationship Diagram and Schema definition for Jeff Brewery e-commerce, custom brewing lab, and Krewe gamification.",
+  "domains": [
+    "Identity & Users",
+    "Catalog & Inventory",
+    "Orders & Fulfillment",
+    "Craft Brew Lab",
+    "Krewe Loyalty & Gamification",
+    "Analytics & AI Engine"
+  ],
+  "tables": [
+    {
+      "name": "users",
+      "primaryKey": ["id"],
+      "columns": {
+        "id": { "type": "string", "maxLength": 36, "format": "uuid" },
+        "name": { "type": "string", "maxLength": 100 },
+        "email": { "type": "string", "format": "email", "unique": true },
+        "password_hash": { "type": "string", "maxLength": 255 },
+        "role": { "type": "string", "enum": ["customer", "admin", "brewer"] },
+        "phone": { "type": "string", "maxLength": 30 },
+        "location": { "type": "string", "maxLength": 150 },
+        "bio": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    {
+      "name": "krewe_profiles",
+      "primaryKey": ["user_id"],
+      "foreignKeys": [
+        { "column": "user_id", "references": { "table": "users", "column": "id" }, "onDelete": "CASCADE" }
+      ],
+      "columns": {
+        "user_id": { "type": "string", "maxLength": 36 },
+        "points": { "type": "integer", "default": 100 },
+        "current_rank": { "type": "string", "maxLength": 50 },
+        "next_rank": { "type": "string", "maxLength": 50 },
+        "next_rank_points": { "type": "integer" },
+        "lifetime_points": { "type": "integer" },
+        "tier": { "type": "string", "enum": ["Road Crew", "Mas Band", "Section Leader", "Inner Circle"] }
+      }
+    },
+    {
+      "name": "beers",
+      "primaryKey": ["id"],
+      "columns": {
+        "id": { "type": "string", "maxLength": 64 },
+        "name": { "type": "string", "maxLength": 150 },
+        "tagline": { "type": "string", "maxLength": 255 },
+        "style": { "type": "string", "maxLength": 80 },
+        "abv": { "type": "number", "minimum": 0, "maximum": 20 },
+        "ibu": { "type": "integer", "minimum": 0 },
+        "price": { "type": "number", "minimum": 0 },
+        "availability": { "type": "string", "enum": ["CORE", "LIMITED", "SEASONAL", "CUSTOM"] },
+        "stock": { "type": "integer", "default": 142 },
+        "max_stock": { "type": "integer", "default": 200 },
+        "image_url": { "type": "string" }
+      }
+    },
+    {
+      "name": "orders",
+      "primaryKey": ["id"],
+      "foreignKeys": [
+        { "column": "user_id", "references": { "table": "users", "column": "id" }, "onDelete": "SET NULL" }
+      ],
+      "columns": {
+        "id": { "type": "string", "maxLength": 32 },
+        "user_id": { "type": "string", "maxLength": 36, "nullable": true },
+        "status": { "type": "string", "enum": ["Order Placed", "Brewing & Bottling", "Out for Delivery", "Ready for Brewery Collection", "Delivered", "Cancelled"] },
+        "delivery_method": { "type": "string", "enum": ["delivery", "pickup"] },
+        "subtotal": { "type": "number" },
+        "shipping_cost": { "type": "number" },
+        "discount": { "type": "number" },
+        "final_total": { "type": "number" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    },
+    {
+      "name": "order_items",
+      "primaryKey": ["id"],
+      "foreignKeys": [
+        { "column": "order_id", "references": { "table": "orders", "column": "id" }, "onDelete": "CASCADE" }
+      ],
+      "columns": {
+        "id": { "type": "integer" },
+        "order_id": { "type": "string", "maxLength": 32 },
+        "item_type": { "type": "string", "enum": ["beer", "merch", "custom_recipe", "gift_card"] },
+        "product_id": { "type": "string", "maxLength": 64 },
+        "product_name": { "type": "string" },
+        "unit_price": { "type": "number" },
+        "quantity": { "type": "integer" },
+        "total_price": { "type": "number" }
+      }
+    },
+    {
+      "name": "custom_recipes",
+      "primaryKey": ["id"],
+      "foreignKeys": [
+        { "column": "user_id", "references": { "table": "users", "column": "id" }, "onDelete": "CASCADE" }
+      ],
+      "columns": {
+        "id": { "type": "string", "maxLength": 64 },
+        "batch_id": { "type": "string", "maxLength": 64, "unique": true },
+        "user_id": { "type": "string", "maxLength": 36 },
+        "name": { "type": "string", "maxLength": 150 },
+        "base_malt": { "type": "string" },
+        "hops": { "type": "string" },
+        "infusion": { "type": "string" },
+        "abv": { "type": "number" },
+        "ibu": { "type": "integer" },
+        "status": { "type": "string" },
+        "progress_percent": { "type": "integer" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,1628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Jeff Brewery Industries - Entity Relationship Diagram (ERD)</title>
+  <link rel="icon" type="image/png" href="/public/favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/lucide@latest/dist/umd/lucide.js"></script>
+  <style>
+    :root {
+      --bg-dark: #0a0f18;
+      --bg-canvas: #070a10;
+      --surface: #111827;
+      --surface-light: #182234;
+      --surface-border: #1f2d44;
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --gold: #f59e0b;
+      --gold-glow: rgba(245, 158, 11, 0.25);
+      --teal: #10b981;
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.35);
+      --purple: #8b5cf6;
+      --rose: #f43f5e;
+      --blue: #3b82f6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    header {
+      background: rgba(17, 24, 39, 0.9);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--surface-border);
+      height: 64px;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      z-index: 50;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      color: #000;
+      font-size: 20px;
+      box-shadow: 0 0 16px var(--gold-glow);
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-title h1 {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .badge-tt {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: #f87171;
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    .brand-title span {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Domain Filter Pills */
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,0,0,0.3);
+      padding: 4px;
+      border-radius: 10px;
+      border: 1px solid var(--surface-border);
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .filter-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .filter-btn.active {
+      background: var(--surface-light);
+      color: #fff;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .filter-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+    }
+
+    /* Actions Toolbar */
+    .actions-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .search-box {
+      position: relative;
+      width: 200px;
+    }
+
+    .search-box input {
+      width: 100%;
+      background: var(--surface-light);
+      border: 1px solid var(--surface-border);
+      border-radius: 8px;
+      padding: 7px 12px 7px 32px;
+      color: #fff;
+      font-size: 12px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s, width 0.3s;
+    }
+
+    .search-box input:focus {
+      border-color: var(--cyan);
+      width: 240px;
+    }
+
+    .search-box i {
+      position: absolute;
+      left: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      font-size: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary {
+      background: var(--surface-light);
+      border-color: var(--surface-border);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: #223049;
+      border-color: #314463;
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f59e0b, #d97706);
+      color: #000;
+      font-weight: 700;
+      box-shadow: 0 2px 10px var(--gold-glow);
+    }
+
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: translateY(-1px);
+    }
+
+    /* Canvas Viewport */
+    #canvas-container {
+      flex: 1;
+      position: relative;
+      background-color: var(--bg-canvas);
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 32px 32px, 128px 128px, 128px 128px;
+      overflow: hidden;
+      cursor: grab;
+    }
+
+    #canvas-container:active {
+      cursor: grabbing;
+    }
+
+    #erd-stage {
+      position: absolute;
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* SVG Connector Overlay */
+    #connections-layer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4800px;
+      height: 3200px;
+      pointer-events: none;
+      z-index: 10;
+    }
+
+    .relation-path {
+      fill: none;
+      stroke: #334155;
+      stroke-width: 2;
+      stroke-dasharray: 6 3;
+      transition: stroke 0.25s, stroke-width 0.25s, opacity 0.25s;
+    }
+
+    .relation-path.active {
+      stroke: var(--cyan);
+      stroke-width: 3.5;
+      stroke-dasharray: none;
+      filter: drop-shadow(0 0 8px var(--cyan-glow));
+    }
+
+    /* Entity Table Nodes */
+    .table-node {
+      position: absolute;
+      width: 290px;
+      background: rgba(17, 24, 39, 0.95);
+      border-radius: 12px;
+      border: 1px solid var(--surface-border);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(12px);
+      z-index: 20;
+      transition: transform 0.15s ease, border-color 0.2s, box-shadow 0.2s, opacity 0.3s;
+      cursor: default;
+    }
+
+    .table-node:hover {
+      border-color: #38bdf8;
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.7), 0 0 18px rgba(56, 189, 248, 0.2);
+      z-index: 30;
+    }
+
+    .table-node.highlighted {
+      border-color: var(--cyan);
+      box-shadow: 0 0 25px var(--cyan-glow);
+      z-index: 35;
+    }
+
+    .table-node.dimmed {
+      opacity: 0.2;
+      pointer-events: none;
+    }
+
+    .table-header {
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-top-left-radius: 11px;
+      border-top-right-radius: 11px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .table-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      font-size: 13px;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+    }
+
+    .table-tag {
+      font-size: 9px;
+      text-transform: uppercase;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      letter-spacing: 0.5px;
+    }
+
+    /* Domain color themes */
+    .domain-commerce .table-header { background: linear-gradient(90deg, rgba(245, 158, 11, 0.15), rgba(245, 158, 11, 0.05)); }
+    .domain-commerce .table-tag { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
+
+    .domain-orders .table-header { background: linear-gradient(90deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.05)); }
+    .domain-orders .table-tag { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
+
+    .domain-craft .table-header { background: linear-gradient(90deg, rgba(6, 182, 212, 0.15), rgba(6, 182, 212, 0.05)); }
+    .domain-craft .table-tag { background: rgba(6, 182, 212, 0.2); color: #22d3ee; border: 1px solid rgba(6, 182, 212, 0.4); }
+
+    .domain-users .table-header { background: linear-gradient(90deg, rgba(139, 92, 246, 0.15), rgba(139, 92, 246, 0.05)); }
+    .domain-users .table-tag { background: rgba(139, 92, 246, 0.2); color: #a78bfa; border: 1px solid rgba(139, 92, 246, 0.4); }
+
+    .domain-analytics .table-header { background: linear-gradient(90deg, rgba(244, 63, 94, 0.15), rgba(244, 63, 94, 0.05)); }
+    .domain-analytics .table-tag { background: rgba(244, 63, 94, 0.2); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.4); }
+
+    .table-body {
+      padding: 6px 0;
+    }
+
+    .column-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 12px;
+      font-size: 11px;
+      font-family: 'JetBrains Mono', monospace;
+      color: #cbd5e1;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      transition: background 0.15s;
+    }
+
+    .column-row:last-child {
+      border-bottom: none;
+    }
+
+    .column-row:hover {
+      background: rgba(255, 255, 255, 0.06);
+    }
+
+    .col-left {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .col-key {
+      font-size: 9px;
+      font-weight: 800;
+      padding: 1px 4px;
+      border-radius: 3px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .key-pk { background: #eab308; color: #000; }
+    .key-fk { background: #38bdf8; color: #000; cursor: pointer; }
+    .key-uq { background: #a855f7; color: #fff; }
+    .key-none { opacity: 0; width: 24px; }
+
+    .col-name {
+      font-weight: 500;
+      color: #e2e8f0;
+    }
+
+    .col-type {
+      font-size: 10px;
+      color: #64748b;
+    }
+
+    /* Floating Canvas Controls */
+    .canvas-hud {
+      position: absolute;
+      bottom: 24px;
+      right: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 40;
+    }
+
+    .hud-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(17, 24, 39, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      transition: all 0.2s;
+    }
+
+    .hud-btn:hover {
+      background: #1f2d44;
+      color: #38bdf8;
+      transform: translateY(-2px);
+    }
+
+    /* Legend Overlay */
+    .legend-card {
+      position: absolute;
+      bottom: 24px;
+      left: 24px;
+      background: rgba(17, 24, 39, 0.9);
+      backdrop-filter: blur(12px);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      padding: 12px 18px;
+      z-index: 40;
+      display: flex;
+      gap: 20px;
+      font-size: 11px;
+      color: var(--text-muted);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    /* Screenshot Banner */
+    .presentation-banner {
+      display: none;
+      position: absolute;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--gold);
+      padding: 8px 24px;
+      border-radius: 30px;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      box-shadow: 0 4px 20px var(--gold-glow);
+      z-index: 100;
+    }
+
+    /* Presentation mode toggle */
+    body.presentation-mode header,
+    body.presentation-mode .canvas-hud,
+    body.presentation-mode .legend-card {
+      display: none !important;
+    }
+
+    body.presentation-mode .presentation-banner {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* Modal / Details Drawer */
+    #detail-drawer {
+      position: absolute;
+      top: 64px;
+      right: -420px;
+      width: 400px;
+      height: calc(100vh - 64px);
+      background: rgba(15, 23, 42, 0.96);
+      backdrop-filter: blur(20px);
+      border-left: 1px solid var(--surface-border);
+      z-index: 45;
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      box-shadow: -10px 0 30px rgba(0,0,0,0.6);
+      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+
+    #detail-drawer.open {
+      right: 0;
+    }
+
+    .drawer-close {
+      align-self: flex-end;
+      background: none;
+      border: none;
+      color: var(--text-dim);
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .drawer-close:hover {
+      color: #fff;
+    }
+
+    /* Notification Toast */
+    #toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: #10b981;
+      color: #000;
+      font-weight: 700;
+      font-size: 13px;
+      padding: 10px 24px;
+      border-radius: 30px;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.4);
+      z-index: 999;
+      transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    #toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header id="main-header">
+    <div class="brand-group">
+      <div class="brand-logo">JB</div>
+      <div class="brand-title">
+        <h1>Jeff Brewery Industries <span class="badge-tt">Trinidad & Tobago</span></h1>
+        <span>Entity Relationship Diagram (ERD) & Database Architecture</span>
+      </div>
+    </div>
+
+    <!-- Subsystem Filter Pills -->
+    <div class="filter-pills">
+      <button class="filter-btn active" data-domain="all">
+        <span class="filter-dot" style="background: #fff;"></span> All (19 Tables)
+      </button>
+      <button class="filter-btn" data-domain="commerce">
+        <span class="filter-dot" style="background: #f59e0b;"></span> Commerce & Beers
+      </button>
+      <button class="filter-btn" data-domain="orders">
+        <span class="filter-dot" style="background: #10b981;"></span> Orders & Logistics
+      </button>
+      <button class="filter-btn" data-domain="craft">
+        <span class="filter-dot" style="background: #06b6d4;"></span> Craft Brew Lab
+      </button>
+      <button class="filter-btn" data-domain="users">
+        <span class="filter-dot" style="background: #8b5cf6;"></span> Krewe & Loyalty
+      </button>
+      <button class="filter-btn" data-domain="analytics">
+        <span class="filter-dot" style="background: #f43f5e;"></span> Analytics & AI
+      </button>
+    </div>
+
+    <!-- Actions Toolbar -->
+    <div class="actions-group">
+      <div class="search-box">
+        <i data-lucide="search"></i>
+        <input type="text" id="erd-search" placeholder="Search table or column...">
+      </div>
+
+      <button class="btn btn-secondary" id="btn-export-svg" title="Download Vector SVG">
+        <i data-lucide="file-code"></i> SVG
+      </button>
+
+      <button class="btn btn-secondary" id="btn-export-sql" title="Download SQL DDL Schema">
+        <i data-lucide="database"></i> SQL
+      </button>
+
+      <button class="btn btn-secondary" id="btn-screenshot-mode" title="Toggle Clean Mode for Screenshot">
+        <i data-lucide="camera"></i> Screenshot Mode
+      </button>
+
+      <button class="btn btn-primary" id="btn-export-png" title="Download High-Res 2x PNG">
+        <i data-lucide="download"></i> Download PNG
+      </button>
+    </div>
+  </header>
+
+  <!-- Presentation Mode Return Bar -->
+  <div class="presentation-banner">
+    <span>📷 Screenshot Mode Active — Press [ESC] or click to exit</span>
+    <button class="btn btn-secondary" style="padding: 2px 10px; font-size: 11px;" id="btn-exit-screenshot">Exit Mode</button>
+  </div>
+
+  <!-- Main Canvas Container -->
+  <main id="canvas-container">
+    <div id="erd-stage">
+      <svg id="connections-layer"></svg>
+      <div id="tables-container"></div>
+    </div>
+
+    <!-- Legend -->
+    <div class="legend-card">
+      <div class="legend-item"><span class="legend-dot" style="background: #f59e0b;"></span> Catalog & Inventory</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #10b981;"></span> Orders & Fulfillment</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #06b6d4;"></span> Craft Brew Lab</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #8b5cf6;"></span> Users & Krewe Loyalty</div>
+      <div class="legend-item"><span class="legend-dot" style="background: #f43f5e;"></span> Audit & AI Analytics</div>
+      <div class="legend-item"><span class="col-key key-pk" style="font-size: 8px;">PK</span> Primary Key</div>
+      <div class="legend-item"><span class="col-key key-fk" style="font-size: 8px;">FK</span> Foreign Key</div>
+    </div>
+
+    <!-- Canvas Navigation HUD -->
+    <div class="canvas-hud">
+      <button class="hud-btn" id="hud-zoom-in" title="Zoom In"><i data-lucide="zoom-in"></i></button>
+      <button class="hud-btn" id="hud-zoom-out" title="Zoom Out"><i data-lucide="zoom-out"></i></button>
+      <button class="hud-btn" id="hud-reset" title="Fit Entire Diagram"><i data-lucide="maximize-2"></i></button>
+    </div>
+  </main>
+
+  <!-- Side Details Drawer -->
+  <aside id="detail-drawer">
+    <button class="drawer-close" id="btn-close-drawer">✕</button>
+    <div id="drawer-content"></div>
+  </aside>
+
+  <!-- Notification Toast -->
+  <div id="toast"><i data-lucide="check-circle-2"></i> <span id="toast-msg">Image generated!</span></div>
+
+  <script>
+    // --- ERD METADATA & SCHEMA SPECIFICATION ---
+    const ERD_DATA = {
+      tables: [
+        // 1. Identity & Users
+        {
+          id: 'users',
+          name: 'users',
+          domain: 'users',
+          desc: 'Primary identity store for customers, administrators, and lab brewmasters.',
+          x: 950, y: 120,
+          columns: [
+            { name: 'id', type: 'VARCHAR(36)', key: 'PK' },
+            { name: 'name', type: 'VARCHAR(100)', key: '' },
+            { name: 'email', type: 'VARCHAR(150)', key: 'UQ' },
+            { name: 'password_hash', type: 'VARCHAR(255)', key: '' },
+            { name: 'role', type: 'ENUM(cust,admin,brew)', key: '' },
+            { name: 'phone', type: 'VARCHAR(30)', key: '' },
+            { name: 'location', type: 'VARCHAR(150)', key: '' },
+            { name: 'bio', type: 'TEXT', key: '' },
+            { name: 'created_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+        {
+          id: 'krewe_profiles',
+          name: 'krewe_profiles',
+          domain: 'users',
+          desc: 'Gamified loyalty points, rank tiers, and milestone progression.',
+          x: 950, y: 540,
+          columns: [
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'PK' },
+            { name: 'points', type: 'INT', key: '' },
+            { name: 'current_rank', type: 'VARCHAR(50)', key: '' },
+            { name: 'next_rank', type: 'VARCHAR(50)', key: '' },
+            { name: 'next_rank_points', type: 'INT', key: '' },
+            { name: 'lifetime_points', type: 'INT', key: '' },
+            { name: 'tier', type: 'VARCHAR(50)', key: '' },
+            { name: 'updated_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+        {
+          id: 'badges',
+          name: 'badges',
+          domain: 'users',
+          desc: 'Platform achievement badges (Freshman Liming, Collector, Taste Explorer).',
+          x: 1350, y: 540,
+          columns: [
+            { name: 'id', type: 'VARCHAR(50)', key: 'PK' },
+            { name: 'name', type: 'VARCHAR(100)', key: '' },
+            { name: 'description', type: 'VARCHAR(255)', key: '' },
+            { name: 'icon', type: 'VARCHAR(50)', key: '' },
+            { name: 'required_points', type: 'INT', key: '' },
+            { name: 'category', type: 'VARCHAR(50)', key: '' }
+          ]
+        },
+        {
+          id: 'user_badges',
+          name: 'user_badges',
+          domain: 'users',
+          desc: 'Many-to-many junction connecting users with unlocked achievement badges.',
+          x: 1350, y: 220,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'badge_id', type: 'VARCHAR(50)', key: 'FK' },
+            { name: 'unlocked_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+
+        // 2. Catalog & Beers
+        {
+          id: 'beers',
+          name: 'beers',
+          domain: 'commerce',
+          desc: 'Craft beer releases, style taxonomy, ABV/IBU metrics, pricing and estate stock.',
+          x: 150, y: 120,
+          columns: [
+            { name: 'id', type: 'VARCHAR(64)', key: 'PK' },
+            { name: 'name', type: 'VARCHAR(150)', key: '' },
+            { name: 'tagline', type: 'VARCHAR(255)', key: '' },
+            { name: 'style', type: 'VARCHAR(80)', key: '' },
+            { name: 'abv', type: 'DECIMAL(4,2)', key: '' },
+            { name: 'ibu', type: 'INT', key: '' },
+            { name: 'price', type: 'DECIMAL(8,2)', key: '' },
+            { name: 'availability', type: 'ENUM(CORE,LTD..)', key: '' },
+            { name: 'stock', type: 'INT', key: '' },
+            { name: 'max_stock', type: 'INT', key: '' },
+            { name: 'image_url', type: 'VARCHAR(255)', key: '' },
+            { name: 'is_bestseller', type: 'BOOLEAN', key: '' }
+          ]
+        },
+        {
+          id: 'beer_flavor_tags',
+          name: 'beer_flavor_tags',
+          domain: 'commerce',
+          desc: 'Sensory notes (Passionfruit, Citrus, Pine, Caramel, Roasted Malt).',
+          x: 150, y: 640,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'beer_id', type: 'VARCHAR(64)', key: 'FK' },
+            { name: 'tag', type: 'VARCHAR(60)', key: '' }
+          ]
+        },
+        {
+          id: 'beer_food_pairings',
+          name: 'beer_food_pairings',
+          domain: 'commerce',
+          desc: 'Caribbean culinary pairings (Geera Pork, Bake & Shark, Doubles, Chow).',
+          x: 150, y: 820,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'beer_id', type: 'VARCHAR(64)', key: 'FK' },
+            { name: 'dish', type: 'VARCHAR(120)', key: '' }
+          ]
+        },
+        {
+          id: 'merch_items',
+          name: 'merch_items',
+          domain: 'commerce',
+          desc: 'Official brewery apparel, glassware, signs, and island lifestyle accessories.',
+          x: 150, y: 1000,
+          columns: [
+            { name: 'id', type: 'VARCHAR(32)', key: 'PK' },
+            { name: 'name', type: 'VARCHAR(150)', key: '' },
+            { name: 'price', type: 'DECIMAL(8,2)', key: '' },
+            { name: 'original_price', type: 'DECIMAL(8,2)', key: '' },
+            { name: 'category', type: 'ENUM(Apparel,Glass..)', key: '' },
+            { name: 'sold_out', type: 'BOOLEAN', key: '' },
+            { name: 'image_url', type: 'VARCHAR(255)', key: '' }
+          ]
+        },
+
+        // 3. Orders & Commerce
+        {
+          id: 'orders',
+          name: 'orders',
+          domain: 'orders',
+          desc: 'Direct customer checkouts, taproom pickups, and courier deliveries.',
+          x: 550, y: 120,
+          columns: [
+            { name: 'id', type: 'VARCHAR(32)', key: 'PK' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'status', type: 'ENUM(Placed,Brewing..)', key: '' },
+            { name: 'delivery_method', type: 'ENUM(delivery,pickup)', key: '' },
+            { name: 'carrier', type: 'VARCHAR(100)', key: '' },
+            { name: 'tracking_number', type: 'VARCHAR(100)', key: '' },
+            { name: 'subtotal', type: 'DECIMAL(10,2)', key: '' },
+            { name: 'shipping_cost', type: 'DECIMAL(8,2)', key: '' },
+            { name: 'discount', type: 'DECIMAL(8,2)', key: '' },
+            { name: 'final_total', type: 'DECIMAL(10,2)', key: '' },
+            { name: 'points_earned', type: 'INT', key: '' },
+            { name: 'delivery_city', type: 'VARCHAR(100)', key: '' },
+            { name: 'created_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+        {
+          id: 'order_items',
+          name: 'order_items',
+          domain: 'orders',
+          desc: 'Individual line items purchased within an order transaction.',
+          x: 550, y: 680,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'order_id', type: 'VARCHAR(32)', key: 'FK' },
+            { name: 'item_type', type: 'ENUM(beer,merch..)', key: '' },
+            { name: 'product_id', type: 'VARCHAR(64)', key: '' },
+            { name: 'product_name', type: 'VARCHAR(150)', key: '' },
+            { name: 'unit_price', type: 'DECIMAL(8,2)', key: '' },
+            { name: 'quantity', type: 'INT', key: '' },
+            { name: 'total_price', type: 'DECIMAL(10,2)', key: '' }
+          ]
+        },
+
+        // 4. Custom Craft Brew Lab
+        {
+          id: 'custom_recipes',
+          name: 'custom_recipes',
+          domain: 'craft',
+          desc: 'User-designed micro-batches with custom grain bill, hops & spice infusions.',
+          x: 950, y: 920,
+          columns: [
+            { name: 'id', type: 'VARCHAR(64)', key: 'PK' },
+            { name: 'batch_id', type: 'VARCHAR(64)', key: 'UQ' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'name', type: 'VARCHAR(150)', key: '' },
+            { name: 'base_malt', type: 'VARCHAR(100)', key: '' },
+            { name: 'hops', type: 'VARCHAR(100)', key: '' },
+            { name: 'infusion', type: 'VARCHAR(150)', key: '' },
+            { name: 'abv', type: 'DECIMAL(4,2)', key: '' },
+            { name: 'ibu', type: 'INT', key: '' },
+            { name: 'status', type: 'VARCHAR(60)', key: '' },
+            { name: 'progress_percent', type: 'INT', key: '' },
+            { name: 'temperature', type: 'VARCHAR(20)', key: '' },
+            { name: 'est_completion', type: 'VARCHAR(80)', key: '' }
+          ]
+        },
+        {
+          id: 'recipe_timeline_stages',
+          name: 'recipe_timeline_stages',
+          domain: 'craft',
+          desc: 'Real-time 5-stage brewing lifecycle: Mashing, Boil, Ferment, Conditioning, Canning.',
+          x: 950, y: 1450,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'recipe_id', type: 'VARCHAR(64)', key: 'FK' },
+            { name: 'step_order', type: 'INT', key: '' },
+            { name: 'stage_name', type: 'VARCHAR(100)', key: '' },
+            { name: 'description', type: 'TEXT', key: '' },
+            { name: 'scheduled_date', type: 'VARCHAR(60)', key: '' },
+            { name: 'status', type: 'ENUM(comp,in_prog..)', key: '' }
+          ]
+        },
+
+        // 5. Reviews, Rewards & Engagement
+        {
+          id: 'reviews',
+          name: 'reviews',
+          domain: 'users',
+          desc: 'Verified tasting notes, ratings, and feedback for brewery catalog items.',
+          x: 550, y: 1040,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'beer_id', type: 'VARCHAR(64)', key: 'FK' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'user_display_name', type: 'VARCHAR(100)', key: '' },
+            { name: 'rating', type: 'INT', key: '' },
+            { name: 'comment', type: 'TEXT', key: '' },
+            { name: 'created_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+        {
+          id: 'krewe_rewards',
+          name: 'krewe_rewards',
+          domain: 'users',
+          desc: 'Redeemable reward perks (Glassware, Can Glasses, VIP passes, Stickers).',
+          x: 1350, y: 920,
+          columns: [
+            { name: 'id', type: 'INT AUTO_INC', key: 'PK' },
+            { name: 'name', type: 'VARCHAR(150)', key: '' },
+            { name: 'cost_points', type: 'INT', key: '' },
+            { name: 'category', type: 'VARCHAR(50)', key: '' },
+            { name: 'image_url', type: 'VARCHAR(255)', key: '' }
+          ]
+        },
+        {
+          id: 'reward_redemptions',
+          name: 'reward_redemptions',
+          domain: 'users',
+          desc: 'History of member point redemptions and generated voucher codes.',
+          x: 1350, y: 1200,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'reward_id', type: 'INT', key: 'FK' },
+            { name: 'points_spent', type: 'INT', key: '' },
+            { name: 'redemption_code', type: 'VARCHAR(64)', key: 'UQ' },
+            { name: 'status', type: 'ENUM(active,used..)', key: '' }
+          ]
+        },
+        {
+          id: 'wishlist_items',
+          name: 'wishlist_items',
+          domain: 'users',
+          desc: 'Customer bookmarked beers and limited apparel drops.',
+          x: 1350, y: 1520,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'product_id', type: 'VARCHAR(64)', key: '' },
+            { name: 'product_type', type: 'ENUM(beer,merch)', key: '' },
+            { name: 'added_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+        {
+          id: 'blog_posts',
+          name: 'blog_posts',
+          domain: 'commerce',
+          desc: 'Brewery stories, Couva heritage, culinary pairings and sustainability journal.',
+          x: 150, y: 1320,
+          columns: [
+            { name: 'id', type: 'INT AUTO_INC', key: 'PK' },
+            { name: 'slug', type: 'VARCHAR(150)', key: 'UQ' },
+            { name: 'title', type: 'VARCHAR(200)', key: '' },
+            { name: 'excerpt', type: 'TEXT', key: '' },
+            { name: 'author', type: 'VARCHAR(100)', key: '' },
+            { name: 'category', type: 'VARCHAR(80)', key: '' },
+            { name: 'published_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+
+        // 6. Analytics & AI Engine
+        {
+          id: 'activity_events',
+          name: 'activity_events',
+          domain: 'analytics',
+          desc: 'Unified audit trail for order events, chatbot inquiries & recommendations.',
+          x: 1750, y: 120,
+          columns: [
+            { name: 'id', type: 'VARCHAR(64)', key: 'PK' },
+            { name: 'user_id', type: 'VARCHAR(36)', key: 'FK' },
+            { name: 'event_type', type: 'ENUM(order,craft..)', key: '' },
+            { name: 'customer_name', type: 'VARCHAR(100)', key: '' },
+            { name: 'description', type: 'VARCHAR(255)', key: '' },
+            { name: 'amount', type: 'VARCHAR(50)', key: '' },
+            { name: 'source_component', type: 'VARCHAR(80)', key: '' },
+            { name: 'created_at', type: 'TIMESTAMP', key: '' }
+          ]
+        },
+        {
+          id: 'ai_recommendations',
+          name: 'ai_recommendations',
+          domain: 'analytics',
+          desc: 'Vector affinity and co-occurrence recommendations with conversion tracking.',
+          x: 1750, y: 540,
+          columns: [
+            { name: 'id', type: 'BIGINT AUTO_INC', key: 'PK' },
+            { name: 'source_beer_id', type: 'VARCHAR(64)', key: 'FK' },
+            { name: 'target_beer_id', type: 'VARCHAR(64)', key: 'FK' },
+            { name: 'match_quality', type: 'ENUM(High,Mod..)', key: '' },
+            { name: 'recommendations_count', type: 'INT', key: '' },
+            { name: 'clicks_count', type: 'INT', key: '' },
+            { name: 'conversion_rate', type: 'DECIMAL(5,2)', key: '' },
+            { name: 'insights_note', type: 'TEXT', key: '' }
+          ]
+        }
+      ],
+
+      // Relationships & Foreign Keys
+      relationships: [
+        { from: 'orders', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'places (N:1)' },
+        { from: 'order_items', fromCol: 'order_id', to: 'orders', toCol: 'id', label: 'contains (N:1)' },
+        { from: 'krewe_profiles', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'has profile (1:1)' },
+        { from: 'user_badges', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'unlocks (N:1)' },
+        { from: 'user_badges', fromCol: 'badge_id', to: 'badges', toCol: 'id', label: 'targets (N:1)' },
+        { from: 'beer_flavor_tags', fromCol: 'beer_id', to: 'beers', toCol: 'id', label: 'describes (N:1)' },
+        { from: 'beer_food_pairings', fromCol: 'beer_id', to: 'beers', toCol: 'id', label: 'pairs with (N:1)' },
+        { from: 'custom_recipes', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'crafts (N:1)' },
+        { from: 'recipe_timeline_stages', fromCol: 'recipe_id', to: 'custom_recipes', toCol: 'id', label: 'tracks (N:1)' },
+        { from: 'reviews', fromCol: 'beer_id', to: 'beers', toCol: 'id', label: 'reviews (N:1)' },
+        { from: 'reviews', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'written by (N:1)' },
+        { from: 'reward_redemptions', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'claims (N:1)' },
+        { from: 'reward_redemptions', fromCol: 'reward_id', to: 'krewe_rewards', toCol: 'id', label: 'redeems (N:1)' },
+        { from: 'wishlist_items', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'saves (N:1)' },
+        { from: 'activity_events', fromCol: 'user_id', to: 'users', toCol: 'id', label: 'logs (N:1)' },
+        { from: 'ai_recommendations', fromCol: 'source_beer_id', to: 'beers', toCol: 'id', label: 'analyzes (N:1)' },
+        { from: 'ai_recommendations', fromCol: 'target_beer_id', to: 'beers', toCol: 'id', label: 'recommends (N:1)' }
+      ]
+    };
+
+    // --- CANVAS ENGINE (PAN, ZOOM, DRAG) ---
+    const container = document.getElementById('canvas-container');
+    const stage = document.getElementById('erd-stage');
+    const tablesContainer = document.getElementById('tables-container');
+    const svgLayer = document.getElementById('connections-layer');
+
+    let scale = 0.65;
+    let panX = 40;
+    let panY = 30;
+    let isPanning = false;
+    let startX = 0, startY = 0;
+    let activeFilter = 'all';
+
+    function updateTransform() {
+      stage.style.transform = `translate(${panX}px, ${panY}px) scale(${scale})`;
+    }
+
+    // Pan Dragging
+    container.addEventListener('mousedown', (e) => {
+      if (e.target.closest('.table-node') || e.target.closest('.canvas-hud') || e.target.closest('.legend-card')) return;
+      isPanning = true;
+      startX = e.clientX - panX;
+      startY = e.clientY - panY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      if (!isPanning) return;
+      panX = e.clientX - startX;
+      panY = e.clientY - startY;
+      updateTransform();
+    });
+
+    window.addEventListener('mouseup', () => { isPanning = false; });
+
+    // Wheel Zoom
+    container.addEventListener('wheel', (e) => {
+      e.preventDefault();
+      const zoomFactor = e.deltaY < 0 ? 1.08 : 0.92;
+      const rect = container.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left;
+      const mouseY = e.clientY - rect.top;
+
+      const newScale = Math.min(Math.max(scale * zoomFactor, 0.25), 2.2);
+      panX = mouseX - (mouseX - panX) * (newScale / scale);
+      panY = mouseY - (mouseY - panY) * (newScale / scale);
+      scale = newScale;
+      updateTransform();
+    }, { passive: false });
+
+    // HUD Zoom controls
+    document.getElementById('hud-zoom-in').addEventListener('click', () => {
+      scale = Math.min(scale * 1.2, 2.2);
+      updateTransform();
+    });
+
+    document.getElementById('hud-zoom-out').addEventListener('click', () => {
+      scale = Math.max(scale * 0.8, 0.25);
+      updateTransform();
+    });
+
+    document.getElementById('hud-reset').addEventListener('click', () => {
+      scale = 0.60;
+      panX = 60;
+      panY = 40;
+      updateTransform();
+      showToast('View reset to fit all 19 entities');
+    });
+
+    // --- RENDER TABLES ---
+    function renderTables() {
+      tablesContainer.innerHTML = '';
+      
+      ERD_DATA.tables.forEach(tbl => {
+        const node = document.createElement('div');
+        node.className = `table-node domain-${tbl.domain}`;
+        node.id = `node-${tbl.id}`;
+        node.style.left = `${tbl.x}px`;
+        node.style.top = `${tbl.y}px`;
+        node.dataset.tableId = tbl.id;
+        node.dataset.domain = tbl.domain;
+
+        let domainLabel = 'Core';
+        if (tbl.domain === 'commerce') domainLabel = 'Catalog';
+        if (tbl.domain === 'orders') domainLabel = 'Orders';
+        if (tbl.domain === 'craft') domainLabel = 'Craft Lab';
+        if (tbl.domain === 'users') domainLabel = 'Krewe';
+        if (tbl.domain === 'analytics') domainLabel = 'Analytics';
+
+        let colsHtml = tbl.columns.map(col => {
+          let keyClass = 'key-none';
+          if (col.key === 'PK') keyClass = 'key-pk';
+          if (col.key === 'FK') keyClass = 'key-fk';
+          if (col.key === 'UQ') keyClass = 'key-uq';
+
+          return `
+            <div class="column-row" data-col="${col.name}">
+              <div class="col-left">
+                <span class="col-key ${keyClass}">${col.key || ''}</span>
+                <span class="col-name">${col.name}</span>
+              </div>
+              <span class="col-type">${col.type}</span>
+            </div>
+          `;
+        }).join('');
+
+        node.innerHTML = `
+          <div class="table-header">
+            <div class="table-title">
+              <i data-lucide="table-2" style="width: 14px; height: 14px;"></i>
+              <span>${tbl.name}</span>
+            </div>
+            <span class="table-tag">${domainLabel}</span>
+          </div>
+          <div class="table-body">
+            ${colsHtml}
+          </div>
+        `;
+
+        // Click to view table details in drawer
+        node.addEventListener('click', (e) => {
+          openTableDetails(tbl);
+        });
+
+        // Hover highlight connected relations
+        node.addEventListener('mouseenter', () => highlightTableRelations(tbl.id));
+        node.addEventListener('mouseleave', () => clearRelationHighlights());
+
+        tablesContainer.appendChild(node);
+      });
+
+      renderConnections();
+      lucide.createIcons();
+    }
+
+    // --- SVG CONNECTIONS RENDERING ---
+    function renderConnections() {
+      svgLayer.innerHTML = '';
+
+      // Defs for crow's foot markers and arrowheads
+      const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
+      defs.innerHTML = `
+        <marker id="dot-marker" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6">
+          <circle cx="5" cy="5" r="4" fill="#38bdf8" />
+        </marker>
+        <marker id="crows-foot" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+          <path d="M 0 0 L 10 6 L 0 12 M 10 0 L 10 12" fill="none" stroke="#38bdf8" stroke-width="2" />
+        </marker>
+      `;
+      svgLayer.appendChild(defs);
+
+      ERD_DATA.relationships.forEach((rel, idx) => {
+        const fromTbl = ERD_DATA.tables.find(t => t.id === rel.from);
+        const toTbl = ERD_DATA.tables.find(t => t.id === rel.to);
+        if (!fromTbl || !toTbl) return;
+
+        const fromNode = document.getElementById(`node-${rel.from}`);
+        const toNode = document.getElementById(`node-${rel.to}`);
+        if (!fromNode || !toNode) return;
+
+        const fromW = 290, toW = 290;
+        const fromH = fromNode.offsetHeight || 260;
+        const toH = toNode.offsetHeight || 260;
+
+        // Smart edge attachment points
+        let x1, y1, x2, y2;
+        if (fromTbl.x + fromW < toTbl.x) {
+          x1 = fromTbl.x + fromW;
+          y1 = fromTbl.y + Math.min(fromH * 0.45, 120);
+          x2 = toTbl.x;
+          y2 = toTbl.y + Math.min(toH * 0.45, 120);
+        } else if (fromTbl.x > toTbl.x + toW) {
+          x1 = fromTbl.x;
+          y1 = fromTbl.y + Math.min(fromH * 0.45, 120);
+          x2 = toTbl.x + toW;
+          y2 = toTbl.y + Math.min(toH * 0.45, 120);
+        } else {
+          x1 = fromTbl.x + fromW / 2;
+          y1 = fromTbl.y + fromH;
+          x2 = toTbl.x + toW / 2;
+          y2 = toTbl.y;
+        }
+
+        const dx = Math.abs(x2 - x1) * 0.55;
+        const d = `M ${x1} ${y1} C ${x1 + (x2 > x1 ? dx : -dx)} ${y1}, ${x2 - (x2 > x1 ? dx : -dx)} ${y2}, ${x2} ${y2}`;
+
+        const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+        path.setAttribute('d', d);
+        path.setAttribute('class', 'relation-path');
+        path.dataset.from = rel.from;
+        path.dataset.to = rel.to;
+        path.dataset.id = `rel-${idx}`;
+        path.setAttribute('marker-start', 'url(#dot-marker)');
+        path.setAttribute('marker-end', 'url(#crows-foot)');
+
+        svgLayer.appendChild(path);
+      });
+    }
+
+    // Relation Hover Highlights
+    function highlightTableRelations(tableId) {
+      document.querySelectorAll('.relation-path').forEach(p => {
+        if (p.dataset.from === tableId || p.dataset.to === tableId) {
+          p.classList.add('active');
+        } else {
+          p.style.opacity = '0.15';
+        }
+      });
+
+      document.querySelectorAll('.table-node').forEach(n => {
+        const id = n.dataset.tableId;
+        const isRelated = ERD_DATA.relationships.some(r => 
+          (r.from === tableId && r.to === id) || (r.to === tableId && r.from === id) || id === tableId
+        );
+        if (isRelated) {
+          n.classList.add('highlighted');
+        } else {
+          n.classList.add('dimmed');
+        }
+      });
+    }
+
+    function clearRelationHighlights() {
+      document.querySelectorAll('.relation-path').forEach(p => {
+        p.classList.remove('active');
+        p.style.opacity = '1';
+      });
+      document.querySelectorAll('.table-node').forEach(n => {
+        n.classList.remove('highlighted');
+        n.classList.remove('dimmed');
+      });
+    }
+
+    // --- DOMAIN FILTERING ---
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        activeFilter = btn.dataset.domain;
+        filterTables();
+      });
+    });
+
+    function filterTables() {
+      const searchVal = document.getElementById('erd-search').value.toLowerCase().trim();
+
+      ERD_DATA.tables.forEach(tbl => {
+        const node = document.getElementById(`node-${tbl.id}`);
+        if (!node) return;
+
+        const matchesDomain = activeFilter === 'all' || tbl.domain === activeFilter;
+        const matchesSearch = !searchVal || 
+          tbl.name.toLowerCase().includes(searchVal) || 
+          tbl.columns.some(c => c.name.toLowerCase().includes(searchVal));
+
+        if (matchesDomain && matchesSearch) {
+          node.style.display = 'block';
+          if (searchVal) node.classList.add('highlighted');
+          else node.classList.remove('highlighted');
+        } else {
+          node.style.display = 'none';
+        }
+      });
+
+      renderConnections();
+    }
+
+    document.getElementById('erd-search').addEventListener('input', filterTables);
+
+    // --- TABLE DETAILS DRAWER ---
+    const drawer = document.getElementById('detail-drawer');
+    const drawerContent = document.getElementById('drawer-content');
+    document.getElementById('btn-close-drawer').addEventListener('click', () => drawer.classList.remove('open'));
+
+    function openTableDetails(tbl) {
+      const relatedRels = ERD_DATA.relationships.filter(r => r.from === tbl.id || r.to === tbl.id);
+
+      drawerContent.innerHTML = `
+        <div style="border-bottom: 1px solid var(--surface-border); padding-bottom: 14px;">
+          <div style="display: flex; align-items: center; justify-content: space-between;">
+            <h2 style="font-size: 18px; font-weight: 700; color: #fff; font-family: 'JetBrains Mono', monospace;">${tbl.name}</h2>
+            <span class="table-tag" style="background: rgba(245, 158, 11, 0.2); color: #fbbf24;">${tbl.domain.toUpperCase()}</span>
+          </div>
+          <p style="font-size: 13px; color: var(--text-muted); margin-top: 6px;">${tbl.desc}</p>
+        </div>
+
+        <div>
+          <h3 style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: var(--cyan); margin-bottom: 10px;">Attributes & Columns (${tbl.columns.length})</h3>
+          <div style="background: var(--surface); border: 1px solid var(--surface-border); border-radius: 8px; overflow: hidden;">
+            ${tbl.columns.map(c => `
+              <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 12px; border-bottom: 1px solid rgba(255,255,255,0.04); font-family: 'JetBrains Mono', monospace; font-size: 11px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="col-key ${c.key === 'PK' ? 'key-pk' : (c.key === 'FK' ? 'key-fk' : (c.key === 'UQ' ? 'key-uq' : 'key-none'))}">${c.key}</span>
+                  <span style="color: #fff; font-weight: 600;">${c.name}</span>
+                </div>
+                <span style="color: #94a3b8;">${c.type}</span>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+
+        <div>
+          <h3 style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: #a855f7; margin-bottom: 10px;">Active Foreign Keys & Relations (${relatedRels.length})</h3>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${relatedRels.map(r => `
+              <div style="background: var(--surface); border: 1px solid var(--surface-border); border-radius: 8px; padding: 10px; font-size: 12px;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+                  <strong style="color: #38bdf8;">${r.from}</strong>
+                  <span style="font-size: 10px; color: var(--text-dim);">⟶</span>
+                  <strong style="color: #34d399;">${r.to}</strong>
+                </div>
+                <div style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--text-muted);">
+                  ${r.from}.${r.fromCol} = ${r.to}.${r.toCol} (${r.label})
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      `;
+
+      drawer.classList.add('open');
+    }
+
+    // --- SCREENSHOT & PRESENTATION MODE ---
+    const btnScreenshot = document.getElementById('btn-screenshot-mode');
+    const btnExitScreenshot = document.getElementById('btn-exit-screenshot');
+
+    btnScreenshot.addEventListener('click', () => {
+      document.body.classList.add('presentation-mode');
+      showToast('Screenshot mode active. Press [ESC] to exit.');
+    });
+
+    btnExitScreenshot.addEventListener('click', () => {
+      document.body.classList.remove('presentation-mode');
+    });
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.body.classList.remove('presentation-mode');
+      }
+    });
+
+    // --- EXPORT TO SQL ---
+    document.getElementById('btn-export-sql').addEventListener('click', () => {
+      window.location.href = '/schema.sql';
+      showToast('Downloading schema.sql DDL...');
+    });
+
+    // --- EXPORT TO SVG ---
+    document.getElementById('btn-export-svg').addEventListener('click', () => {
+      exportFullSVG();
+    });
+
+    function exportFullSVG() {
+      // Build a full standalone vector SVG representation
+      const svgWidth = 2400;
+      const svgHeight = 1800;
+
+      let svgXml = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgWidth}" height="${svgHeight}" viewBox="0 0 ${svgWidth} ${svgHeight}" style="background-color: #0b0f17; font-family: 'Plus Jakarta Sans', system-ui, sans-serif;">
+        <defs>
+          <style>
+            .title { font-size: 26px; font-weight: 800; fill: #ffffff; }
+            .subtitle { font-size: 14px; fill: #94a3b8; }
+            .tbl-title { font-family: 'JetBrains Mono', monospace; font-size: 13px; font-weight: 700; fill: #ffffff; }
+            .col-text { font-family: 'JetBrains Mono', monospace; font-size: 11px; fill: #cbd5e1; }
+            .col-type { font-family: 'JetBrains Mono', monospace; font-size: 10px; fill: #64748b; }
+            .pk { font-weight: 800; font-size: 9px; fill: #000; }
+          </style>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+          </marker>
+        </defs>
+
+        <!-- Brand Title Header -->
+        <g transform="translate(80, 60)">
+          <text class="title" x="0" y="0">Jeff Brewery Industries - Entity Relationship Diagram (ERD)</text>
+          <text class="subtitle" x="0" y="24">Production Relational Schema Architecture (Couva &amp; Port of Spain, Trinidad &amp; Tobago)</text>
+        </g>
+      `;
+
+      // Render Relations in SVG
+      ERD_DATA.relationships.forEach(rel => {
+        const fromTbl = ERD_DATA.tables.find(t => t.id === rel.from);
+        const toTbl = ERD_DATA.tables.find(t => t.id === rel.to);
+        if (!fromTbl || !toTbl) return;
+
+        const x1 = fromTbl.x + 290;
+        const y1 = fromTbl.y + 60;
+        const x2 = toTbl.x;
+        const y2 = toTbl.y + 60;
+        const dx = Math.abs(x2 - x1) * 0.5;
+
+        svgXml += `
+          <path d="M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}" 
+                fill="none" stroke="#38bdf8" stroke-width="2" stroke-dasharray="4 2" marker-end="url(#arrow)" opacity="0.75" />
+        `;
+      });
+
+      // Render Tables in SVG
+      ERD_DATA.tables.forEach(tbl => {
+        const cardH = 34 + tbl.columns.length * 24 + 10;
+        svgXml += `
+          <g transform="translate(${tbl.x}, ${tbl.y})">
+            <rect width="290" height="${cardH}" rx="10" fill="#111827" stroke="#1f2d44" stroke-width="1.5" />
+            <rect width="290" height="34" rx="10" fill="#182234" />
+            <rect y="24" width="290" height="10" fill="#182234" />
+            <text class="tbl-title" x="14" y="22">${tbl.name}</text>
+        `;
+
+        tbl.columns.forEach((c, i) => {
+          const cy = 52 + i * 24;
+          let badge = '';
+          if (c.key === 'PK') {
+            badge = `<rect x="14" y="${cy - 12}" width="20" height="15" rx="3" fill="#f59e0b"/><text class="pk" x="17" y="${cy}">PK</text>`;
+          } else if (c.key === 'FK') {
+            badge = `<rect x="14" y="${cy - 12}" width="20" height="15" rx="3" fill="#38bdf8"/><text class="pk" x="18" y="${cy}">FK</text>`;
+          }
+          svgXml += `
+            ${badge}
+            <text class="col-text" x="${c.key ? 42 : 16}" y="${cy}">${c.name}</text>
+            <text class="col-type" x="275" y="${cy}" text-anchor="end">${c.type}</text>
+            <line x1="0" y1="${cy + 7}" x2="290" y2="${cy + 7}" stroke="#1f2d44" stroke-width="0.5" opacity="0.4"/>
+          `;
+        });
+
+        svgXml += `</g>`;
+      });
+
+      svgXml += `</svg>`;
+
+      const blob = new Blob([svgXml], { type: 'image/svg+xml;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'jeff_brewery_erd.svg';
+      link.click();
+      URL.revokeObjectURL(url);
+      showToast('Downloaded jeff_brewery_erd.svg vector diagram!');
+    }
+
+    // --- HIGH-RES PNG EXPORT (2X CANVASES) ---
+    document.getElementById('btn-export-png').addEventListener('click', () => {
+      exportHighResPNG();
+    });
+
+    function exportHighResPNG() {
+      showToast('Rendering high-resolution 2X PNG...');
+      
+      const width = 2400;
+      const height = 1800;
+      const canvas = document.createElement('canvas');
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+
+      // Background
+      ctx.fillStyle = '#0a0f18';
+      ctx.fillRect(0, 0, width, height);
+
+      // Grid background dots
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      for (let x = 0; x < width; x += 32) {
+        for (let y = 0; y < height; y += 32) {
+          ctx.beginPath();
+          ctx.arc(x, y, 1, 0, Math.PI * 2);
+          ctx.fill();
+        }
+      }
+
+      // Title Banner
+      ctx.fillStyle = '#ffffff';
+      ctx.font = 'bold 28px Plus Jakarta Sans, sans-serif';
+      ctx.fillText('Jeff Brewery Industries — Entity Relationship Diagram (ERD)', 80, 60);
+
+      ctx.fillStyle = '#94a3b8';
+      ctx.font = '14px Plus Jakarta Sans, sans-serif';
+      ctx.fillText('Official Relational Architecture | 19 Entities, Full Foreign Keys & Cardinalities', 80, 88);
+
+      // Draw Connections
+      ERD_DATA.relationships.forEach(rel => {
+        const fromTbl = ERD_DATA.tables.find(t => t.id === rel.from);
+        const toTbl = ERD_DATA.tables.find(t => t.id === rel.to);
+        if (!fromTbl || !toTbl) return;
+
+        const x1 = fromTbl.x + 290;
+        const y1 = fromTbl.y + 60;
+        const x2 = toTbl.x;
+        const y2 = toTbl.y + 60;
+        const dx = Math.abs(x2 - x1) * 0.5;
+
+        ctx.strokeStyle = '#38bdf8';
+        ctx.lineWidth = 2.5;
+        ctx.setLineDash([6, 3]);
+        ctx.beginPath();
+        ctx.moveTo(x1, y1);
+        ctx.bezierCurveTo(x1 + dx, y1, x2 - dx, y2, x2, y2);
+        ctx.stroke();
+        ctx.setLineDash([]);
+      });
+
+      // Draw Tables
+      ERD_DATA.tables.forEach(tbl => {
+        const w = 290;
+        const h = 38 + tbl.columns.length * 24 + 10;
+        const x = tbl.x;
+        const y = tbl.y;
+
+        // Card Shadow & Body
+        ctx.fillStyle = '#111827';
+        ctx.strokeStyle = '#1f2d44';
+        ctx.lineWidth = 2;
+        roundRect(ctx, x, y, w, h, 12, true, true);
+
+        // Header
+        ctx.fillStyle = tbl.domain === 'commerce' ? '#1c2436' : (tbl.domain === 'orders' ? '#132822' : '#1c2035');
+        roundRect(ctx, x, y, w, 36, 12, true, false);
+
+        // Title
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 13px JetBrains Mono, monospace';
+        ctx.fillText(tbl.name, x + 16, y + 23);
+
+        // Domain pill
+        ctx.fillStyle = 'rgba(245, 158, 11, 0.2)';
+        roundRect(ctx, x + w - 70, y + 10, 56, 16, 4, true, false);
+        ctx.fillStyle = '#fbbf24';
+        ctx.font = 'bold 9px Plus Jakarta Sans';
+        ctx.fillText(tbl.domain.toUpperCase(), x + w - 62, y + 22);
+
+        // Columns
+        tbl.columns.forEach((col, idx) => {
+          const rowY = y + 54 + idx * 24;
+
+          // Key badge
+          if (col.key === 'PK') {
+            ctx.fillStyle = '#f59e0b';
+            roundRect(ctx, x + 12, rowY - 12, 22, 16, 3, true, false);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 9px JetBrains Mono';
+            ctx.fillText('PK', x + 16, rowY);
+          } else if (col.key === 'FK') {
+            ctx.fillStyle = '#38bdf8';
+            roundRect(ctx, x + 12, rowY - 12, 22, 16, 3, true, false);
+            ctx.fillStyle = '#000000';
+            ctx.font = 'bold 9px JetBrains Mono';
+            ctx.fillText('FK', x + 16, rowY);
+          }
+
+          // Column Name
+          ctx.fillStyle = '#f1f5f9';
+          ctx.font = '500 11px JetBrains Mono, monospace';
+          ctx.fillText(col.name, x + (col.key ? 42 : 16), rowY);
+
+          // Type
+          ctx.fillStyle = '#64748b';
+          ctx.font = '10px JetBrains Mono, monospace';
+          ctx.textAlign = 'right';
+          ctx.fillText(col.type, x + w - 16, rowY);
+          ctx.textAlign = 'left';
+
+          // Divider
+          ctx.strokeStyle = 'rgba(255, 255, 255, 0.04)';
+          ctx.lineWidth = 1;
+          ctx.beginPath();
+          ctx.moveTo(x, rowY + 6);
+          ctx.lineTo(x + w, rowY + 6);
+          ctx.stroke();
+        });
+      });
+
+      // Export image
+      const link = document.createElement('a');
+      link.download = 'jeff_brewery_erd_diagram.png';
+      link.href = canvas.toDataURL('image/png');
+      link.click();
+      showToast('High-Res PNG downloaded successfully!');
+    }
+
+    function roundRect(ctx, x, y, width, height, radius, fill, stroke) {
+      ctx.beginPath();
+      ctx.moveTo(x + radius, y);
+      ctx.lineTo(x + width - radius, y);
+      ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
+      ctx.lineTo(x + width, y + height - radius);
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
+      ctx.lineTo(x + radius, y + height);
+      ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
+      ctx.lineTo(x, y + radius);
+      ctx.quadraticCurveTo(x, y, x + radius, y);
+      ctx.closePath();
+      if (fill) ctx.fill();
+      if (stroke) ctx.stroke();
+    }
+
+    // Toast helper
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-msg').innerText = msg;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3500);
+    }
+
+    // Init
+    window.addEventListener('load', () => {
+      renderTables();
+      updateTransform();
+      window.addEventListener('resize', renderConnections);
+    });
+  </script>
+</body>
+</html>
